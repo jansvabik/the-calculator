@@ -9,6 +9,7 @@
         "test": "jest"
     },
     "dependencies": {
+        "electron": "^4.1.0",
         "jest": "^24.5.0"
     }
 }
