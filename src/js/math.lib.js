@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @file math.lib.js
  * @brief The mathematical library
@@ -45,7 +43,7 @@ module.exports.factorize = (x) => {};
 
 module.exports.power = (x, n) => {};
 
-module.exports.root = (x, n) => {}
+module.exports.root = (x, n) => {};
 
 module.exports.naturalLogarithm = (x) => {};
 
