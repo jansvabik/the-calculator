@@ -19,6 +19,7 @@ Lukas Gurecky (xgurec00)
 - vyvoj matematicke knihovny
 - navrh a kodovani GUI
 - vyvoj algoritmu pro profiling
+- programovani interakci s uzivatelem
 
 Jan Svabik (xsvabi00)
 - vytvoreni unit testu pro matematickou knihovnu (Jest)
