@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * MATHEMATIC LIBRARY TESTS
  * 

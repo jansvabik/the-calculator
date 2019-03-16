@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @file math.lib.js
  * @brief The mathematical library
