@@ -23,3 +23,30 @@ const checkValues = (values, minOperands = 0) => {
         if (typeof values[i] !== 'number' || isNaN(values[i]))
             throw new Error('Wrong operands');
 };
+
+module.exports.add = (values) => {
+    // check data-type of each value
+    checkValues(values, 1);
+
+    // summarize the values
+    let sum = 0;
+    for (let i = 0; i < values.length; i++)
+        sum += values[i];
+    return sum;
+};
+
+module.exports.subtract = (values) => {};
+
+module.exports.multiply = (values) => {};
+
+module.exports.divide = (values) => {};
+
+module.exports.factorize = (x) => {};
+
+module.exports.power = (x, n) => {};
+
+module.exports.root = (x, n) => {}
+
+module.exports.naturalLogarithm = (x) => {};
+
+module.exports.decimalLogarithm = (x) => {};
