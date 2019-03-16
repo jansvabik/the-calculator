@@ -1,0 +1,43 @@
+=== STANOVENE TERMINY ===
+do 15. 3. 2019 vytvoreni testu matematicke knihovny pro test-driven development (Jest)
+do 17. 3. 2019 navrzene a nakodovane GUI
+do 24. 3. 2019 test-driven development (vyvoj matematicke knihovny)
+do 31. 3. 2019 vyvinuti jadra aplikace (zpracovani zadani a vypoctu)
+do 3. 4. 2019 propojeni modulu aplikace do funkcniho celku, vytvoreni Makefile
+do 17. 4. 2019 finalni testovani aplikace a ladeni, sepsani napovedy
+do 20. 4. 2019 vytvoreni instalatoru, sepsani uzivatelske prirucky
+do 24. 4. 2019 odevzdani projektu
+
+=== PRIDELENI UKOLU ===
+Vojtech Dvorak (xdvora3a)
+- vyvoj matematicke knihovny
+- navrh a vyvoj jadra aplikace
+- generovani dokumentace (Doxygen)
+- vytvoreni Makefile
+
+Lukas Gurecky (xgurec00)
+- vyvoj matematicke knihovny
+- navrh a kodovani GUI
+- vyvoj algoritmu pro profiling
+
+Jan Svabik (xsvabi00)
+- vytvoreni unit testu pro matematickou knihovnu (Jest)
+- navrh a vyvoj jadra aplikace
+- zefektivnovani a zprehlednovani kodu
+- programovani interakci s uzivatelem
+
+Radim Zitka (xzitka07)
+- navrh algoritmu pro pokrocile matematicke funkce
+- komplexni finalni testovani
+- sepsani uzivatelske prirucky a napovedy
+- vytvoreni instalatoru finalni aplikace
+
+=== KOMUNIKACNI KANALY ===
+Skupinova konverzace/hovor na Facebooku pro reseni problemu
+Trello pro organizaci veci a napr. uchovavani uzitecnych odkazu
+Dropbox pro pripadnou rychlou vymenu dalsich souboruÂ¨
+
+=== SYSTEM PRO SPRAVU VERZI A JEHO HOSTING ===
+Zvoleny system: GIT
+Hosting: Bitbucket
+URL: https://bitbucket.org/fitpeaches/the-calculator/src
