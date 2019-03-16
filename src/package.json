@@ -1,4 +1,10 @@
 {
+    "name": "thecalculator",
+    "version": "0.1.0",
+    "description": "The Calculator – app for calculating",
+    "main": "app.js",
+    "author": "FIT Peaches",
+    "license": "GPL-3.0-or-later",
     "scripts": {
         "test": "jest"
     },
