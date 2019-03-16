@@ -6,6 +6,7 @@
     "author": "FIT Peaches",
     "license": "GPL-3.0-or-later",
     "scripts": {
+        "start": "electron .",
         "test": "jest"
     },
     "dependencies": {
