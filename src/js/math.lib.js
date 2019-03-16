@@ -43,7 +43,7 @@ module.exports.factorize = (x) => {};
 
 module.exports.power = (x, n) => {};
 
-module.exports.root = (x, n) => {}
+module.exports.root = (x, n) => {};
 
 module.exports.naturalLogarithm = (x) => {};
 
