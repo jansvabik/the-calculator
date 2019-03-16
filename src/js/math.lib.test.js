@@ -89,45 +89,7 @@ test('Dividing', () => {
     expect(() => math.divide([])).toThrowError();
 });
 
-test('Factorizing', () => {
-    expect(math.factorize(0)).toBe(1);
-    expect(math.factorize(-0)).toBe(1);
-    expect(math.factorize(5)).toBe(120);
-    expect(math.factorize(2.5)).toBe(NaN); // only with gamma function
-    expect(math.factorize(11)).toBe(39916800);
-    expect(math.factorize(5.6)).toBe(NaN); // only with gamma function
-    expect(math.factorize(0.3399)).toBe(NaN); // only with gamma function
-
-    expect(math.factorize(math.PI)).toBe(NaN); // only with gamma function
-    expect(math.factorize(math.E)).toBe(NaN); // only with gamma function
-    
-    expect(math.factorize(Infinity)).toBe(Infinity);
-    expect(math.factorize(-Infinity)).toBe(NaN);
-    
-    expect(math.factorize(-9)).toBe(NaN);
-    expect(math.factorize(-9.876)).toBe(NaN); // only with gamma function
-    expect(() => math.factorize(NaN)).toThrowError();
-    expect(() => math.factorize(undefined)).toThrowError();
-});
-
-test('Natural logarithm', () => {
-    expect(math.naturalLogarithm(0)).toBe(-Infinity);
-    expect(math.naturalLogarithm(-0)).toBe(-Infinity);
-    expect(math.naturalLogarithm(1)).toBe(0);
-    expect(math.naturalLogarithm(math.E)).toBe(1);
-    expect(math.naturalLogarithm(1.5)).toBeCloseTo(0.4054651081);
-    expect(math.naturalLogarithm(45)).toBeCloseTo(3.80666248977);
-    expect(math.naturalLogarithm(-1)).toBe(NaN);
-    expect(math.naturalLogarithm(-65.3525)).toBe(NaN);
-    
-    expect(math.naturalLogarithm(Infinity)).toBe(Infinity);
-    expect(math.naturalLogarithm(-Infinity)).toBe(NaN);
-    
-    expect(() => math.naturalLogarithm(NaN)).toThrowError();
-    expect(() => math.naturalLogarithm(undefined)).toThrowError();
-});
-
-test('Exponentiating', () => {
+test('Calculating the power', () => {
     expect(math.power(0, 0)).toBe(1);
     expect(math.power(0, -0)).toBe(1);
     expect(math.power(0, 5)).toBe(0);
@@ -178,7 +140,7 @@ test('Exponentiating', () => {
     expect(() => math.power(3.14, undefined)).toThrowError();
 });
 
-test('Finding the root', () => {
+test('Calculating the root', () => {
     expect(math.root(125, 3)).toBe(5);
     expect(math.root(2187, 7)).toBe(3);
     expect(math.root(678223072849, 14)).toBe(7);
@@ -209,4 +171,60 @@ test('Finding the root', () => {
     expect(() => math.root(4, '5')).toThrowError();
     expect(() => math.root(4, NaN)).toThrowError();
     expect(() => math.root(NaN, 4)).toThrowError();
+});
+
+
+test('Calculating the factorial', () => {
+    expect(math.factorize(0)).toBe(1);
+    expect(math.factorize(-0)).toBe(1);
+    expect(math.factorize(5)).toBe(120);
+    expect(math.factorize(2.5)).toBe(NaN); // only with gamma function
+    expect(math.factorize(11)).toBe(39916800);
+    expect(math.factorize(5.6)).toBe(NaN); // only with gamma function
+    expect(math.factorize(0.3399)).toBe(NaN); // only with gamma function
+
+    expect(math.factorize(math.PI)).toBe(NaN); // only with gamma function
+    expect(math.factorize(math.E)).toBe(NaN); // only with gamma function
+    
+    expect(math.factorize(Infinity)).toBe(Infinity);
+    expect(math.factorize(-Infinity)).toBe(NaN);
+    
+    expect(math.factorize(-9)).toBe(NaN);
+    expect(math.factorize(-9.876)).toBe(NaN); // only with gamma function
+    expect(() => math.factorize(NaN)).toThrowError();
+    expect(() => math.factorize(undefined)).toThrowError();
+});
+
+test('Calculating the natural logarithm', () => {
+    expect(math.naturalLogarithm(0)).toBe(-Infinity);
+    expect(math.naturalLogarithm(-0)).toBe(-Infinity);
+    expect(math.naturalLogarithm(1)).toBe(0);
+    expect(math.naturalLogarithm(math.E)).toBe(1);
+    expect(math.naturalLogarithm(1.5)).toBeCloseTo(0.4054651081);
+    expect(math.naturalLogarithm(45)).toBeCloseTo(3.80666248977);
+    expect(math.naturalLogarithm(-1)).toBe(NaN);
+    expect(math.naturalLogarithm(-65.3525)).toBe(NaN);
+    
+    expect(math.naturalLogarithm(Infinity)).toBe(Infinity);
+    expect(math.naturalLogarithm(-Infinity)).toBe(NaN);
+    
+    expect(() => math.naturalLogarithm(NaN)).toThrowError();
+    expect(() => math.naturalLogarithm(undefined)).toThrowError();
+});
+
+test('Calculating the decimal logarithm', () => {
+    expect(math.decimalLogarithm(0)).toBe(-Infinity);
+    expect(math.decimalLogarithm(-0)).toBe(-Infinity);
+    expect(math.decimalLogarithm(1)).toBe(0);
+    expect(math.decimalLogarithm(10)).toBe(1);
+    expect(math.decimalLogarithm(1.5)).toBeCloseTo(0.17609125905);
+    expect(math.decimalLogarithm(45)).toBeCloseTo(1.65321251378);
+    expect(math.decimalLogarithm(-1)).toBe(NaN);
+    expect(math.decimalLogarithm(-65.3525)).toBe(NaN);
+    
+    expect(math.decimalLogarithm(Infinity)).toBe(Infinity);
+    expect(math.decimalLogarithm(-Infinity)).toBe(NaN);
+    
+    expect(() => math.decimalLogarithm(NaN)).toThrowError();
+    expect(() => math.decimalLogarithm(undefined)).toThrowError();
 });
