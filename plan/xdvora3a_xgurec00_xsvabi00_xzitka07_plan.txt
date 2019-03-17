@@ -13,18 +13,19 @@ Vojtech Dvorak (xdvora3a)
 - vyvoj matematicke knihovny
 - navrh a vyvoj jadra aplikace
 - generovani dokumentace (Doxygen)
-- vytvoreni Makefile
+- programovani interakci s uzivatelem
 
 Lukas Gurecky (xgurec00)
 - vyvoj matematicke knihovny
 - navrh a kodovani GUI
 - vyvoj algoritmu pro profiling
+- programovani interakci s uzivatelem
 
 Jan Svabik (xsvabi00)
 - vytvoreni unit testu pro matematickou knihovnu (Jest)
 - navrh a vyvoj jadra aplikace
 - zefektivnovani a zprehlednovani kodu
-- programovani interakci s uzivatelem
+- vytvoreni Makefile
 
 Radim Zitka (xzitka07)
 - navrh algoritmu pro pokrocile matematicke funkce
