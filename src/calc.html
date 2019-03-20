@@ -2,12 +2,78 @@
 <html lang="cs">
     <head>
         <meta charset="UTF-8">
-        <title>The Calculator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>calculator</title>
+        <link rel="stylesheet" href="./css/layout.css">
     </head>
     <body>
-        The Calculator
-        <script>
-            require('./renderer.js');
-        </script>
+        <div class="container">
+            <div class="displayHeight">
+                <div class="display">tady budou mezivýsledky</div>
+            </div>
+            <div class="displayHeight">
+                    <div class="Display">tady budou hodnoty</div>
+                </div>
+            <div class="row">
+                <div class="bg-dark-shadow">(</div>
+                <div class="bg-dark-shadow">)</div>
+                <div class="bg-dark-shadow">mc</div>
+                <div class="bg-dark-shadow">m+</div>
+                <div class="bg-dark-shadow">m−</div>
+                <div class="bg-dark-shadow">mr</div>
+                <div class="bg-dark-shadow">AC</div>
+                <div class="bg-dark-shadow">±</div>
+                <div class="bg-dark-shadow">%</div>
+                <div class="bg-orange">÷</div>
+            </div>
+            <div class="row">
+                <div class="bg-dark-shadow">2<sup>nd</sup></div>
+                <div class="bg-dark-shadow">x<sup>2</sup></div>
+                <div class="bg-dark-shadow">x<sup>3</sup></div>
+                <div class="bg-dark-shadow">x<sup>y</sup></div>
+                <div class="bg-dark-shadow">e<sup>x</sup></div>
+                <div class="bg-dark-shadow">10<sup>x</sup></div>
+                <div class="bg-shadow">7</div>
+                <div class="bg-shadow">8</div>
+                <div class="bg-shadow">9</div>
+                <div class="bg-orange">×</div>
+            </div>
+            <div class="row">
+                <div class="bg-dark-shadow"><sup>1</sup>&frasl;<sub>x</sub></div>
+                <div class="bg-dark-shadow">&radic;<span style="text-decoration:overline;">x</span></div>
+                <div class="bg-dark-shadow"><sup>3</sup>&radic;<span style="text-decoration:overline;">x</span></div>
+                <div class="bg-dark-shadow"><sup>y</sup>&radic;<span style="text-decoration:overline;">x</span></div>
+                <div class="bg-dark-shadow">ln</div>
+                <div class="bg-dark-shadow">log<sub>10</sub></div>
+                <div class="bg-shadow">4</div>
+                <div class="bg-shadow">5</div>
+                <div class="bg-shadow">6</div>
+                <div class="bg-orange">−</div>
+            </div>
+            <div class="row">
+                <div class="bg-dark-shadow">x!</div>
+                <div class="bg-dark-shadow">sin</div>
+                <div class="bg-dark-shadow">cos</div>
+                <div class="bg-dark-shadow">tan</div>
+                <div class="bg-dark-shadow">e</div>
+                <div class="bg-dark-shadow">EE</div>
+                <div class="bg-shadow">1</div>
+                <div class="bg-shadow">2</div>
+                <div class="bg-shadow">3</div>
+                <div class="bg-orange">+</div>
+            </div>
+            <div class="row">
+                <div class="bg-dark-shadow">Rad</div>
+                <div class="bg-dark-shadow">sinh</div>
+                <div class="bg-dark-shadow">cosh</div>
+                <div class="bg-dark-shadow">tanh</div>
+                <div class="bg-dark-shadow">&pi;</div>
+                <div class="bg-dark-shadow">Rand</div>
+                <div class="bg-shadow exception">0</div>
+                <div class="bg-shadow">,</div>
+                <div class="bg-orange">=</div>
+            </div>
+        </div>
     </body>
 </html>
