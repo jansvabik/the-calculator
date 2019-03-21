@@ -2,6 +2,7 @@
  * @file math.lib.js
  * @brief The mathematical library
  * @description This mathematical library was developed especially for The Calculator
+ * @version 1.0
  */
 
 // constants
@@ -37,7 +38,7 @@ module.exports.subtract = (values) => {
     // check data-type of each value
     checkValues(values, 1);
 
-    if(values.length === 1)
+    if (values.length === 1)
         return -values[0];
 
     // subtract the values
@@ -51,7 +52,7 @@ module.exports.multiply = (values) => {
     // check data-type of each value
     checkValues(values, 2);
     
-    if(values.includes(0)) 
+    if (values.includes(0)) 
         return 0;
 
     // summarize the values
@@ -66,7 +67,8 @@ module.exports.divide = (values) => {
     // check data-type of each value
     checkValues(values, 2);
 
-    if(values[0] === 0 && !values.slice(1).includes(0))
+    // if the first value is zero and there is no other zero, return 0
+    if (values[0] === 0 && !values.slice(1).includes(0))
         return 0;
 
     // summarize the values
@@ -80,17 +82,17 @@ module.exports.divide = (values) => {
 module.exports.factorize = (x) => {
     checkValues([x]);
 
-    if(x === Infinity)
+    // special situations
+    if (x === Infinity)
         return Infinity;
     
-    if(x % 1 !== 0 || x === -Infinity || x < 0)
+    if (x % 1 !== 0 || x === -Infinity || x < 0)
         return NaN;
 
+    // make the factorial
     let result = 1;
-    for(let i = x; i > 1; i--)
-    {
+    for (let i = x; i > 1; i--)
         result *= i;
-    }
 
     return result;
 };
@@ -105,14 +107,14 @@ module.exports.root = (x, n) => {
     checkValues([x, n]);
 
     let result;
-    if(n % 2 === 1 && x < 0)
+    if (n % 2 === 1 && x < 0)
         result = -Math.pow(-x, 1/n)
     else
         result =  Math.pow(x, 1/n);
 
+    // round and check for the tolerance
     let rounded = Math.round(result);
-
-    if(Math.abs(rounded - result) < 1e-12) 
+    if (Math.abs(rounded - result) < 1e-12) 
         result = rounded;
 
     return result;    
