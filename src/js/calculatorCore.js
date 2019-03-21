@@ -7,7 +7,6 @@
 
 // include our mathematical library
 const math = require('./math.lib');
-const util = require('util'); // for testing purposes (e.g. displaying very deep arrays)
 
 const simpleExpressionRegex = /\(([0-9\.\+\-\*\/\!]*)\)/g;
 const constantRegex = /(?<!log|ln|sin|cos|tan)\(([0-9\.\-]*)\)/g;
@@ -169,14 +168,6 @@ const parseFunctionExpression = (expr) => {
 const calculateParsedExpression = (parsedExpression) => {
 
 };
-
-let resp;
-try {
-    resp = calculate('2+(-log(1.8))*(8+sin(9+1-log(3+4*ln(8-6)-4))+4!/2+0.5+(1)-tan(4*5-4)+7)-cos(8)');
-} catch (e) {
-    console.log(e.constructor.name);
-}
-console.log(resp);
 
 module.exports = {
     calc: calculate,

@@ -108,7 +108,7 @@ module.exports.root = (x, n) => {
 
     let result;
     if (n % 2 === 1 && x < 0)
-        result = -Math.pow(-x, 1/n)
+        result = -Math.pow(-x, 1/n);
     else
         result =  Math.pow(x, 1/n);
 
