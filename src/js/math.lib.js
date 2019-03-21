@@ -33,18 +33,99 @@ module.exports.add = (values) => {
     return sum;
 };
 
-module.exports.subtract = (values) => {};
+module.exports.subtract = (values) => {
+    // check data-type of each value
+    checkValues(values, 1);
 
-module.exports.multiply = (values) => {};
+    if(values.length === 1)
+        return -values[0];
 
-module.exports.divide = (values) => {};
+    // subtract the values
+    let diff = values[0];
+    for (let i = 1; i < values.length; i++)
+        diff -= values[i];
+    return diff;
+};
 
-module.exports.factorize = (x) => {};
+module.exports.multiply = (values) => {
+    // check data-type of each value
+    checkValues(values, 2);
+    
+    if(values.includes(0)) 
+        return 0;
 
-module.exports.power = (x, n) => {};
+    // summarize the values
+    let product = 1;
+    for (let i = 0; i < values.length; i++)
+        product *= values[i];
 
-module.exports.root = (x, n) => {};
+    return product;
+};
 
-module.exports.naturalLogarithm = (x) => {};
+module.exports.divide = (values) => {
+    // check data-type of each value
+    checkValues(values, 2);
 
-module.exports.decimalLogarithm = (x) => {};
+    if(values[0] === 0 && !values.slice(1).includes(0))
+        return 0;
+
+    // summarize the values
+    let quotient = values[0];
+    for (let i = 1; i < values.length; i++)
+        quotient /= values[i];
+
+    return quotient;
+};
+
+module.exports.factorize = (x) => {
+    checkValues([x]);
+
+    if(x === Infinity)
+        return Infinity;
+    
+    if(x % 1 !== 0 || x === -Infinity || x < 0)
+        return NaN;
+
+    let result = 1;
+    for(let i = x; i > 1; i--)
+    {
+        result *= i;
+    }
+
+    return result;
+};
+
+module.exports.power = (x, n) => {
+    checkValues([x, n]);
+
+    return Math.pow(x, n);
+};
+
+module.exports.root = (x, n) => {
+    checkValues([x, n]);
+
+    let result;
+    if(n % 2 === 1 && x < 0)
+        result = -Math.pow(-x, 1/n)
+    else
+        result =  Math.pow(x, 1/n);
+
+    let rounded = Math.round(result);
+
+    if(Math.abs(rounded - result) < 1e-12) 
+        result = rounded;
+
+    return result;    
+};
+
+module.exports.naturalLogarithm = (x) => {
+    checkValues([x]);
+
+    return Math.log(x);
+};
+
+module.exports.decimalLogarithm = (x) => {
+    checkValues([x]);
+
+    return Math.log10(x);
+};
