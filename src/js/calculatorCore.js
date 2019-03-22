@@ -8,11 +8,24 @@
 // include our mathematical library
 const math = require('./math.lib');
 
-const simpleExpressionRegex = /\(([0-9\.\+\-\*\/\!]*)\)/g;
-const constantRegex = /(?<!log|ln|sin|cos|tan)\(([0-9\.\-]*)\)/g;
-const functionRegex = /(log|ln|sin|cos|tan)\([0-9\.\-]*\)/g;
+const simpleExpressionRegex = /\(([0-9\.\+\-\*\/\!\^]*)\)/g;
+const constantRegex = /(?<!log|ln|sin|cos|tan)\((\-?[0-9\.]*)\)/g;
+const functionRegex = /(log|ln|sin|cos|tan)\((\-?[0-9\.]*)\)/g;
+const rootRegex = /\[([0-9\.\-]*)\]root\[([\-?0-9\.]*)\]/g;
 
 const calculate = (expr) => {
+    let leftBrackets = (expr.match(/\(/g) || []).length;
+    let rightBrackets = (expr.match(/\)/g) || []).length;
+    if (leftBrackets !== rightBrackets)
+        return 'Máš blbě závorky ty idiote.';
+
+    // replace mathematical constants
+    expr = expr.replace('E', math.E);
+    expr = expr.replace('PI', math.PI);
+
+    console.log('\nConstants replaced');
+    console.log(expr);
+
     // if the only expression is the number, this number is the result
     if (!isNaN(expr))
         return Number(expr);
@@ -20,8 +33,9 @@ const calculate = (expr) => {
     // prvni faze – vypocet zavorek, ktere neobsahuji dalsi zavorky (a tedy ani funkce)
     let simpleExprArray = expr.match(simpleExpressionRegex);
     let functionArray = expr.match(functionRegex);
+    let rootArray = expr.match(rootRegex);
 
-    while (simpleExprArray != null || functionArray != null) {
+    while (simpleExprArray != null || functionArray != null || rootArray != null) {
         // calculate simple expressions
         if (simpleExprArray != null) {
             for (let i = 0; i < simpleExprArray.length; i++) {
@@ -34,7 +48,10 @@ const calculate = (expr) => {
                 const calculatedSimpleExpr = calculateSimpleExpression(splittedSimpleExpr);
                 expr = expr.replace('(' + simpleExpr + ')', '(' + calculatedSimpleExpr + ')');
             }
+            console.log('\nSimple expressions calculated');
+            console.log(expr);
         }
+
 
         // calculate functions
         functionArray = expr.match(functionRegex);
@@ -44,6 +61,20 @@ const calculate = (expr) => {
                 const parsedFunctionExpr = parseFunctionExpression(functionExpr);
                 expr = expr.replace(functionExpr, calculateFunction(parsedFunctionExpr));
             }
+            console.log('\nFunctions calculated');
+            console.log(expr);
+        }
+
+
+        // rooting
+        while ((roots = rootRegex.exec(expr)) != null) {
+            let frontpart = expr.substr(0, roots.index);
+            let backpart = expr.substr(roots.index).replace(roots[0], math.root(Number(roots[2]), Number(roots[1])));
+
+            expr = frontpart + backpart;
+
+            console.log('\nRoots calculated');
+            console.log(expr);
         }
 
         // handle constants
@@ -52,17 +83,29 @@ const calculate = (expr) => {
             let backpart = expr.substr(constants.index).replace(constants[0], constants[1]);
 
             expr = frontpart + backpart;
+            console.log('\nConstants unbracketed');
+            console.log(expr);
         }
 
         // get the new array of simple expressions and functions
         simpleExprArray = expr.match(simpleExpressionRegex);
         functionArray = expr.match(functionRegex);
+        rootArray = expr.match(rootRegex);
     }
 
-    const splittedSimpleExpr = splitSimpleExpression(expr);
-    expr = calculateSimpleExpression(splittedSimpleExpr);
+    if (expr.includes('NaN'))
+        return null;
 
-    return expr;
+    // if the expr is already number, do not split it
+    if (isNaN(expr)) {
+        const splittedSimpleExpr = splitSimpleExpression(expr);
+        expr = calculateSimpleExpression(splittedSimpleExpr);
+    }
+
+    console.log('\nThe last simple expression calculated');
+    console.log(expr + '\n\nResult');
+
+    return Number(expr);
 };
 
 // parse simple mathematic expression into array to calculate (+, -, *, /, !)
@@ -71,8 +114,10 @@ const splitSimpleExpression = (expr) => {
 
     expr = expr.replace('*+', '*');
     expr = expr.replace('/+', '/');
+    expr = expr.replace('^+', '^');
     expr = expr.replace('*-', '*N');
     expr = expr.replace('/-', '/N');
+    expr = expr.replace('^-', '^N');
 
     return splitArrayOfExpressions([expr])[0];
 };
@@ -109,7 +154,7 @@ const splitArrayOfExpressions = (exprArray) => {
 
 // check that some expression contains one of the operators defined
 const operatorContainmentCheck = (expr) => {
-    const operators = ['+', '-', '*', '/', '!'];
+    const operators = ['+', '-', '*', '/', '^', '!'];
     for (let i = 0; i < operators.length; i++)
         if (expr.includes(operators[i]))
             return operators[i];
@@ -135,6 +180,8 @@ const calculateSimpleExpression = (parsedSimpleExpression) => {
         return math.multiply(parsedSimpleExpression);
     if (operation === '/')
         return math.divide(parsedSimpleExpression);
+    if (operation === '^')
+        return math.power(parsedSimpleExpression[0], parsedSimpleExpression[1]);
     if (operation === '!')
         return math.factorize(parsedSimpleExpression[0]);
 };
@@ -165,9 +212,13 @@ const parseFunctionExpression = (expr) => {
     return [functionName, Number(value)];
 };
 
-const calculateParsedExpression = (parsedExpression) => {
-
-};
+let expr = 'log(-sin((14-tan(-4.333)+5)*2))+((5-[3]root[27]))!/log(PI^3)';
+try {
+    console.log('Calculating: ' + expr);
+    console.log(calculate(expr));
+} catch (e) {
+    console.log(e);
+}
 
 module.exports = {
     calc: calculate,

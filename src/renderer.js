@@ -14,10 +14,10 @@ $(document).ready(function () {
     try {
         result = calculate(expression);
     } catch (e) {
-        alert('Chyba');
+        console.log('Chyba');
     }
 
     // log the result of the calculation
     if (result)
-        alert(result);
+        console.log(result);
 });
