@@ -3,7 +3,7 @@
  * 
  * @description The library will be developed using this tests (test-driven development).
  * @author Jan Svabik (xsvabi00)
- * @version 1.0
+ * @version 1.1
  */
 
 const units = require('./calculatorCore').testing;
@@ -70,6 +70,7 @@ test('Complex calculations', () => {
     expect(calc('7*4+log(8+13*sin(18.3-4/2)+22)/3!-ln(14+3!)')).toBeCloseTo(25.230416403);
     expect(calc('2+(-log(1.8))*(8+sin(9+1-log(3+4*ln(8-6)-4))+4!/2+0.5+(1)-tan(4*5-4)+7)-cos(8)')).toBeCloseTo(-4.97112211349);
     expect(calc('4*(2+6^-(1+1))/sin([3]root[27])*3^-2')).toBeCloseTo(6.386299010973019);
+    expect(calc('log(-sin((14-tan(-4.333)+5)*2))+((5-[3]root[27]))!/log(PI^3)')).toBeCloseTo(1.256190271546842);
 
     expect(() => calc('2*(8+log(9+1-log(3+4*(8-6)-4))!/2+0.5-log(4*5-4)+7)-8')).toThrow();
 });
