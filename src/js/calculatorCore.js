@@ -2,7 +2,9 @@
  * Core of the calculator
  * 
  * @description Functions that allow calculator to work (splitting the operations, checking them, choosing preferred operations etc.) 
- * @version 0.2
+ * @version 0.3
+ * @author Jan Svabik (xsvabi00)
+ * @author Vojtech Dvorak (xdvora3a)
  */
 
 // include our mathematical library
@@ -11,6 +13,7 @@ const math = require('./math.lib');
 const simpleExpressionRegex = /\(([0-9\.\+\-\*\/\!\^]*)\)/g;
 const constantRegex = /(?<!log|ln|sin|cos|tan)\((\-?[0-9\.]*)\)/g;
 const functionRegex = /(log|ln|sin|cos|tan)\((\-?[0-9\.]*)\)/g;
+const bracketFactorialRegex = /\((\-?[0-9\.]*)\)!/g;
 const rootRegex = /\[([0-9\.\-]*)\]root\[([\-?0-9\.]*)\]/g;
 
 const calculate = (expr) => {
@@ -34,8 +37,9 @@ const calculate = (expr) => {
     let simpleExprArray = expr.match(simpleExpressionRegex);
     let functionArray = expr.match(functionRegex);
     let rootArray = expr.match(rootRegex);
+    let bracketFactorialArray = expr.match(bracketFactorialRegex);
 
-    while (simpleExprArray != null || functionArray != null || rootArray != null) {
+    while (simpleExprArray != null || functionArray != null || rootArray != null || bracketFactorialArray != null) {
         // calculate simple expressions
         if (simpleExprArray != null) {
             for (let i = 0; i < simpleExprArray.length; i++) {
@@ -65,7 +69,6 @@ const calculate = (expr) => {
             console.log(expr);
         }
 
-
         // rooting
         while ((roots = rootRegex.exec(expr)) != null) {
             let frontpart = expr.substr(0, roots.index);
@@ -74,6 +77,16 @@ const calculate = (expr) => {
             expr = frontpart + backpart;
 
             console.log('\nRoots calculated');
+            console.log(expr);
+        }
+
+        // factorize numbers in brackets
+        while ((bracketedFactorials = bracketFactorialRegex.exec(expr)) != null) {
+            let frontpart = expr.substr(0, bracketedFactorials.index);
+            let backpart = expr.substr(bracketedFactorials.index).replace(bracketedFactorials[0], math.factorize(Number(bracketedFactorials[1])));
+
+            expr = frontpart + backpart;
+            console.log('\nFactorized numbers in brackets');
             console.log(expr);
         }
 
@@ -103,7 +116,7 @@ const calculate = (expr) => {
     }
 
     console.log('\nThe last simple expression calculated');
-    console.log(expr + '\n\nResult');
+    console.log(expr);
 
     return Number(expr);
 };
@@ -212,10 +225,12 @@ const parseFunctionExpression = (expr) => {
     return [functionName, Number(value)];
 };
 
-let expr = 'log(-sin((14-tan(-4.333)+5)*2))+((5-[3]root[27]))!/log(PI^3)';
+let expr = '2+(3-5)!';
 try {
     console.log('Calculating: ' + expr);
-    console.log(calculate(expr));
+    let c = calculate(expr);
+    console.log('\nResult:');
+    console.log(c);
 } catch (e) {
     console.log(e);
 }
