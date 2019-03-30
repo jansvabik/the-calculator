@@ -50,7 +50,7 @@ module.exports.subtract = (values) => {
     checkValues(values, 1);
 
     // if there is only one value in 'values', change the sign
-    if(values.length === 1)
+    if (values.length === 1)
         return -values[0];
 
     // subtact the values
@@ -71,7 +71,7 @@ module.exports.multiply = (values) => {
     checkValues(values, 2);
     
     //if there si 0 in array 'values', the product is always 0
-    if(values.includes(0)) 
+    if (values.includes(0)) 
         return 0;
 
     // multiply the values
@@ -94,7 +94,7 @@ module.exports.divide = (values) => {
 
     // if the first value is 0 and there is no other 0 in array 'values',
     // the quotient is 0
-    if(values[0] === 0 && !values.slice(1).includes(0))
+    if (values[0] === 0 && !values.slice(1).includes(0))
         return 0;
 
     // divide the values
@@ -115,12 +115,12 @@ module.exports.factorize = (x) => {
     checkValues([x]);
 
     // Factorization of Infinity is Infinity
-    if(x === Infinity)
+    if (x === Infinity)
         return Infinity;
     
     // if x is not an integer, if x is -Infinity and if x < 0,
     // the result is NaN
-    if(x % 1 !== 0 || x === -Infinity || x < 0)
+    if (x % 1 !== 0 || x === -Infinity || x < 0)
         return NaN;
 
     // Factorize the x
@@ -158,14 +158,14 @@ module.exports.root = (x, n) => {
     checkValues([x, n]);
 
     let result;
-    if(n % 2 === 1 && x < 0)
+    if (n % 2 === 1 && x < 0)
         result = -Math.pow(-x, 1/n);
     else
         result =  Math.pow(x, 1/n);
 
     let rounded = Math.round(result);
 
-    if(Math.abs(rounded - result) < 1e-12) 
+    if (Math.abs(rounded - result) < 1e-12) 
         result = rounded;
 
     return result;    
