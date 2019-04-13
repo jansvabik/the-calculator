@@ -2,10 +2,28 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-size: .5em;
+    cursor: default !important;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    letter-spacing: -1px;
 }
 
+::selection {background: transparent;}
+
 body {
-    background: black;
+    background: #565658;
+}
+
+sup {
+    display: inline-block;
+    margin-top: -1.2em;
+    margin-left: .1em;
+}
+
+sub {
+    display: inline-block;
+    margin-bottom: -1em;
 }
 
 .container {
@@ -24,35 +42,38 @@ body {
     
 }
 
-.displayHeight {
+.expressionRow {
     flex: 0.7 !important;
 }
 
+.resultRow {
+    flex: 1.1 !important;
+}
+
 .container > div {
-    flex: 1;
+    flex: 0.9;
     display: flex;
     flex-direction: row;
     align-items: stretch;
 }
 
-.Display {
+.result {
     flex:9;
-    background: #565658;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    font-size: 4rem;
-    padding: 1.5rem 2rem;
-}
-
-.display {
-    flex: 9;
-    background: #565658;
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
-    font-size: 2.5rem;
-    padding: 1.5rem 2rem;
+    font-size: 4rem;
+    padding: .5rem 2rem 1.5rem 2rem;
+}
+
+.expression {
+    letter-spacing: 0 !important;
+    flex: 9;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    font-size: 2.3rem;
+    padding: 2rem 2rem 1.5rem 2rem;
     color: rgba(255, 255, 255, 0.733);
 }
 
@@ -60,27 +81,28 @@ body {
     flex: 2 !important;
 }
 
-.bg-shadow {
+.button {
     flex: 1;
+    box-shadow: inset 0px 0px 0px .5px rgba(86,86,88,1);
+    font-size: 2.7rem !important;
+}
+
+.bg-shadow {
     background: #7D7D7F;
-    border: 1px solid #565658;
-    border-collapse: collapse;
 }
 
 .bg-dark-shadow {
-    flex: 1;
     background: #636567;
-    border: 1px solid #565658;
-    border-collapse: collapse;
 }
 
 .bg-orange {
-    flex: 1;
     background: #FF9C38;
-    border: 1px solid #565658;
-    border-collapse: collapse;
 }
 
-.bg-dark-shadow:active, .bg-shadow:active, .bg-orange:active{
+.bg-orange:active {
+    background: #FF9C38aa;
+}
+
+.bg-dark-shadow:active, .bg-shadow:active {
     background: #6365676e;
 }
