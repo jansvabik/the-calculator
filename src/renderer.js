@@ -25,23 +25,37 @@ $(document).ready(function () {
         
         if (resultDisplayed) {
             resultDisplayed = false;
-
             resultLine.text('');
-            if (btnType === 'operator') {
+
+            if (!error && btnType === 'operator') {
                 resultLine.text(ANS);
                 expression += ANS;
             }
-        }
-
+        }        
+        
         if (exprValue !== '=') {
             expression += exprValue;
             resultLine.text(resultLine.text() + lineValue);
+            error = false;
         }
         else {
             expressionLine.text(resultLine.text() + '=');
 
-            result = calculate(expression).toString();
-
+            try {
+                result = calculate(expression);
+            } catch (e) {
+                result = 'Někde ti chybí operand ty idiote.';
+                error = true;
+            }
+            
+            if (result === null || result.toString().includes(NaN)) {
+                error = true;
+                result = 'Nedefinováno';
+            }
+            else {
+                result = result.toString();
+            }
+            
             if (['Máš blbě závorky ty idiote.'].includes(result))
                 error = true;
 
@@ -51,7 +65,7 @@ $(document).ready(function () {
             ANS = result;
             expression = '';
 
-            resultLine.text(result.replace('*', '×'));
+            resultLine.text(result.replace('*', '×').replace('.', ','));
             resultDisplayed = true;
         }        
     });
