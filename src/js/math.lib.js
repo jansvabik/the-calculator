@@ -201,7 +201,7 @@ module.exports.decimalLogarithm = (x) => {
  * @param[in] x Value to calculate sinus of
  * @returns Sinus of x
  */
-module.exports.sinus = (x) => {
+module.exports.sin = (x) => {
     checkValues([x]);
 
     // Calculate the sinus
@@ -214,7 +214,7 @@ module.exports.sinus = (x) => {
  * @param[in] x Value to calculate cosinus of
  * @returns Cosinus of x
  */
-module.exports.cosinus = (x) => {
+module.exports.cos = (x) => {
     checkValues([x]);
 
     // Calculate the cosinus
@@ -227,7 +227,7 @@ module.exports.cosinus = (x) => {
  * @param[in] x Value to calculate tangens of
  * @returns Tangens of x
  */
-module.exports.tangens = (x) => {
+module.exports.tan = (x) => {
     checkValues([x]);
 
     // Calculate the tangens
@@ -240,7 +240,7 @@ module.exports.tangens = (x) => {
  * @param[in] x Value to calculate cotangens of
  * @returns Cotangens of x
  */
-module.exports.cotangens = (x) => {
+module.exports.cotan = (x) => {
     checkValues([x]);
 
     // Calculate the cotangens
@@ -253,7 +253,7 @@ module.exports.cotangens = (x) => {
  * @param[in] x Value to calculate hyperbolic sinus of
  * @returns Hyperbolic sinus of x
  */
-module.exports.sinush = (x) => {
+module.exports.sinh = (x) => {
     checkValues([x]);
 
     // Calculate the hyperbolic sinus
@@ -266,7 +266,7 @@ module.exports.sinush = (x) => {
  * @param[in] x Value to calculate hyperbolic cosinus of
  * @returns Hyperbolic cosinus of x
  */
-module.exports.sinush = (x) => {
+module.exports.cosh = (x) => {
     checkValues([x]);
 
     // Calculate the hyperbolic cosinus
@@ -279,7 +279,7 @@ module.exports.sinush = (x) => {
  * @param[in] x Value to calculate hyperbolic tangens of
  * @returns Hyperbolic tangens of x
  */
-module.exports.sinush = (x) => {
+module.exports.tanh = (x) => {
     checkValues([x]);
 
     // Calculate the hyperbolic tangens
