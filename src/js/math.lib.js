@@ -194,3 +194,94 @@ module.exports.decimalLogarithm = (x) => {
     // Calculate the decimal logarithm
     return Math.log10(x);
 };
+
+/**
+ * @brief Sinus of x
+ * @description Function calculates sinus of x
+ * @param[in] x Value to calculate sinus of
+ * @returns Sinus of x
+ */
+module.exports.sinus = (x) => {
+    checkValues([x]);
+
+    // Calculate the sinus
+    return Math.sin(x);
+};
+
+/**
+ * @brief Cosinus of x
+ * @description Function calculates cosinus of x
+ * @param[in] x Value to calculate cosinus of
+ * @returns Cosinus of x
+ */
+module.exports.cosinus = (x) => {
+    checkValues([x]);
+
+    // Calculate the cosinus
+    return Math.cos(x);
+};
+
+/**
+ * @brief Tangens of x
+ * @description Function calculates tangens of x
+ * @param[in] x Value to calculate tangens of
+ * @returns Tangens of x
+ */
+module.exports.tangens = (x) => {
+    checkValues([x]);
+
+    // Calculate the tangens
+    return Math.tan(x);
+};
+
+/**
+ * @brief Cotangens of x
+ * @description Function calculates cotangens of x
+ * @param[in] x Value to calculate cotangens of
+ * @returns Cotangens of x
+ */
+module.exports.cotangens = (x) => {
+    checkValues([x]);
+
+    // Calculate the cotangens
+    return 1/Math.tan(x);
+};
+
+/**
+ * @brief Hyperbolic sinus of x
+ * @description Function calculates hyperbolic sinus of x
+ * @param[in] x Value to calculate hyperbolic sinus of
+ * @returns Hyperbolic sinus of x
+ */
+module.exports.sinush = (x) => {
+    checkValues([x]);
+
+    // Calculate the hyperbolic sinus
+    return Math.sinh(x);
+};
+
+/**
+ * @brief Hyperbolic cosinus of x
+ * @description Function calculates hyperbolic cosinus of x
+ * @param[in] x Value to calculate hyperbolic cosinus of
+ * @returns Hyperbolic cosinus of x
+ */
+module.exports.sinush = (x) => {
+    checkValues([x]);
+
+    // Calculate the hyperbolic cosinus
+    return Math.cosh(x);
+};
+
+/**
+ * @brief Hyperbolic tangens of x
+ * @description Function calculates hyperbolic tangens of x
+ * @param[in] x Value to calculate hyperbolic tangens of
+ * @returns Hyperbolic tangens of x
+ */
+module.exports.sinush = (x) => {
+    checkValues([x]);
+
+    // Calculate the hyperbolic tangens
+    return Math.tanh(x);
+};
