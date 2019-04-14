@@ -1,5 +1,6 @@
 {
     "name": "thecalculator",
+    "productName": "The Calculator",
     "version": "0.1.0",
     "description": "The Calculator – app for calculating",
     "main": "app.js",
@@ -9,8 +10,13 @@
         "start": "electron .",
         "test": "jest"
     },
-    "dependencies": {
+    "dependencies": {},
+    "devDependencies": {
         "electron": "^4.1.0",
-        "jest": "^24.5.0"
+        "jest": "^24.5.0",
+        "electron-builder": "^20.39.0"
+    },
+    "build": {
+        "appId": "cz.vutbr.fit.ivs.thecalculator.fitpeaches"
     }
 }
