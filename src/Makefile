@@ -8,7 +8,7 @@ calc: electronbuilder
 	electron-builder
 
 profile: pkg
-	pkg profiling.js --targets latest-macos-x64
+	pkg profiling.js --targets host
 
 pack:
 	zip -r hotovo.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
