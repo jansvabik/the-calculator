@@ -2,12 +2,82 @@
 <html lang="cs">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;subset=latin-ext" rel="stylesheet">
         <title>The Calculator</title>
+        <link rel="stylesheet" href="./css/layout.css">
     </head>
     <body>
-        The Calculator
+        <div class="container">
+            <div class="expressionRow">
+                <div id="expressionLine" class="expression"></div>
+            </div>
+            <div class="resultRow">
+                <div id="resultLine" class="result">0</div>
+            </div>
+            <div class="row">
+                <div class="button bg-dark-shadow">(</div>
+                <div class="button bg-dark-shadow">)</div>
+                <div class="button bg-dark-shadow"></div>
+                <div class="button bg-dark-shadow"></div>
+                <div class="button bg-dark-shadow"></div>
+                <div class="button bg-dark-shadow"></div>
+                <div class="button bg-dark-shadow">AC</div>
+                <div class="button bg-dark-shadow"></div>
+                <div data-type="special" id="btnBackspace" class="button bg-dark-shadow">BCK</div>
+                <div data-type="operator" data-expr-value="/" class="button bg-orange">÷</div>
+            </div>
+            <div class="row">
+                <div class="button bg-dark-shadow"></div>
+                <div data-type="operator" data-line-value="^2" class="button bg-dark-shadow">x<sup>2</sup></div>
+                <div data-type="operator" data-line-value="^3" class="button bg-dark-shadow">x<sup>3</sup></div>
+                <div data-type="operator" data-line-value="^(" class="button bg-dark-shadow">x<sup>y</sup></div>
+                <div data-expr-value="E^(" data-line-value="e^(" class="button bg-dark-shadow">e<sup>x</sup></div>
+                <div data-line-value="10^(" class="button bg-dark-shadow">10<sup>x</sup></div>
+                <div class="button bg-shadow">7</div>
+                <div class="button bg-shadow">8</div>
+                <div class="button bg-shadow">9</div>
+                <div data-type="operator" data-expr-value="*" class="button bg-orange">×</div>
+            </div>
+            <div class="row">
+                <div data-line-value="1/" class="button bg-dark-shadow"><sup>1</sup>&frasl;<sub>x</sub></div>
+                <div data-line-value="(2)root(" class="button bg-dark-shadow">&radic;<span style="text-decoration:overline;">x</span></div>
+                <div data-line-value="(3)root(" class="button bg-dark-shadow"><sup>3</sup>&radic;<span style="text-decoration:overline;">x</span></div>
+                <div class="button bg-dark-shadow"><sup>y</sup>&radic;<span style="text-decoration:overline;">x</span></div>
+                <div data-line-value="ln(" class="button bg-dark-shadow">ln</div>
+                <div data-line-value="log(" class="button bg-dark-shadow">log<sub>10</sub></div>
+                <div class="button bg-shadow">4</div>
+                <div class="button bg-shadow">5</div>
+                <div class="button bg-shadow">6</div>
+                <div data-type="operator" data-expr-value="-" class="button bg-orange">−</div>
+            </div>
+            <div class="row">
+                <div data-line-value="!" data-type="operator" class="button bg-dark-shadow">x!</div>
+                <div data-line-value="sin(" class="button bg-dark-shadow">sin</div>
+                <div data-line-value="cos(" class="button bg-dark-shadow">cos</div>
+                <div data-line-value="tan(" class="button bg-dark-shadow">tan</div>
+                <div data-expr-value="E" class="button bg-dark-shadow">e</div>
+                <div class="button bg-dark-shadow"></div>
+                <div class="button bg-shadow">1</div>
+                <div class="button bg-shadow">2</div>
+                <div class="button bg-shadow">3</div>
+                <div data-type="operator" class="button bg-orange">+</div>
+            </div>
+            <div class="row">
+                <div class="button bg-dark-shadow"></div>
+                <div class="button bg-dark-shadow"></div>
+                <div class="button bg-dark-shadow"></div>
+                <div class="button bg-dark-shadow"></div>
+                <div data-expr-value="PI" class="button bg-dark-shadow">π</div>
+                <div class="button bg-dark-shadow">RAND</div>
+                <div class="button bg-shadow exception">0</div>
+                <div data-expr-value="." data-line-value="," class="button bg-shadow">,</div>
+                <div class="button bg-orange">=</div>
+            </div>
+        </div>
         <script>
-            require('./renderer.js');
+            require('./renderer');
         </script>
     </body>
 </html>
