@@ -11,6 +11,8 @@
 const math = require('./math.lib');
 const util = require('util');
 
+const maxDecimalPrecision = 10;
+
 const simpleExpressionRegex = /\((([0-9\.\+\-\*\/\!\^]*)|\-?Infinity)\)/g;
 const constantRegex = /(?<!log|ln|sin|cos|tan)\(((\-?[0-9\.]*)|\-?Infinity)\)(?![!^])/g;
 const functionRegex = /(log|ln|sin|cos|tan)\(((\-?[0-9\.]*)|\-?Infinity)\)/g;
@@ -34,7 +36,17 @@ const removeEType = (expr) => {
     return removeEType(expr);
 };
 
-// kradena funkce
+/**
+ * Function for removing the scientific notation from the number
+ * @brief Removing the scientific notation
+ * @param num The number with scientific notation
+ * @bug Breaking the number precision
+ * @todo Use BigInt library for calculations and remove this function
+ * @author Jenny O'Reilly
+ * @see https://stackoverflow.com/a/46545519
+ * @see https://stackoverflow.com/revisions/46545519/1
+ * @license CC-BY-SA
+ */
 function numberToString(num)
 {
     let numStr = String(num);
@@ -79,7 +91,7 @@ const calculate = (expr) => {
     // replace mathematical constants
     expr = expr.replace(/E/g, math.E);
     expr = expr.replace(/PI/g, math.PI);
-    expr = removeEType(expr);
+    //expr = removeEType(expr);
 
     // replace all RANDs by random integers from <0;1> interval
     while (expr.includes("RAND"))
@@ -104,7 +116,7 @@ const calculate = (expr) => {
     while (simpleExprArray != null || functionArray != null || rootArray != null || bracketFactorialArray != null) {
         // calculate simple expressions
         if (simpleExprArray != null) {
-            expr = removeEType(expr);
+            //expr = removeEType(expr);
             for (let i = 0; i < simpleExprArray.length; i++) {
                 const simpleExpr = simpleExprArray[i].substr(1, simpleExprArray[i].length-2);
 
@@ -123,7 +135,7 @@ const calculate = (expr) => {
         // calculate functions
         functionArray = expr.match(functionRegex);
         if (functionArray != null) {
-            expr = removeEType(expr);
+            //expr = removeEType(expr);
             for (let i = 0; i < functionArray.length; i++) {
                 const functionExpr = functionArray[i];
                 const parsedFunctionExpr = parseFunctionExpression(functionExpr);
@@ -135,7 +147,7 @@ const calculate = (expr) => {
 
         // rooting
         while ((roots = rootRegex.exec(expr)) != null) {
-            expr = removeEType(expr);
+            //expr = removeEType(expr);
             let frontpart = expr.substr(0, roots.index);
             let backpart = expr.substr(roots.index).replace(roots[0], math.root(Number(roots[2]), Number(roots[1])));
 
@@ -147,7 +159,7 @@ const calculate = (expr) => {
 
         // factorize numbers in brackets
         while ((bracketedFactorials = bracketFactorialRegex.exec(expr)) != null) {
-            expr = removeEType(expr);
+            //expr = removeEType(expr);
             let frontpart = expr.substr(0, bracketedFactorials.index);
             let backpart = expr.substr(bracketedFactorials.index).replace(bracketedFactorials[0], math.factorize(Number(bracketedFactorials[1])));
 
@@ -158,7 +170,7 @@ const calculate = (expr) => {
 
         // power numbers in brackets (there can be negative numbers)
         while ((bracketPowerArray = bracketPowerRegex.exec(expr)) != null) {
-            expr = removeEType(expr);
+            //expr = removeEType(expr);
             let frontpart = expr.substr(0, bracketPowerArray.index);
             console.log(bracketPowerArray);
             console.log("Snazim se umocnit " + Number(bracketPowerArray[1]) + ' na ' + Number(bracketPowerArray[3]) + 'tou');
@@ -171,7 +183,7 @@ const calculate = (expr) => {
 
         // handle constants
         while ((constants = constantRegex.exec(expr)) != null) {
-            expr = removeEType(expr);
+            //expr = removeEType(expr);
             let frontpart = expr.substr(0, constants.index);
             let backpart = expr.substr(constants.index).replace(constants[0], constants[1]);
         
@@ -194,16 +206,16 @@ const calculate = (expr) => {
         return null;
 
     // if the expr is already number, do not split it
-    expr = removeEType(expr);
     if (isNaN(expr)) {
         const splittedSimpleExpr = splitSimpleExpression(expr);
         expr = calculateSimpleExpression(splittedSimpleExpr);
     }
-
+    
+    expr = removeEType(expr);
     console.log('\nThe last simple expression calculated');
     console.log(expr);
 
-    return Number(expr);
+    return Number(Number(expr).toPrecision(maxDecimalPrecision));
 };
 
 // parse simple mathematic expression into array to calculate (+, -, *, /, !)
