@@ -1,9 +1,55 @@
-all:
-	@echo "Not prepared yet. But tests are prepared (make test, make coverage)."
+SHELL:=/bin/bash
 
-jest test tests:
-	@jest --expand --verbose
+.PHONY: all calc profile pack clean run test jest electronbuilder electron pkg node
 
-coverage:
-	@jest --expand --verbose --coverage
-	@rm -rf ./coverage
+all: calc profile
+
+calc: electronbuilder
+	electron-builder
+
+profile: pkg
+	pkg profiling.js --targets latest-macos-x64
+
+pack:
+	zip -r hotovo.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
+
+clean:
+	rm -rf profiling .clinic node_modules dev dist package-lock.json
+
+docs:
+	doxygen *.js
+
+run: electron
+	npm start
+
+test: jest
+	jest --expand --verbose --silent ./js/math.lib.test.js
+
+jest: node
+	@if [[ $(shell which jest) == "" ]]; then \
+		sudo npm i -g jest; \
+	fi
+
+electronbuilder: node 
+	@if [[ $(shell which electron-builder) == "" ]]; then \
+		sudo npm i -g electron-builder; \
+	fi
+
+electron: node 
+	@if [[ $(shell which electron) == "" ]]; then \
+		sudo npm i -g electron; \
+	fi
+
+pkg: node 
+	@if [[ $(shell which pkg) == "" ]]; then \
+		sudo npm i -g pkg; \
+	fi
+
+node:
+	@if [[ $(shell which curl) == "" ]]; then \
+		sudo apt-get install curl; \
+	fi
+	@if [[ $(shell which node) == "" ]]; then \
+		curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -; \
+		sudo apt-get install -y nodejs; \
+	fi
