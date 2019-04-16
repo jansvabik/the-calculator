@@ -65,7 +65,14 @@ $(document).ready(function () {
             ANS = result;
             expression = '';
 
-            resultLine.text(result.replace('*', '×').replace('.', ','));
+            // replace * by ×
+            result = result.replace('*', '×');
+
+            // replace . by , if this is the real result
+            if (!error) 
+                result = result.replace('.', ',');
+
+            resultLine.text(result);
             resultDisplayed = true;
         }        
     });
