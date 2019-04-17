@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Obecná odmocnina</title>
+        <style>
+            * {margin: 0; padding: 0; box-sizing: border-box;}
+            body {padding: 1rem; background: #636567;}
+        </style>
+    </head>
+    <body>
+        <input type="number" id="n" placeholder="nta"><br>
+        <input type="number" id="x" placeholder="z..."><br>
+        <input type="submit" id="btn" value="Hotovo">
+        <script>
+            document.getElementById("btn").addEventListener("click", () => {
+                let n = document.getElementById('n').value;
+                let x = document.getElementById('x').value;
+
+                window.opener.commonRoot(n, x);
+                window.close();
+            });
+        </script>
+    </body>
+</html>
