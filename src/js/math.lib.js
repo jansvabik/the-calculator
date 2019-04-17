@@ -18,9 +18,11 @@ const checkValues = (values, minOperands = 0) => {
     if (values.length < minOperands)
         throw new Error('Missing operands');
 
-    for (let i = 0; i < values.length; i++)
+    for (let i = 0; i < values.length; i++) {
+        values[i] = Number(values[i]);
         if (typeof values[i] !== 'number' || isNaN(values[i]))
             throw new Error('Wrong operands');
+    }
 };
 
 /**

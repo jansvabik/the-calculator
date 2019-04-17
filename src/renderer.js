@@ -11,8 +11,8 @@ $(document).ready(function () {
 
     let expression = '';
     let error = false;
-    let result = '0';
-    let ANS = '0';
+    let result = '';
+    let ANS = '';
     let resultDisplayed = true;
 
     $('.button').click(function () {
@@ -44,7 +44,7 @@ $(document).ready(function () {
             try {
                 result = calculate(expression);
             } catch (e) {
-                result = 'Někde ti chybí operand ty idiote.';
+                result = 'Někde chybí operand, mrkněte na to.';
                 error = true;
             }
             
@@ -55,8 +55,13 @@ $(document).ready(function () {
             else {
                 result = result.toString();
             }
+
+            if (result === 'ERR:BRACKETS') {
+                error = true;   
+                result = 'Nesprávně uzávorkováno.';
+            }
             
-            if (['Máš blbě závorky ty idiote.'].includes(result))
+            if (['ERR:BRACKETS'].includes(result))
                 error = true;
 
             if (result.includes('e') && !error)
@@ -89,4 +94,17 @@ $(document).ready(function () {
         let rl = resultLine.text();
         resultLine.text(rl.substr(0, rl.length - 1));
     });
+
+    $('.button#btnCommonRoot').click(function () {
+        let modal = window.open('root.html', 'modal');
+
+    });
+
+
+    function commonRoot(n, x) {
+        resultLine.text(resultLine.text() + '(' + n + ')root(' + x + ')');
+        expression += '(' + n + ')root(' + x + ')';
+    }
+
+    window.commonRoot = commonRoot;
 });
