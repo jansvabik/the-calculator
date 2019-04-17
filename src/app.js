@@ -17,7 +17,7 @@ let mainWindow;
 const createWindow = () => {
     // create a new instance of window and set it up
     mainWindow = new BrowserWindow({
-        width: 650,
+        width: 600,
         height: 350,
         resizable: false,
         icon: __dirname + '/img/icon.png',
