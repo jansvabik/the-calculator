@@ -106,3 +106,9 @@ sub {
 .bg-dark-shadow:active, .bg-shadow:active {
     background: #6365676e;
 }
+
+.bg-arrow-left {background-image: url('../img/iconmonstr-arrow-left-thin.svg') !important; background-size: 33% !important; background-position: center center !important; background-repeat: no-repeat !important;}
+div.fraction {display: flex; flex-direction: column; font-size: 3.5rem; align-items: center; justify-content: center;}
+div.fraction > div:first-child {border-bottom: 1px solid #fff;}
+div.fraction > div:last-child {margin-top: -3px;}
+div.fraction > div {padding-left: 3px; padding-right: 3px;}
