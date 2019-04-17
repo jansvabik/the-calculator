@@ -1,6 +1,6 @@
 /**
  * Core of the calculator
- * 
+ * @file calculatorCore.js
  * @description Functions that allow calculator to work (splitting the operations, checking them, choosing preferred operations etc.) 
  * @version 0.3
  * @author Jan Svabik (xsvabi00)
@@ -13,6 +13,7 @@ const util = require('util');
 
 const maxDecimalPrecision = 10;
 
+// Regular expressions for simplifying expressions to calculate
 const simpleExpressionRegex = /\((([0-9\.\+\-\*\/\!\^]*)|\-?Infinity)\)/g;
 const constantRegex = /(?<!log|ln|sin|cos|tan)\(((\-?[0-9\.]*)|\-?Infinity)\)(?![!^])/g;
 const functionRegex = /(log|ln|sin|cos|tan)\(((\-?[0-9\.]*)|\-?Infinity)\)/g;
@@ -21,6 +22,13 @@ const bracketPowerRegex = /\(((\-?[0-9\.]*)|\-?Infinity)\)\^((\-?[0-9\.]+)|\-?In
 const rootRegex = /\(([0-9\.\-]*)\)root\(([\-?0-9\.]*)\)/g;
 const eTypeRegex = /e((\+|\-)([0-9]+))/g;
 
+/**
+ * @brief Function transfers big or small numbers in expression 'expr' typed with e-... (eg. 1.6e-20)
+ *        to numbers without e (eg 1.6e-20 -> 0.0000.....16)
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to check and transfer numbers in
+ * @return Returns transfered expression 'expr'
+ */
 const removeEType = (expr) => {
     let eType = eTypeRegex.exec(expr);
     if (eType == null)
@@ -77,10 +85,24 @@ function numberToString(num)
     return numStr;
 }
 
+/**
+ * @brief Function transfers expression 'expr' containing 'RAND' to expression with random number.
+ *        'RAND' is replaced for random number in that expression.
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to check if contains 'RAND' and to transfer
+ * @return Returns transfered expression 'expr' with random 
+ */
 const nahradRAND = (expr) => {
     expr = expr.replace('RAND', Math.random());
     return expr;
 };
+
+/**
+ * @brief Function calculates expression 'expr'
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to calculate
+ * @return Returns result of calculating expression 'expr' [Number]
+ */
 
 const calculate = (expr) => {
     let leftBrackets = (expr.match(/\(/g) || []).length;
@@ -218,7 +240,12 @@ const calculate = (expr) => {
     return Number(Number(expr).toPrecision(maxDecimalPrecision));
 };
 
-// parse simple mathematic expression into array to calculate (+, -, *, /, !)
+/**
+ * @brief Function parses simple mathematic expression into array to calculate (+, -, *, /, !)
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to split
+ * @return Returns array 'splitted' to calculate
+ */
 const splitSimpleExpression = (expr) => {
     expr = plusMinusAxiom(expr);
 
@@ -235,7 +262,12 @@ const splitSimpleExpression = (expr) => {
     return splitted;
 };
 
-// function for removing chain of plus or minus symbols
+/**
+ * @brief Function for removing chain of plus or minus symbols
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to check and modify
+ * @return Returns modified expression 'expr'
+ */
 const plusMinusAxiom = (expr) => {
     expr = expr.replace('++', '+');
     expr = expr.replace('+-', '-');
@@ -248,7 +280,12 @@ const plusMinusAxiom = (expr) => {
         return expr;
 };
 
-// parse array of simple mathematic expressions into array to even more simple array
+/**
+ * @brief Function parses array of simple mathematic expressions into array to even more simple array
+ * @author Jan Svabik (xsvabi00) 
+ * @param exprArray Array of expressions to split into more simple array
+ * @return Returns splitted array 'exprArray' without nulls, 0, ...
+ */
 const splitArrayOfExpressions = (exprArray) => {
     for (let i = 0; i < exprArray.length; i++) {
         const expr = exprArray[i];
@@ -265,7 +302,12 @@ const splitArrayOfExpressions = (exprArray) => {
     return exprArray.filter(i => i || i === 0);
 };
 
-// check that some expression contains one of the operators defined
+/**
+ * @brief Function checks, if some expression contains one of the operators defined
+ * @author Jan Svabik (xsvabi00) 
+ * @param expr Expression to check
+ * @return Returns first operator found in expression 'expr', or false
+ */
 const operatorContainmentCheck = (expr) => {
     const operators = ['+', '-', '*', '/', '^', '!'];
     for (let i = 0; i < operators.length; i++)
@@ -275,6 +317,12 @@ const operatorContainmentCheck = (expr) => {
     return false;
 };
 
+/**
+ * @brief Function calculates simple expressions parsed to array
+ * @author Jan Svabik (xsvabi00) 
+ * @param parsedSimpleExpression Array made of parsed expression to calculate
+ * @return Returns result of calculation
+ */
 const calculateSimpleExpression = (parsedSimpleExpression) => {
     console.log('Hm: ');
     console.log(util.inspect(parsedSimpleExpression, {
@@ -304,6 +352,12 @@ const calculateSimpleExpression = (parsedSimpleExpression) => {
         return numberToString(math.factorize(parsedSimpleExpression[0]));
 };
 
+/**
+ * @brief Function calculates functions (sin, cos, ...)
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param parsedExpression Array to calculate (functionName, value)
+ * @return Returns result of calculation
+ */
 const calculateFunction = (parsedExpression) => {
     const functionName = parsedExpression[0];
     const value = parsedExpression[1];
@@ -322,6 +376,12 @@ const calculateFunction = (parsedExpression) => {
         return Math.tan(value);
 };
 
+/**
+ * @brief Function parses function to array (sin(2) -> (sin, 2))
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to parse
+ * @return Returns parsed function as array (functionName, value)
+ */
 const parseFunctionExpression = (expr) => {
     const splitExpr = expr.split('(');
     const functionName = splitExpr[0];
