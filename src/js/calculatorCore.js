@@ -15,8 +15,8 @@ const maxDecimalPrecision = 10;
 
 // Regular expressions for simplifying expressions to calculate
 const simpleExpressionRegex = /\((([0-9\.\+\-\*\/\!\^]*)|\-?Infinity)\)/g;
-const constantRegex = /(?<!log|ln|sin|cos|tan)\(((\-?[0-9\.]*)|\-?Infinity)\)(?![!^])/g;
-const functionRegex = /(log|ln|sin|cos|tan)\(((\-?[0-9\.]*)|\-?Infinity)\)/g;
+const constantRegex = /(?<!cotan|cosh|sinh|tanh|log|ln|sin|cos|tan)\(((\-?[0-9\.]*)|\-?Infinity)\)(?![!^])/g;
+const functionRegex = /(cotan|cosh|sinh|tanh|log|ln|sin|cos|tan)\(((\-?[0-9\.]*)|\-?Infinity)\)/g;
 const bracketFactorialRegex = /\(((\-?[0-9\.]*)|\-?Infinity)\)!/g;
 const bracketPowerRegex = /\(((\-?[0-9\.]*)|\-?Infinity)\)\^((\-?[0-9\.]+)|\-?Infinity)/g;
 const rootRegex = /\(([0-9\.\-]*)\)root\(([\-?0-9\.]*)\)/g;
@@ -108,12 +108,12 @@ const calculate = (expr) => {
     let leftBrackets = (expr.match(/\(/g) || []).length;
     let rightBrackets = (expr.match(/\)/g) || []).length;
     if (leftBrackets !== rightBrackets)
-        return 'Máš blbě závorky ty idiote.';
+        return 'ERR:BRACKETS';
 
     // replace mathematical constants
     expr = expr.replace(/E/g, math.E);
     expr = expr.replace(/PI/g, math.PI);
-    //expr = removeEType(expr);
+    expr = removeEType(expr);
 
     // replace all RANDs by random integers from <0;1> interval
     while (expr.includes("RAND"))
@@ -138,7 +138,7 @@ const calculate = (expr) => {
     while (simpleExprArray != null || functionArray != null || rootArray != null || bracketFactorialArray != null) {
         // calculate simple expressions
         if (simpleExprArray != null) {
-            //expr = removeEType(expr);
+            expr = removeEType(expr);
             for (let i = 0; i < simpleExprArray.length; i++) {
                 const simpleExpr = simpleExprArray[i].substr(1, simpleExprArray[i].length-2);
 
@@ -152,12 +152,13 @@ const calculate = (expr) => {
             console.log('\nSimple expressions calculated');
             console.log(expr);
         }
-
-
+console.log('JO?');
         // calculate functions
+        console.log('testuje se ' + expr);
         functionArray = expr.match(functionRegex);
+        console.log(functionArray);
         if (functionArray != null) {
-            //expr = removeEType(expr);
+            expr = removeEType(expr);
             for (let i = 0; i < functionArray.length; i++) {
                 const functionExpr = functionArray[i];
                 const parsedFunctionExpr = parseFunctionExpression(functionExpr);
@@ -165,11 +166,13 @@ const calculate = (expr) => {
             }
             console.log('\nFunctions calculated');
             console.log(expr);
+            console.log('NIC1');
         }
+        console.log('NIC2');
 
         // rooting
         while ((roots = rootRegex.exec(expr)) != null) {
-            //expr = removeEType(expr);
+            expr = removeEType(expr);
             let frontpart = expr.substr(0, roots.index);
             let backpart = expr.substr(roots.index).replace(roots[0], math.root(Number(roots[2]), Number(roots[1])));
 
@@ -179,9 +182,11 @@ const calculate = (expr) => {
             console.log(expr);
         }
 
+        console.log("tu taky, co");
+
         // factorize numbers in brackets
         while ((bracketedFactorials = bracketFactorialRegex.exec(expr)) != null) {
-            //expr = removeEType(expr);
+            expr = removeEType(expr);
             let frontpart = expr.substr(0, bracketedFactorials.index);
             let backpart = expr.substr(bracketedFactorials.index).replace(bracketedFactorials[0], math.factorize(Number(bracketedFactorials[1])));
 
@@ -192,7 +197,7 @@ const calculate = (expr) => {
 
         // power numbers in brackets (there can be negative numbers)
         while ((bracketPowerArray = bracketPowerRegex.exec(expr)) != null) {
-            //expr = removeEType(expr);
+            expr = removeEType(expr);
             let frontpart = expr.substr(0, bracketPowerArray.index);
             console.log(bracketPowerArray);
             console.log("Snazim se umocnit " + Number(bracketPowerArray[1]) + ' na ' + Number(bracketPowerArray[3]) + 'tou');
@@ -205,7 +210,7 @@ const calculate = (expr) => {
 
         // handle constants
         while ((constants = constantRegex.exec(expr)) != null) {
-            //expr = removeEType(expr);
+            expr = removeEType(expr);
             let frontpart = expr.substr(0, constants.index);
             let backpart = expr.substr(constants.index).replace(constants[0], constants[1]);
         
@@ -213,6 +218,10 @@ const calculate = (expr) => {
             console.log('\nConstants unbracketed');
             console.log(expr);
         }
+
+        // if the calculated expression is a number, end the loop immediatelz
+        if (!isNaN(expr))
+            break;
 
         // get the new array of simple expressions and functions
         simpleExprArray = expr.match(simpleExpressionRegex);
@@ -228,6 +237,7 @@ const calculate = (expr) => {
         return null;
 
     // if the expr is already number, do not split it
+    expr = removeEType(expr);
     if (isNaN(expr)) {
         const splittedSimpleExpr = splitSimpleExpression(expr);
         expr = calculateSimpleExpression(splittedSimpleExpr);
@@ -364,16 +374,26 @@ const calculateFunction = (parsedExpression) => {
 
     // console.log(functionName + '(' + value + ')')
 
+    // TODO: zmenit asi na switch nebo proste na math[functionName](value);
+
     if (functionName === 'log')
         return math.decimalLogarithm(value);
     if (functionName === 'ln')
         return math.naturalLogarithm(value);
     if (functionName === 'sin')
-        return Math.sin(value);
+        return math.sin(value);
     if (functionName === 'cos')
-        return Math.cos(value);
+        return math.cos(value);
     if (functionName === 'tan')
-        return Math.tan(value);
+        return math.tan(value);
+    if (functionName === 'sinh')
+        return math.sinh(value);
+    if (functionName === 'cosh')
+        return math.cosh(value);
+    if (functionName === 'tanh')
+        return math.tanh(value);
+    if (functionName === 'cotan')
+        return math.cotan(value);
 };
 
 /**
