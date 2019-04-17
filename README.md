@@ -2,22 +2,21 @@
 
 The repository for the calculator which is the VUT FIT 1BIT LS IVS second project.
 
-Prostredi
+Prostředí
 ---------
 
 Ubuntu 64bit
-Windows 64bit
 
-Autori
+Autoři
 ------
 
-Nazev tymu
-- xlogin01 jmeno prijmeni 
-- xlogin02 jmeno prijmeni 
-- xlogin03 jmeno prijmeni 
-- xlogin04 jmeno prijmeni 
+FIT Peaches
+- xdvora3a Vojtech Dvorak 
+- xgurec00 Lukas Gurecky 
+- xsvabi00 Jan Svabik 
+- xzitka07 Radim Zitka 
 
 Licence
 -------
 
-Tento program je poskytovan...
+Aplikace je poskytována pod licencí GNU General Public License v3.0.
