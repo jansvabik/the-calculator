@@ -17,9 +17,13 @@ let mainWindow;
 const createWindow = () => {
     // create a new instance of window and set it up
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 600,
+        height: 350,
+        resizable: false,
         icon: __dirname + '/img/icon.png',
+        webPreferences: {
+            nativeWindowOpen: true,
+        },
     });
 
     // display calc.html page as the calculator GUI
@@ -33,6 +37,20 @@ const createWindow = () => {
     mainWindow.on('closed', () => {
         mainWindow = null;
     });
+
+    mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+        if (frameName === 'modal') {
+          // open window as modal
+          event.preventDefault();
+          Object.assign(options, {
+            modal: true,
+            parent: mainWindow,
+            width: 250,
+            height: 150,
+          });
+          event.newGuest = new BrowserWindow(options);
+        }
+      });
 };
 
 // create the main window when app is ready
