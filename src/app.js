@@ -45,8 +45,8 @@ const createWindow = () => {
           Object.assign(options, {
             modal: true,
             parent: mainWindow,
-            width: 250,
-            height: 150,
+            width: 300,
+            height: 170,
           });
           event.newGuest = new BrowserWindow(options);
         }
