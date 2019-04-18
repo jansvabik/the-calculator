@@ -1,6 +1,6 @@
 /**
  * Core of the calculator
- * 
+ * @file calculatorCore.js
  * @description Functions that allow calculator to work (splitting the operations, checking them, choosing preferred operations etc.) 
  * @version 0.3
  * @author Jan Svabik (xsvabi00)
@@ -232,7 +232,12 @@ const isSimpleExpression = (expr) => {
     return true;
 };
 
-// parse simple mathematic expression into array to calculate (+, -, *, /, !)
+/**
+ * @brief Function parses simple mathematic expression into array to calculate (+, -, *, /, !)
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to split
+ * @return Returns array 'splitted' to calculate
+ */
 const splitSimpleExpression = (expr) => {
     expr = plusMinusAxiom(expr);
 
@@ -247,7 +252,12 @@ const splitSimpleExpression = (expr) => {
     return splitArrayOfExpressions([expr])[0];
 };
 
-// function for removing chain of plus or minus symbols
+/**
+ * @brief Function for removing chain of plus or minus symbols
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to check and modify
+ * @return Returns modified expression 'expr'
+ */
 const plusMinusAxiom = (expr) => {
     expr = expr.replace('++', '+');
     expr = expr.replace('+-', '-');
@@ -259,7 +269,12 @@ const plusMinusAxiom = (expr) => {
     return expr;
 };
 
-// parse array of simple mathematic expressions into array to even more simple array
+/**
+ * @brief Function parses array of simple mathematic expressions into array to even more simple array
+ * @author Jan Svabik (xsvabi00) 
+ * @param exprArray Array of expressions to split into more simple array
+ * @return Returns splitted array 'exprArray' without nulls, 0, ...
+ */
 const splitArrayOfExpressions = (exprArray) => {
     for (let i = 0; i < exprArray.length; i++) {
         const expr = exprArray[i];
@@ -276,7 +291,12 @@ const splitArrayOfExpressions = (exprArray) => {
     return exprArray.filter(i => i || i === 0);
 };
 
-// check that some expression contains one of the operators defined
+/**
+ * @brief Function checks, if some expression contains one of the operators defined
+ * @author Jan Svabik (xsvabi00) 
+ * @param expr Expression to check
+ * @return Returns first operator found in expression 'expr', or false
+ */
 const operatorContainmentCheck = (expr) => {
     const operators = ['+', '-', '*', '/', '^', '!'];
     for (let i = 0; i < operators.length; i++)
@@ -286,6 +306,12 @@ const operatorContainmentCheck = (expr) => {
     return false;
 };
 
+/**
+ * @brief Function calculates simple expressions parsed to array
+ * @author Jan Svabik (xsvabi00) 
+ * @param parsedSimpleExpression Array made of parsed expression to calculate
+ * @return Returns result of calculation
+ */
 const calculateSimpleExpression = (parsedSimpleExpression) => {
     const operation = parsedSimpleExpression[0];
     parsedSimpleExpression.shift();
