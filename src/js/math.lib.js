@@ -2,12 +2,14 @@
  * @file math.lib.js
  * @brief The mathematical library
  * @description This mathematical library was developed especially for The Calculator
+ * @author Vojtech Dvorak (xdvora3a)
  * @version 1.0
  */
 
 // constants
-module.exports.PI = Math.PI;
-module.exports.E = Math.E;
+const PI = module.exports.PI = Math.PI;
+const PId2 = module.exports.PId2 = Math.PI/2;
+const E = module.exports.E = Math.E;
 
 /**
  * @brief Cheking values and the number of operands
@@ -207,7 +209,7 @@ module.exports.sin = (x) => {
     checkValues([x]);
 
     // Calculate the sinus
-    return Math.sin(x);
+    return Number(Number(Math.sin(x).toFixed(13)).toPrecision(13));
 };
 
 /**
@@ -220,7 +222,7 @@ module.exports.cos = (x) => {
     checkValues([x]);
 
     // Calculate the cosinus
-    return Math.cos(x);
+    return Number(Number(Math.cos(x).toFixed(13)).toPrecision(13));
 };
 
 /**
@@ -232,8 +234,12 @@ module.exports.cos = (x) => {
 module.exports.tan = (x) => {
     checkValues([x]);
 
+    // handle undefined points
+    if (Number((x % PId2).toPrecision(13)) === 0 && Number((x % PI).toPrecision(13)) !== 0)
+        return NaN;
+
     // Calculate the tangens
-    return Math.tan(x);
+    return Number(Number(Math.tan(x).toFixed(13)).toPrecision(13));
 };
 
 /**
@@ -245,8 +251,12 @@ module.exports.tan = (x) => {
 module.exports.cotan = (x) => {
     checkValues([x]);
 
+    // handle undefined points
+    if (Number((x % PI).toPrecision(13)) === 0)
+        return NaN;
+
     // Calculate the cotangens
-    return 1/Math.tan(x);
+    return 1 / Number(Number(Math.tan(x).toFixed(13)).toPrecision(13));
 };
 
 /**
@@ -259,7 +269,7 @@ module.exports.sinh = (x) => {
     checkValues([x]);
 
     // Calculate the hyperbolic sinus
-    return Math.sinh(x);
+    return Number(Number(Math.sinh(x).toFixed(13)).toPrecision(13));
 };
 
 /**
@@ -272,7 +282,7 @@ module.exports.cosh = (x) => {
     checkValues([x]);
 
     // Calculate the hyperbolic cosinus
-    return Math.cosh(x);
+    return Number(Number(Math.cosh(x).toFixed(13)).toPrecision(13));
 };
 
 /**
@@ -285,5 +295,5 @@ module.exports.tanh = (x) => {
     checkValues([x]);
 
     // Calculate the hyperbolic tangens
-    return Math.tanh(x);
+    return Number(Number(Math.tanh(x).toFixed(13)).toPrecision(13));
 };
