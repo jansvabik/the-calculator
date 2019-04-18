@@ -18,7 +18,6 @@ test('Adding', () => {
     expect(math.add([-616, Infinity, 0, Infinity])).toBe(Infinity);
     expect(math.add([Infinity, 5.4554, -0.11, -Infinity, 2])).toBe(NaN);
     
-    expect(() => math.add([11, '73', 1345, -3.346])).toThrowError();
     expect(() => math.add([56, 11, NaN, -355.3])).toThrowError();
     expect(() => math.add([])).toThrowError();
 });
@@ -38,7 +37,6 @@ test('Subtracting', () => {
     expect(math.subtract([-8])).toBe(8);
     expect(math.subtract([-Infinity])).toBe(Infinity);
     
-    expect(() => math.subtract(['90', -2.2, '4.56', 0])).toThrowError();
     expect(() => math.subtract([NaN, 90, 1.111])).toThrowError();
     expect(() => math.subtract([0.567, 1000, NaN])).toThrowError();
     expect(() => math.subtract([])).toThrowError();
@@ -60,7 +58,6 @@ test('Multiplying', () => {
     expect(math.multiply([-Infinity, Infinity, -Infinity, -Infinity, Infinity])).toBe(-Infinity);
 
     expect(() => math.multiply([0, -7, NaN, 3.14])).toThrowError();
-    expect(() => math.multiply([5, '1234', -0.1234, 0])).toThrowError();
     expect(() => math.multiply([4])).toThrowError();
     expect(() => math.multiply([NaN])).toThrowError();
     expect(() => math.multiply([])).toThrowError();
@@ -131,8 +128,6 @@ test('Calculating the power', () => {
     expect(math.power(-Infinity, 4.111)).toBe(Infinity);
     expect(math.power(-Infinity, 5)).toBe(-Infinity);
 
-    expect(() => math.power('45', 4)).toThrowError();
-    expect(() => math.power(4, '3')).toThrowError();
     expect(() => math.power(NaN, 4)).toThrowError();
     expect(() => math.power(3.14, NaN)).toThrowError();
     expect(() => math.power(3.14, undefined)).toThrowError();
@@ -165,8 +160,6 @@ test('Calculating the root', () => {
     expect(math.root(-12.344, -0.4)).toBe(NaN); // complex number
     expect(math.root(-12.344, -0.4)).toBe(NaN); // complex number
 
-    expect(() => math.root('3', 4)).toThrowError();
-    expect(() => math.root(4, '5')).toThrowError();
     expect(() => math.root(4, NaN)).toThrowError();
     expect(() => math.root(NaN, 4)).toThrowError();
 });
@@ -225,4 +218,15 @@ test('Calculating the decimal logarithm', () => {
     
     expect(() => math.decimalLogarithm(NaN)).toThrowError();
     expect(() => math.decimalLogarithm(undefined)).toThrowError();
+});
+
+test('Sinus', () => {
+    expect(math.sin(0)).toBe(0);
+    expect(math.sin(math.PI)).toBe(0);
+    expect(math.sin(9*math.PI)).toBe(0);
+    expect(math.sin(-4*math.PI)).toBe(0);
+    expect(math.sin(9.8795)).toBeCloseTo(-0.4392126155);
+    expect(math.sin(-3344)).toBeCloseTo(-0.97470931296);
+    expect(math.sin(Infinity)).toBe(NaN);
+    expect(math.sin(-Infinity)).toBe(NaN);
 });
