@@ -14,7 +14,7 @@ pack:
 	zip -r hotovo.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
 
 clean:
-	rm -rf profiling .clinic node_modules dev dist package-lock.json
+	rm -rf profiling .clinic node_modules dev dist package-lock.json hotovo.zip
 
 docs:
 	doxygen *.js
@@ -25,31 +25,40 @@ run: electron
 test: jest
 	jest --expand --verbose --silent ./js/math.lib.test.js
 
+installer: electronpackager
+	electron-packager .
+
 jest: node
-	@if [[ $(shell which jest) == "" ]]; then \
+	@if [[ "$(shell which jest)" == "" ]]; then \
 		sudo npm i -g jest; \
 	fi
 
 electronbuilder: node 
-	@if [[ $(shell which electron-builder) == "" ]]; then \
+	@if [[ "$(shell which electron-builder)" == "" ]]; then \
 		sudo npm i -g electron-builder; \
 	fi
 
+electronpackager:
+	@if [[ "$(shell which electron-packager)" == "" ]]; then \
+		sudo npm install electron --save --unsafe-perm=true --allow-root; \
+		sudo npm i -g electron-packager; \
+	fi
+
 electron: node 
-	@if [[ $(shell which electron) == "" ]]; then \
+	@if [[ "$(shell which electron)" == "" ]]; then \
 		sudo npm i -g electron; \
 	fi
 
-pkg: node 
-	@if [[ $(shell which pkg) == "" ]]; then \
+pkg: node
+	@if [[ "$(shell which pkg)" == "" ]]; then \
 		sudo npm i -g pkg; \
 	fi
 
 node:
-	@if [[ $(shell which curl) == "" ]]; then \
-		sudo apt-get install curl; \
+	@if [[ "$(shell which curl)" == "" ]]; then \
+		sudo apt-get --assume-yes install curl; \
 	fi
-	@if [[ $(shell which node) == "" ]]; then \
+	@if [[ "$(shell which node)" == "" ]]; then \
 		curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -; \
-		sudo apt-get install -y nodejs; \
+		sudo apt-get --assume-yes install -y nodejs; \
 	fi
