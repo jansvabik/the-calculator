@@ -87,7 +87,7 @@ $(document).ready(function () {
 
     // when any button is clicked...
     $('.button').click(function () {
-        let lineValue = $(this).data('line-value') || $(this).text();
+        let lineValue = $(this).data('line-value') || $(this).children('span.content').text();
         let exprValue = $(this).data('expr-value') || lineValue;
         let btnType = $(this).data('type') || false;
 
