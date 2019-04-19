@@ -38,17 +38,20 @@ const createWindow = () => {
         mainWindow = null;
     });
 
+    // opening modals (e.g. common root input)
     mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+        // open window as modal
         if (frameName === 'modal') {
-          // open window as modal
-          event.preventDefault();
-          Object.assign(options, {
-            modal: true,
-            parent: mainWindow,
-            width: 300,
-            height: 170,
-          });
-          event.newGuest = new BrowserWindow(options);
+            event.preventDefault();
+            Object.assign(options, {
+                parent: mainWindow,
+                modal: true,
+                width: 300,
+                height: 170,
+            });
+
+            // use BrowserWindow to create the new window
+            event.newGuest = new BrowserWindow(options);
         }
       });
 };
