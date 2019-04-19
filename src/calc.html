@@ -14,16 +14,16 @@
                 <div id="expressionLine" class="expression"></div>
             </div>
             <div class="resultRow">
-                <div id="resultLine" class="result"></div>
+                <div id="resultLine" class="result" contenteditable="true"></div>
             </div>
             <div class="row">
                 <div data-line-value="!" data-type="operator" class="button bg-dark-shadow">x!</div>
                 <div class="button bg-dark-shadow">RAND</div>
-                <div data-type="special" class="button bg-dark-shadow">MR</div>
-                <div data-type="special" class="button bg-dark-shadow">M-</div>
-                <div data-type="special" class="button bg-dark-shadow">M+</div>
-                <div class="button bg-dark-shadow">(</div>
-                <div class="button bg-dark-shadow">)</div>
+                <div id="btnMemoryRead" data-type="special" class="button bg-dark-shadow">MR</div>
+                <div id="btnMemoryReset" data-type="special" class="button bg-dark-shadow">M-</div>
+                <div id="btnMemorySet" data-type="special" class="button bg-dark-shadow">M+</div>
+                <div data-type="operator" class="button bg-dark-shadow">(</div>
+                <div data-type="operator" class="button bg-dark-shadow">)</div>
                 <div data-type="special" id="btnBackspace" class="button bg-dark-shadow bg-arrow-left"></div>
                 <div data-type="operator" data-expr-value="/" class="button bg-orange">÷</div>
             </div>
@@ -73,7 +73,7 @@
                 <div data-expr-value="E^(" data-line-value="e^(" class="button bg-dark-shadow">e<sup>x</sup></div>
                 <div class="button bg-shadow exception">0</div>
                 <div data-expr-value="." class="button bg-shadow">,</div>
-                <div class="button bg-orange">=</div>
+                <div data-type="special" id="btnEqual" class="button bg-orange">=</div>
             </div>
         </div>
         <script>
