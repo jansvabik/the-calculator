@@ -120,6 +120,9 @@ const startReplacement = (expr) => {
     // replace mathematical constants
     expr = expr.replace(regex.constants.E, '(' + math.E + ')');
     expr = expr.replace(regex.constants.PI, '(' + math.PI + ')');
+
+    // remove white space
+    expr = expr.replace(/\s/g, '');
     
     // replace all RANDs by random integers from <0;1) interval
     while (expr.includes('RAND')) {

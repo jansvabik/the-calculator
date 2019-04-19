@@ -11,10 +11,10 @@ profile: pkg
 	pkg profiling.js --targets host
 
 pack:
-	zip -r hotovo.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
+	zip -r the-calculator.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
 
 clean:
-	rm -rf profiling .clinic node_modules dev dist package-lock.json hotovo.zip
+	rm -rf profiling .clinic dist the-calculator.zip
 
 docs:
 	doxygen *.js

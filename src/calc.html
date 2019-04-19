@@ -17,63 +17,193 @@
                 <div id="resultLine" class="result" contenteditable="true"></div>
             </div>
             <div class="row">
-                <div data-line-value="!" data-type="operator" class="button bg-dark-shadow">x!</div>
-                <div class="button bg-dark-shadow">RAND</div>
-                <div id="btnMemoryRead" data-type="special" class="button bg-dark-shadow">MR</div>
-                <div id="btnMemoryReset" data-type="special" class="button bg-dark-shadow">M-</div>
-                <div id="btnMemorySet" data-type="special" class="button bg-dark-shadow">M+</div>
-                <div data-type="operator" class="button bg-dark-shadow">(</div>
-                <div data-type="operator" class="button bg-dark-shadow">)</div>
-                <div data-type="special" id="btnBackspace" class="button bg-dark-shadow bg-arrow-left"></div>
-                <div data-type="operator" data-expr-value="/" class="button bg-orange">÷</div>
+                <div data-line-value="!" data-type="operator" class="button bg-dark-shadow">
+                    <span class="content">x!</span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-dark-shadow">
+                    <span class="content">RAND</span>
+                    <span class="help"></span>
+                </div>
+                <div id="btnMemoryRead" data-type="special" class="button bg-dark-shadow">
+                    <span class="content">MR</span>
+                    <span class="help"></span>
+                </div>
+                <div id="btnMemoryReset" data-type="special" class="button bg-dark-shadow">
+                    <span class="content">M-</span>
+                    <span class="help"></span>
+                </div>
+                <div id="btnMemorySet" data-type="special" class="button bg-dark-shadow">
+                    <span class="content">M+</span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="operator" class="button bg-dark-shadow">
+                    <span class="content">(</span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="operator" class="button bg-dark-shadow">
+                    <span class="content">)</span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="special" id="btnBackspace" class="button bg-dark-shadow bg-arrow-left">
+                    <span class="content"></span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="operator" data-expr-value="/" class="button bg-orange">
+                    <span class="content">÷</span>
+                    <span class="help"></span>
+                </div>
             </div>
             <div class="row">
-                <div data-type="operator" data-line-value="^2" class="button bg-dark-shadow">x<sup>2</sup></div>
-                <div data-type="operator" data-line-value="^3" class="button bg-dark-shadow">x<sup>3</sup></div>
-                <div data-type="operator" data-line-value="^(" class="button bg-dark-shadow">x<sup>y</sup></div>
-                <div data-line-value="10^(" class="button bg-dark-shadow">10<sup>x</sup></div>
+                <div data-type="operator" data-line-value="^2" class="button bg-dark-shadow">
+                    <span class="content">x<sup>2</sup></span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="operator" data-line-value="^3" class="button bg-dark-shadow">
+                    <span class="content">x<sup>3</sup></span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="operator" data-line-value="^(" class="button bg-dark-shadow">
+                    <span class="content">x<sup>y</sup></span>
+                    <span class="help"></span>
+                </div>
+                <div data-line-value="10^(" class="button bg-dark-shadow">
+                    <span class="content">10<sup>x</sup></span>
+                    <span class="help"></span>
+                </div>
                 <div data-line-value="(1/" class="button bg-dark-shadow">
-                    <div class="fraction">
+                    <div class="content fraction">
                         <div>1</div>
                         <div>x</div>
                     </div>
+                    <span class="help"></span>
                 </div>
-                <div class="button bg-shadow">7</div>
-                <div class="button bg-shadow">8</div>
-                <div class="button bg-shadow">9</div>
-                <div data-type="operator" data-expr-value="*" class="button bg-orange">×</div>
+                <div class="button bg-shadow">
+                    <span class="content">7</span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-shadow">
+                    <span class="content">8</span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-shadow">
+                    <span class="content">9</span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="operator" data-expr-value="*" class="button bg-orange">
+                    <span class="content">×</span>
+                    <span class="help"></span>
+                </div>
             </div>
             <div class="row">
-                <div data-line-value="(2)root(" class="button bg-dark-shadow">&radic;<span style="text-decoration:overline;">x</span></div>
-                <div data-line-value="(3)root(" class="button bg-dark-shadow"><sup>3</sup>&radic;<span style="text-decoration:overline;">x</span></div>
-                <div data-type="special" id="btnCommonRoot" class="button bg-dark-shadow"><sup>y</sup>&radic;<span style="text-decoration:overline;">x</span></div>
-                <div data-line-value="ln(" class="button bg-dark-shadow">ln</div>
-                <div data-line-value="log(" class="button bg-dark-shadow">log<sub>10</sub></div>
-                <div class="button bg-shadow">4</div>
-                <div class="button bg-shadow">5</div>
-                <div class="button bg-shadow">6</div>
-                <div data-type="operator" data-expr-value="-" class="button bg-orange">−</div>
+                <div data-line-value="(2)root(" class="button bg-dark-shadow">
+                    <span class="content">&radic;<span style="text-decoration: overline;">x</span></span>
+                    <span class="help"></span>
+                </div>
+                <div data-line-value="(3)root(" class="button bg-dark-shadow">
+                    <span class="content"><sup>3</sup>&radic;<span style="text-decoration: overline;">x</span></span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="special" id="btnCommonRoot" class="button bg-dark-shadow">
+                    <span class="content"><sup>y</sup>&radic;<span style="text-decoration: overline;">x</span></span>
+                    <span class="help"></span>
+                </div>
+                <div data-line-value="ln(" class="button bg-dark-shadow">
+                    <span class="content">ln</span>
+                    <span class="help"></span>
+                </div>
+                <div data-line-value="log(" class="button bg-dark-shadow">
+                    <span class="content">log<sub>10</sub></span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-shadow">
+                    <span class="content">4</span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-shadow">
+                    <span class="content">5</span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-shadow">
+                    <span class="content">6</span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="operator" data-expr-value="-" class="button bg-orange">
+                    <span class="content">−</span>
+                    <span class="help"></span>
+                </div>
             </div>
             <div class="row">
-                <div data-line-value="sin(" class="button bg-dark-shadow">sin</div>
-                <div data-line-value="cos(" class="button bg-dark-shadow">cos</div>
-                <div data-line-value="tan(" class="button bg-dark-shadow">tan</div>
-                <div data-line-value="cotan(" class="button bg-dark-shadow">cotan</div>
-                <div data-expr-value="PI" class="button bg-dark-shadow">π</div>
-                <div class="button bg-shadow">1</div>
-                <div class="button bg-shadow">2</div>
-                <div class="button bg-shadow">3</div>
-                <div data-type="operator" class="button bg-orange">+</div>
+                <div data-line-value="sin(" class="button bg-dark-shadow">
+                    <span class="content">sin</span>
+                    <span class="help"></span>
+                </div>
+                <div data-line-value="cos(" class="button bg-dark-shadow">
+                    <span class="content">cos</span>
+                    <span class="help"></span>
+                </div>
+                <div data-line-value="tan(" class="button bg-dark-shadow">
+                    <span class="content">tan</span>
+                    <span class="help"></span>
+                </div>
+                <div data-line-value="cotan(" class="button bg-dark-shadow">
+                    <span class="content">cotan</span>
+                    <span class="help"></span>
+                </div>
+                <div data-expr-value="PI" class="button bg-dark-shadow">
+                    <span class="content">π</span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-shadow">
+                    <span class="content">1</span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-shadow">
+                    <span class="content">2</span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-shadow">
+                    <span class="content">3</span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="operator" class="button bg-orange">
+                    <span class="content">+</span>
+                    <span class="help"></span>
+                </div>
             </div>
             <div class="row">
-                <div data-line-value="sinh(" class="button bg-dark-shadow">sinh</div>
-                <div data-line-value="cosh(" class="button bg-dark-shadow">cosh</div>
-                <div data-line-value="tanh(" class="button bg-dark-shadow">tanh</div>
-                <div data-expr-value="E" class="button bg-dark-shadow">e</div>
-                <div data-expr-value="E^(" data-line-value="e^(" class="button bg-dark-shadow">e<sup>x</sup></div>
-                <div class="button bg-shadow exception">0</div>
-                <div data-expr-value="." class="button bg-shadow">,</div>
-                <div data-type="special" id="btnEqual" class="button bg-orange">=</div>
+                <div data-line-value="sinh(" class="button bg-dark-shadow">
+                    <span class="content">sinh</span>
+                    <span class="help"></span>
+                </div>
+                <div data-line-value="cosh(" class="button bg-dark-shadow">
+                    <span class="content">cosh</span>
+                    <span class="help"></span>
+                </div>
+                <div data-line-value="tanh(" class="button bg-dark-shadow">
+                    <span class="content">tanh</span>
+                    <span class="help"></span>
+                </div>
+                <div data-expr-value="E" class="button bg-dark-shadow">
+                    <span class="content">e</span>
+                    <span class="help"></span>
+                </div>
+                <div data-expr-value="E^(" data-line-value="e^(" class="button bg-dark-shadow">
+                    <span class="content">e<sup>x</sup></span>
+                    <span class="help"></span>
+                </div>
+                <div class="button bg-shadow exception">
+                    <span class="content">0</span>
+                    <span class="help"></span>
+                </div>
+                <div data-expr-value="." class="button bg-shadow">
+                    <span class="content">,</span>
+                    <span class="help"></span>
+                </div>
+                <div data-type="special" id="btnEqual" class="button bg-orange">
+                    <span class="content">=</span>
+                    <span class="help"></span>
+                </div>
             </div>
         </div>
         <script>
