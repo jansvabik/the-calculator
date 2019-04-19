@@ -13,6 +13,10 @@
                 box-sizing: border-box;
                 font-family: "Open Sans", Arial, sans-serif;
             }
+
+            *:focus {
+                outline: 0;
+            }
         
             body {
                 padding: 1rem;
@@ -57,25 +61,27 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <div>
-                Kolikátá odmocnina:
+        <form action="#">
+            <div class="container">
+                <div>
+                    Kolikátá odmocnina:
+                </div>
+                <div>
+                    <input class="input" type="number" id="n" autofocus required>
+                </div>
             </div>
-            <div>
-                <input class="input" type="number" id="n">
+            <div class="container">
+                <div>
+                    Z jakého čísla:
+                </div>
+                <div>
+                    <input class="input" type="number" id="x" required>
+                </div>
             </div>
-        </div>
-        <div class="container">
-            <div>
-               Z jakého čísla:
-            </div>
-            <div>
-                <input class="input" type="number" id="x">
-            </div>
-        </div>
-        <input class="button" type="submit" id="btn" value="Hotovo">
+            <input class="button" type="submit" id="btn" value="Hotovo">
+        </form>
         <script>
-            document.getElementById("btn").addEventListener("click", () => {
+            document.getElementById("btn").addEventListener("click", function () {
                 let n = document.getElementById('n').value;
                 let x = document.getElementById('x').value;
 

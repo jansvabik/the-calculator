@@ -2,18 +2,17 @@
  * Core of the calculator
  * @file calculatorCore.js
  * @description Functions that allow calculator to work (splitting the operations, checking them, choosing preferred operations etc.) 
- * @version 0.3
+ * @version 1.0
  * @author Jan Svabik (xsvabi00)
  * @author Vojtech Dvorak (xdvora3a)
  */
 
 // include our mathematical library
-const math = require('./math.lib');
-const regex = require('./calculatorRegex');
-const util = require('util');
+const math = require('./math.lib'); /** < mathematical library */
+const regex = require('./calculatorRegex'); /** < regular expressions for calculations */
 
 // max decimal precision to export
-const maxDecimalPrecision = 10;
+const maxDecimalPrecision = 10; /** < maximum decimal places in final results */
 
 /**
  * @brief The main function - do the calculation of the whole expression
@@ -27,52 +26,53 @@ const calculate = (expr) => {
         return 'ERR:BRACKETS';
     }
 
-    // replace mathematical constants
-    expr = expr.replace(/E/g, math.E);
-    expr = expr.replace(/PI/g, math.PI);
-    expr = expr.replace(/\)\(/g, ')*(');
-    expr = removeEType(expr);
-
-    // replace all RANDs by random integers from <0;1) interval
-    while (expr.includes('RAND')) {
-        expr = setRANDs(expr);
-    }
+    // replace constants, RANDs, multiplying as a default operator
+    expr = startReplacement(expr);
 
     // if the only expression is the number, this number is the result
-    // ? mozna tu byt vubec nemusi
     if (!isNaN(expr)) {
         return Number(expr);
     }
 
     // the calculating loop
+    let steps = 0;
+    let previousIterationExpression = '';
     while (true) {
-        expr = replaceSimpleExpression(expr); // handle simple expressions
         expr = replaceFunctionExpression(expr); // handle functions
         expr = replaceRootExpression(expr); // handle roots
         expr = replaceBracketFactorial(expr); // handle factorized brackets
         expr = replaceBracketPower(expr); // handle powered brackets
+        expr = replaceSimpleExpression(expr); // handle simple expressions
         expr = handleConstants(expr); // handle constants
+        expr = plusMinusAxiom(expr); // handle +- operator mix
 
         // if the expr is a number, end the loop
-        if (!isNaN(expr) || isSimpleExpression(expr))
+        if (!isNaN(expr) || isSimpleExpression(expr) || expr.includes('NaN')) {
             break;
+        }
+        
+        // this cannot be calculated
+        if (steps % 100 === 0 && expr == previousIterationExpression) {
+            return 'ERR:INFINITYLOOP';
+        }
+
+        // save this iteration result
+        previousIterationExpression = expr;
+        steps++;
+    }
+
+    // calculate the last simple expression if expr is simple expression
+    if (!expr.includes('NaN') && isNaN(expr)) {
+        expr = calculateSimpleExpression(splitSimpleExpression(expr));
     }
 
     // if there was NaN in the expression, some calculation had an undefined result
     if (expr.includes('NaN')) {
-        return null;
-    }
-
-    // if the expr is already number, do not split it
-    expr = removeEType(expr);
-    if (isNaN(expr)) {
-        expr = calculateSimpleExpression(splitSimpleExpression(expr));
+        return 'ERR:UNDEFINED';
     }
     
-    // remove scientific notation
-    expr = removeEType(expr);
-
     // return the number with predefined maximal decimal precision
+    expr = removeEType(expr);
     return Number(Number(expr).toPrecision(maxDecimalPrecision));
 };
 
@@ -85,9 +85,71 @@ const calculate = (expr) => {
 const bracketsError = (expr) => {
     let leftBrackets = (expr.match(/\(/g) || []).length;
     let rightBrackets = (expr.match(/\)/g) || []).length;
+
+    // the starting depth (0 = no brackets)
+    let depth = 0;
+
+    // count the brackets
+    for (let i = 0; i < expr.length; i++) {
+        const char = expr[i];
+        if (char === '(')
+            depth++;
+        else if (char === ')')
+            depth--;
+
+        // if there were more closing brackets than the opening, return true (error)
+        if (depth < 0)
+            return true;
+    }
+
+    // return true (error) if the number of opening and closing brackets is not the same
     if (leftBrackets !== rightBrackets)
         return true;
+
+    // no error
     return false;
+};
+
+/**
+ * @brief Function for doing the first replacements (constants, RANDs, multiplying as a def. operator)
+ * @param expr Expression to do the basic replacement in 
+ * @author Jan Svabik (xsvabi00)
+ * @return Expression after the replacement
+ */
+const startReplacement = (expr) => {
+    // replace mathematical constants
+    expr = expr.replace(regex.constants.E, '(' + math.E + ')');
+    expr = expr.replace(regex.constants.PI, '(' + math.PI + ')');
+    
+    // replace all RANDs by random integers from <0;1) interval
+    while (expr.includes('RAND')) {
+        expr = setRANDs(expr);
+    }
+    
+    // set multiplying as a default operator
+    expr = setMultiplyingAsDefaultOperator(expr);
+
+    // remove scientific notation
+    expr = removeEType(expr);
+
+    return expr;
+};
+
+/**
+ * @brief Function for adding multiplication * symbol as a default operator
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to add multiplication symbol in
+ * @return The expression with added * symbol e.g. between brackets )( or before functions 3log(2)
+ */
+const setMultiplyingAsDefaultOperator = (expr) => {
+    const me = regex.multiplyingReplacementNumberStart.exec(expr) || regex.multiplyingReplacementNumberEnd.exec(expr);
+    if (me === null)
+        return expr;
+
+    let frontpart = expr.substr(0, me.index);
+    let backpart = expr.substr(me.index).replace(me[0], me[1] + '*' + me[2]);
+
+    return setMultiplyingAsDefaultOperator(frontpart + backpart);
 };
 
 /**
@@ -105,8 +167,6 @@ const removeEType = (expr) => {
     let backpart = expr.substr(eType.index).replace(eType[0], '*10^' + eType[1]);
 
     expr = frontpart + backpart;
-    console.log('\nRemoved E-types');
-    console.log(expr);
 
     return removeEType(expr);
 };
@@ -118,7 +178,7 @@ const removeEType = (expr) => {
  * @return Expression with 'RAND' replaced for random number
  */
 const setRANDs = (expr) => {
-    expr = expr.replace('RAND', Math.random());
+    expr = expr.replace('RAND', '(' + Math.random() + ')');
     return expr;
 };
 
@@ -135,7 +195,7 @@ const replaceSimpleExpression = (expr) => {
     let simpleExprArray = regex.simpleExpression.exec(expr);
     if (simpleExprArray === null)
         return expr;
-
+        
     const simpleExpr = simpleExprArray[0].substr(1, simpleExprArray[0].length-2);
 
     // if the expression is constant, continue
@@ -196,9 +256,9 @@ const calculateFunction = (parsedExpression) => {
 
     // call matching function
     if (functionName === 'log')
-        return math.decimalLogarithm(value);
+        return math.log(value);
     if (functionName === 'ln')
-        return math.naturalLogarithm(value);
+        return math.ln(value);
     if (functionName === 'sin')
         return math.sin(value);
     if (functionName === 'cos')
@@ -276,8 +336,10 @@ const replaceBracketPower = (expr) => {
 };
 
 /**
- * @brief nevím
- * @param expr 
+ * @brief Function replaces constants in brackets by the constants only (brackets removal)
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace constants in brackets by constants only in
+ * @return Expression with constants without brackets
  */
 const handleConstants = (expr) => {
     expr = removeEType(expr);
@@ -300,10 +362,7 @@ const handleConstants = (expr) => {
  * @return True, if the expression 'expr' is simple, or false 
  */
 const isSimpleExpression = (expr) => {
-    let se = /(([0-9\.\+\-\*\/\!\^]*)|\-?Infinity)/.exec(expr).filter(i => i);
-    if (se.length === 0)
-        return false;
-    return true;
+    return regex.fullSimpleExpression.test(expr);
 };
 
 /**
@@ -349,15 +408,21 @@ const plusMinusAxiom = (expr) => {
  * @param exprArray Array of expressions to split into more simple array
  * @return Returns splitted array 'exprArray' without nulls, 0, ...
  */
-const splitArrayOfExpressions = (exprArray) => {
+const splitArrayOfExpressions = (exprArray, operatorBefore = false, exprBefore = false) => {
+    if (operatorBefore === '-' && exprBefore[0] === '-')
+        exprArray[1] = 'N' + exprArray[1];
+
     for (let i = 0; i < exprArray.length; i++) {
         const expr = exprArray[i];
         const operator = operatorContainmentCheck(expr);
 
+
         if (!operator && expr.length > 0)
             exprArray[i] = expr[0] !== 'N' ? Number(expr) : -Number(expr.substr(1));
-        else if (expr.length > 1)
-            exprArray[i] = splitArrayOfExpressions([operator, ...expr.split(operator)]);
+        else if (expr.length > 1) {
+            let splitted = expr.split(operator);
+            exprArray[i] = splitArrayOfExpressions([operator, ...splitted], operator, expr);
+        }
         else if (expr.length === 0)
             delete(exprArray[i]);
     }
@@ -431,7 +496,7 @@ function numberToString(num)
         if (e)
         {
             let negative = num < 0;
-            if (negative) num *= -1
+            if (negative) num *= -1;
             num *= Math.pow(10, e - 1);
             numStr = '0.' + (new Array(e)).join('0') + num.toString().substring(2);
             if (negative) numStr = "-" + numStr;

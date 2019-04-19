@@ -187,39 +187,40 @@ test('Calculating the factorial', () => {
 });
 
 test('Calculating the natural logarithm', () => {
-    expect(math.naturalLogarithm(0)).toBe(-Infinity);
-    expect(math.naturalLogarithm(-0)).toBe(-Infinity);
-    expect(math.naturalLogarithm(1)).toBe(0);
-    expect(math.naturalLogarithm(math.E)).toBe(1);
-    expect(math.naturalLogarithm(1.5)).toBeCloseTo(0.4054651081);
-    expect(math.naturalLogarithm(45)).toBeCloseTo(3.80666248977);
-    expect(math.naturalLogarithm(-1)).toBe(NaN);
-    expect(math.naturalLogarithm(-65.3525)).toBe(NaN);
+    expect(math.ln(0)).toBe(-Infinity);
+    expect(math.ln(-0)).toBe(-Infinity);
+    expect(math.ln(1)).toBe(0);
+    expect(math.ln(math.E)).toBe(1);
+    expect(math.ln(1.5)).toBeCloseTo(0.4054651081);
+    expect(math.ln(45)).toBeCloseTo(3.80666248977);
+    expect(math.ln(-1)).toBe(NaN);
+    expect(math.ln(-65.3525)).toBe(NaN);
     
-    expect(math.naturalLogarithm(Infinity)).toBe(Infinity);
-    expect(math.naturalLogarithm(-Infinity)).toBe(NaN);
+    expect(math.ln(Infinity)).toBe(Infinity);
+    expect(math.ln(-Infinity)).toBe(NaN);
     
-    expect(() => math.naturalLogarithm(NaN)).toThrowError();
-    expect(() => math.naturalLogarithm(undefined)).toThrowError();
+    expect(() => math.ln(NaN)).toThrowError();
+    expect(() => math.ln(undefined)).toThrowError();
 });
 
 test('Calculating the decimal logarithm', () => {
-    expect(math.decimalLogarithm(0)).toBe(-Infinity);
-    expect(math.decimalLogarithm(-0)).toBe(-Infinity);
-    expect(math.decimalLogarithm(1)).toBe(0);
-    expect(math.decimalLogarithm(10)).toBe(1);
-    expect(math.decimalLogarithm(1.5)).toBeCloseTo(0.17609125905);
-    expect(math.decimalLogarithm(45)).toBeCloseTo(1.65321251378);
-    expect(math.decimalLogarithm(-1)).toBe(NaN);
-    expect(math.decimalLogarithm(-65.3525)).toBe(NaN);
+    expect(math.log(0)).toBe(-Infinity);
+    expect(math.log(-0)).toBe(-Infinity);
+    expect(math.log(1)).toBe(0);
+    expect(math.log(10)).toBe(1);
+    expect(math.log(1.5)).toBeCloseTo(0.17609125905);
+    expect(math.log(45)).toBeCloseTo(1.65321251378);
+    expect(math.log(-1)).toBe(NaN);
+    expect(math.log(-65.3525)).toBe(NaN);
     
-    expect(math.decimalLogarithm(Infinity)).toBe(Infinity);
-    expect(math.decimalLogarithm(-Infinity)).toBe(NaN);
+    expect(math.log(Infinity)).toBe(Infinity);
+    expect(math.log(-Infinity)).toBe(NaN);
     
-    expect(() => math.decimalLogarithm(NaN)).toThrowError();
-    expect(() => math.decimalLogarithm(undefined)).toThrowError();
+    expect(() => math.log(NaN)).toThrowError();
+    expect(() => math.log(undefined)).toThrowError();
 });
 
+// added functions
 test('Sinus', () => {
     expect(math.sin(0)).toBe(0);
     expect(math.sin(math.PI)).toBe(0);
@@ -229,4 +230,95 @@ test('Sinus', () => {
     expect(math.sin(-3344)).toBeCloseTo(-0.97470931296);
     expect(math.sin(Infinity)).toBe(NaN);
     expect(math.sin(-Infinity)).toBe(NaN);
+});
+
+test('Cosinus', () => {
+    expect(math.cos(0)).toBe(1);
+    expect(math.cos(math.PI)).toBe(-1);
+    expect(math.cos(9*math.PI)).toBe(-1);
+    expect(math.cos(-4*math.PI)).toBe(1);
+    expect(math.cos(9.8795)).toBeCloseTo(-0.89838314675);
+    expect(math.cos(-3344)).toBeCloseTo(0.22347652052);
+    expect(math.cos(Infinity)).toBe(NaN);
+    expect(math.cos(-Infinity)).toBe(NaN);
+});
+
+test('Tangens', () => {
+    expect(math.tan(0)).toBe(0);
+    expect(math.tan(1)).toBeCloseTo(1.55740772465);
+    expect(math.tan(math.PI)).toBe(0);
+    expect(math.tan(9*math.PI)).toBe(0);
+    expect(math.tan(-4*math.PI)).toBe(0);
+    expect(math.tan(9.8795)).toBeCloseTo(0.48889231403);
+    expect(math.tan(-3344)).toBeCloseTo(-4.36157369315);
+    expect(math.tan(math.PI/4)).toBe(1);
+
+    expect(math.tan(math.PI/2)).toBe(NaN);
+
+    expect(math.tan(Infinity)).toBe(NaN);
+    expect(math.tan(-Infinity)).toBe(NaN);
+});
+
+test('Cotangens', () => {
+    expect(math.cotan(0)).toBe(NaN);
+    expect(math.cotan(1)).toBeCloseTo(0.6420926159);
+    expect(math.cotan(math.PI)).toBe(NaN);
+    expect(math.cotan(9*math.PI)).toBe(NaN);
+    expect(math.cotan(-4*math.PI)).toBe(NaN);
+    expect(math.cotan(9.8795)).toBeCloseTo(2.0454402152);
+    expect(math.cotan(-3344)).toBeCloseTo(-0.2292750439);
+    expect(math.cotan(math.PI/4)).toBe(1);
+
+    expect(math.cotan(math.PI/2)).toBeCloseTo(6.123234e-17);
+
+    expect(math.cotan(Infinity)).toBe(NaN);
+    expect(math.cotan(-Infinity)).toBe(NaN);
+});
+
+test('Hyperbolic sinus', () => {
+    expect(math.sinh(0)).toBe(0);
+    expect(math.sinh(1)).toBeCloseTo(1.17520119);
+    expect(math.sinh(math.PI)).toBeCloseTo(11.5487394);
+    expect(math.sinh(9*math.PI)).toBeCloseTo(9.513869476461e11);
+    expect(math.sinh(-4*math.PI)).toBeCloseTo(-143375.657);
+    expect(math.sinh(9.8795)).toBeCloseTo(9762.9786);
+    expect(math.sinh(-3344)).toBe(-Infinity);
+    expect(math.sinh(math.PI/4)).toBeCloseTo(0.868670961);
+
+    expect(math.sinh(math.PI/2)).toBeCloseTo(2.3012989);
+
+    expect(math.sinh(Infinity)).toBe(Infinity);
+    expect(math.sinh(-Infinity)).toBe(-Infinity);
+});
+
+test('Hyperbolic cosinus', () => {
+    expect(math.cosh(0)).toBe(1);
+    expect(math.cosh(1)).toBeCloseTo(1.54308063);
+    expect(math.cosh(math.PI)).toBeCloseTo(11.5919533);
+    expect(math.cosh(9*math.PI)).toBeCloseTo(9.513869476461e11);
+    expect(math.cosh(-4*math.PI)).toBeCloseTo(143375.657);
+    expect(math.cosh(9.8795)).toBeCloseTo(9762.97865);
+    expect(math.cosh(-3344)).toBe(Infinity);
+    expect(math.cosh(math.PI/4)).toBeCloseTo(1.32460908925);
+
+    expect(math.cosh(math.PI/2)).toBeCloseTo(2.50917847866);
+
+    expect(math.cosh(Infinity)).toBe(Infinity);
+    expect(math.cosh(-Infinity)).toBe(Infinity);
+});
+
+test('Hyperbolic tangens', () => {
+    expect(math.tanh(0)).toBe(0);
+    expect(math.tanh(1)).toBeCloseTo(0.76159415595);
+    expect(math.tanh(math.PI)).toBeCloseTo(0.99627207622);
+    expect(math.tanh(9*math.PI)).toBe(1);
+    expect(math.tanh(-4*math.PI)).toBeCloseTo(-0.99999999997);
+    expect(math.tanh(9.8795)).toBeCloseTo(0.99999999475);
+    expect(math.tanh(-3344)).toBe(-1);
+    expect(math.tanh(math.PI/4)).toBeCloseTo(0.65579420263);
+
+    expect(math.tanh(math.PI/2)).toBeCloseTo(0.91715233566);
+
+    expect(math.tanh(Infinity)).toBe(1);
+    expect(math.tanh(-Infinity)).toBe(-1);
 });

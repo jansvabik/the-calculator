@@ -9,6 +9,8 @@
     letter-spacing: -1px;
 }
 
+*:focus {outline: 0;}
+
 ::selection {background: transparent;}
 
 body {
@@ -50,6 +52,17 @@ sub {
     flex: 1.1 !important;
 }
 
+.expressionRow, .resultRow {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.expressionRow > *::selection, .resultRow > *::selection {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
 .container > div {
     flex: 0.9;
     display: flex;
@@ -63,15 +76,17 @@ sub {
     align-items: flex-start;
     justify-content: flex-end;
     font-size: 4rem;
+    text-align: right;
     padding: .5rem 2rem 1.5rem 2rem;
 }
 
 .expression {
     letter-spacing: 0 !important;
     flex: 9;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
+    z-index: 10;
+    display: inline-block;
+    position: absolute;
+    right: 0;
     font-size: 2.3rem;
     padding: 2rem 2rem 1.5rem 2rem;
     color: rgba(255, 255, 255, 0.733);

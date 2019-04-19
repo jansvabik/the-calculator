@@ -179,7 +179,7 @@ module.exports.root = (x, n) => {
  * @param[in] x Value to calculate natural logarithm of
  * @returns Natural logarithm of x
  */
-module.exports.naturalLogarithm = (x) => {
+module.exports.ln = (x) => {
     checkValues([x]);
 
     // Calculate the natural logarithm
@@ -192,7 +192,7 @@ module.exports.naturalLogarithm = (x) => {
  * @param[in] x Value to calculate decimal logarithm of
  * @returns Decimal logarithm of x
  */
-module.exports.decimalLogarithm = (x) => {
+module.exports.log = (x) => {
     checkValues([x]);
 
     // Calculate the decimal logarithm
