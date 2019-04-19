@@ -8,7 +8,7 @@ calc: electronbuilder
 	electron-builder
 
 profile: pkg
-	pkg profiling.js --targets host
+	pkg profiling.js --targets node6
 
 pack:
 	zip -r the-calculator.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
