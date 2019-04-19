@@ -11,9 +11,6 @@
     "maintainers": [
         "FIT Peaches"
     ],
-    "files": [
-        "build/icon.*"
-    ],
     "homepage": "https://bitbucket.org/fitpeaches/the-calculator",
     "license": "GPL-3.0-or-later",
     "scripts": {
@@ -29,6 +26,17 @@
         "jest": "^24.7.1"
     },
     "build": {
-        "appId": "cz.vutbr.fit.ivs.thecalculator.fitpeaches"
+        "appId": "cz.vutbr.fit.ivs.thecalculator.fitpeaches",
+        "directories": {
+            "output": "dist",
+            "buildResources": "build"
+        },
+        "linux": {
+            "target": [
+                "AppImage"
+            ],
+            "icon": "build/icon.png",
+            "category": "Utility"
+        }
     }
 }

@@ -20,7 +20,7 @@ const createWindow = () => {
         width: 600,
         height: 350,
         resizable: false,
-        icon: __dirname + '/img/icon.png',
+        icon: path.join(__dirname + 'build/icon.png'),
         webPreferences: {
             nativeWindowOpen: true,
         },
