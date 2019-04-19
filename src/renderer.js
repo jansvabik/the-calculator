@@ -1,3 +1,11 @@
+/**
+ * @file renderer.js
+ * @brief User interactions (buttons and calculating request)
+ * @author Jan Svabik (xsvabi00)
+ * @author Vojtech Dvorak (xdvora3a)
+ * @author Lukas Gurecky (xgurec00)
+ */
+
 // libs
 const $ = require('./js/jquery-3.3.1.min');
 const calculate = require('./js/calculatorCore').calc;
@@ -9,6 +17,11 @@ let errors = {
     'ERR:UNDEFINED': 'Nedefinováno.',
     'ERR:MISSINGOPERAND': 'Chybějící operand.',
     'ERR:INFINITYLOOP': 'Toto bohužel neumím spočítat.',
+};
+
+// get line content
+const getLine = (line) => {
+    return line.text();
 };
 
 // set line content to data
@@ -25,7 +38,7 @@ const addToLine = (line, data) => {
 
 // transfer string into processable expression
 const strToExpr = (data) => {
-    return data.replace(/,/g, '.').replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+    return data.replace(/,/g, '.').replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-').replace(/π/g, 'PI').replace(/e/g, 'E');
 };
 
 // transfer processable expression into pretty string
@@ -40,7 +53,6 @@ const noError = () => {
 
 // calculating and displaying variables, data and statuses
 let result = '';
-let expression = '';
 let resultDisplayed = false;
 let errorDisplayed = false;
 let M = '';
@@ -59,7 +71,6 @@ $(document).ready(function () {
 
     const startAgain = () => {
         result = '';
-        expression = '';
         setLine(resultLine, '');
         setLine(expressionLine, '');
         resultDisplayed = false;
@@ -81,7 +92,6 @@ $(document).ready(function () {
     resultLine.on('keyup', function (e) {
         if (e.keyCode !== 13) {        
             resultDisplayed = false;   
-            expression = strToExpr($(this).text());
         }
     });
 
@@ -96,7 +106,7 @@ $(document).ready(function () {
             return;
 
         if (resultDisplayed && !errorDisplayed && btnType === 'operator') {
-            expression = result;
+            //expression = result;
         }
         else if (resultDisplayed || errorDisplayed) {
             startAgain();
@@ -108,7 +118,6 @@ $(document).ready(function () {
         }
 
         addToLine(resultLine, lineValue);
-        expression += exprValue;
         resultDisplayed = false;
     });
 
@@ -125,7 +134,7 @@ $(document).ready(function () {
         
         // try to calculate the value
         try {
-            result = String(calculate(expression));
+            result = String(calculate(strToExpr(getLine(resultLine))));
         } catch (e) {
             error.is = true;
             error.type = 'ERR:MISSINGOPERAND';
@@ -154,10 +163,11 @@ $(document).ready(function () {
             resultLine.focus();
         }
         else {
-            expression = expression.substr(0, expression.length-1);
-            setLine(resultLine, exprToStr(expression));
+            let lineNow = getLine(resultLine);
+            let lineNew = lineNow.substr(0, lineNow.length-1);
+            setLine(resultLine, lineNew);
 
-            if (expression.length === 0)
+            if (lineNew.length === 0)
                 resultLine.focus();
         }
     });
@@ -167,13 +177,12 @@ $(document).ready(function () {
     });
 
     $('#btnMemorySet').click(function () {
-        if (!errorDisplayed)
+        if (!errorDisplayed && resultDisplayed)
             M = result;
     });
 
     $('#btnMemoryRead').click(function () {
         if (!resultDisplayed && !errorDisplayed) {
-            expression += M;
             addToLine(resultLine, exprToStr(M));
         }
     });
@@ -183,14 +192,10 @@ $(document).ready(function () {
     });
 
     function commonRoot(n, x) {
-        if (resultDisplayed && !errorDisplayed) {
-            expression = result;
-        }
-
         resultDisplayed = false;
-        expression += '(' + n + ')root(' + x + ')';
-        setLine(resultLine, exprToStr(expression));
+        addToLine(resultLine, '(' + n + ')root(' + x + ')')
     }
 
     window.commonRoot = commonRoot;
 });
+/** file end */

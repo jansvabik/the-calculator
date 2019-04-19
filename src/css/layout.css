@@ -133,4 +133,4 @@ div.fraction > div:last-child {margin-top: -3px;}
 div.fraction > div {padding-left: 3px; padding-right: 3px;}
 
 .button span.help {display: none;}
-.button:hover span.help {position: absolute; top: 0; left: 0; right: 0; display: block; color: #fff; background: rgba(0, 0, 0, 0.7); text-align: center; font-size: 2rem; padding: .6rem; letter-spacing: -.5px;}
+.button:hover span.help {position: absolute; z-index: 100; top: 0; left: 0; right: 0; display: block; color: #fff; background: rgba(0, 0, 0, 0.7); text-align: center; font-size: 2rem; padding: .6rem; letter-spacing: -.5px;}

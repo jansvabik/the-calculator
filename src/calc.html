@@ -23,7 +23,7 @@
                 </div>
                 <div class="button bg-dark-shadow">
                     <span class="content">RAND</span>
-                    <span class="help">Vložení náhodného čísla z intervalu  &lt;0,1). </span>
+                    <span class="help">Vložení náhodného čísla z intervalu  &lt;0;1). </span>
                 </div>
                 <div id="btnMemoryRead" data-type="special" class="button bg-dark-shadow">
                     <span class="content">MR</span>
@@ -35,48 +35,44 @@
                 </div>
                 <div id="btnMemorySet" data-type="special" class="button bg-dark-shadow">
                     <span class="content">M+</span>
-                    <span class="help">Uloží aktuální hodnotu do paměti.</span>
+                    <span class="help">Uloží aktuální výsledek do paměti.</span>
                 </div>
                 <div data-type="operator" class="button bg-dark-shadow">
                     <span class="content">(</span>
-                    <span class="help">Vloží levou závorku.</span>
                 </div>
                 <div data-type="operator" class="button bg-dark-shadow">
                     <span class="content">)</span>
-                    <span class="help">Vloží pravou závorku.</span>
                 </div>
                 <div data-type="special" id="btnBackspace" class="button bg-dark-shadow bg-arrow-left">
                     <span class="content"></span>
-                    <span class="help">Smaže poslední znak.</span>
                 </div>
-                <div data-type="operator" data-expr-value="/" class="button bg-orange">
+                <div data-type="operator" class="button bg-orange">
                     <span class="content">÷</span>
-                    <span class="help">Vloží znak dělení.</span>
                 </div>
             </div>
             <div class="row">
                 <div data-type="operator" data-line-value="^2" class="button bg-dark-shadow">
                     <span class="content">x<sup>2</sup></span>
-                    <span class="help">Umocnění posledního zadaného čísla na 2.</span>
+                    <span class="help">Umocnění posledního zadaného čísla na druhou.</span>
                 </div>
                 <div data-type="operator" data-line-value="^3" class="button bg-dark-shadow">
                     <span class="content">x<sup>3</sup></span>
-                    <span class="help">Umocnění posledního zadaného čísla na 3.</span>
+                    <span class="help">Umocnění posledního zadaného čísla na třetí.</span>
                 </div>
                 <div data-type="operator" data-line-value="^(" class="button bg-dark-shadow">
                     <span class="content">x<sup>y</sup></span>
-                    <span class="help">Umocnění posledního zadaného čísla na libovolnou hodnotu.</span>
+                    <span class="help">Umocnění posledního zadaného čísla na následně zadanou hodnotu.</span>
                 </div>
                 <div data-line-value="10^(" class="button bg-dark-shadow">
                     <span class="content">10<sup>x</sup></span>
-                    <span class="help">Vložení sekvence 10^...</span>
+                    <span class="help">Vložení sekvence 10^( – pro rychlejší zápis.</span>
                 </div>
                 <div data-line-value="(1/" class="button bg-dark-shadow">
                     <div class="content fraction">
                         <div>1</div>
                         <div>x</div>
                     </div>
-                    <span class="help">Vložení sekvence (1/...).</span>
+                    <span class="help">Vložení sekvence (1/ – pro rychlejší zápis.</span>
                 </div>
                 <div class="button bg-shadow">
                     <span class="content">7</span>
@@ -87,9 +83,8 @@
                 <div class="button bg-shadow">
                     <span class="content">9</span>
                 </div>
-                <div data-type="operator" data-expr-value="*" class="button bg-orange">
+                <div data-type="operator" class="button bg-orange">
                     <span class="content">×</span>
-                    <span class="help">Násobení.</span>
                 </div>
             </div>
             <div class="row">
@@ -103,15 +98,15 @@
                 </div>
                 <div data-type="special" id="btnCommonRoot" class="button bg-dark-shadow">
                     <span class="content"><sup>y</sup>&radic;<span style="text-decoration: overline;">x</span></span>
-                    <span class="help">Výpočet obecné odmocniny podle zadaných hodnot.</span>
+                    <span class="help">Výpočet odmocniny podle následně zadaných hodnot.</span>
                 </div>
                 <div data-line-value="ln(" class="button bg-dark-shadow">
                     <span class="content">ln</span>
-                    <span class="help">Výpočet přirozeného logaritmu z následně zadané hodnoty.</span>
+                    <span class="help">Výpočet přirozeného logaritmu (základ e) z následně zadané hodnoty.</span>
                 </div>
                 <div data-line-value="log(" class="button bg-dark-shadow">
                     <span class="content">log<sub>10</sub></span>
-                    <span class="help">Výpočet decimálního logaritmu z následně zadané hodnoty.</span>
+                    <span class="help">Výpočet logaritmu o základu 10 z následně zadané hodnoty.</span>
                 </div>
                 <div class="button bg-shadow">
                     <span class="content">4</span>
@@ -122,9 +117,8 @@
                 <div class="button bg-shadow">
                     <span class="content">6</span>
                 </div>
-                <div data-type="operator" data-expr-value="-" class="button bg-orange">
+                <div data-type="operator" class="button bg-orange">
                     <span class="content">−</span>
-                    <span class="help">Odčítání.</span>
                 </div>
             </div>
             <div class="row">
@@ -144,7 +138,7 @@
                     <span class="content">cotan</span>
                     <span class="help">Výpočet funkce cotangens.</span>
                 </div>
-                <div data-expr-value="PI" class="button bg-dark-shadow">
+                <div class="button bg-dark-shadow">
                     <span class="content">π</span>
                     <span class="help">Vložení konstanty π.</span>
                 </div>
@@ -159,7 +153,6 @@
                 </div>
                 <div data-type="operator" class="button bg-orange">
                     <span class="content">+</span>
-                    <span class="help">Sčítání.</span>
                 </div>
             </div>
             <div class="row">
@@ -175,24 +168,22 @@
                     <span class="content">tanh</span>
                     <span class="help">Výpočet funkce hyperbolický tangens.</span>
                 </div>
-                <div data-expr-value="E" class="button bg-dark-shadow">
+                <div class="button bg-dark-shadow">
                     <span class="content">e</span>
                     <span class="help">Vložení konstanty e.</span>
                 </div>
-                <div data-expr-value="E^(" data-line-value="e^(" class="button bg-dark-shadow">
+                <div data-line-value="e^(" class="button bg-dark-shadow">
                     <span class="content">e<sup>x</sup></span>
                     <span class="help">Výpočet e umocněného na zadanou hodnotu.</span>
                 </div>
                 <div class="button bg-shadow exception">
                     <span class="content">0</span>
                 </div>
-                <div data-expr-value="." class="button bg-shadow">
+                <div class="button bg-shadow">
                     <span class="content">,</span>
-                    <span class="help">Vložení desetinné čárky.</span>
                 </div>
                 <div data-type="special" id="btnEqual" class="button bg-orange">
                     <span class="content">=</span>
-                    <span class="help">Vypočítá zadaný výraz.</span>
                 </div>
             </div>
         </div>
