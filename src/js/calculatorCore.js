@@ -15,7 +15,12 @@ const util = require('util');
 // max decimal precision to export
 const maxDecimalPrecision = 10;
 
-// the main function - do the calculation of the whole expression
+/**
+ * @brief The main function - do the calculation of the whole expression
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to calculate
+ * @return Result of the calculation (number), or null if there was some error or mistake in expression
+ */
 const calculate = (expr) => {
     // check the number of left and right brackets
     if (bracketsError(expr)) {
@@ -71,6 +76,12 @@ const calculate = (expr) => {
     return Number(Number(expr).toPrecision(maxDecimalPrecision));
 };
 
+/**
+ * @brief Function checks if there is the same number of left brackets as of right brackets
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to check
+ * @return true, if there is error with brackets, or false if not
+ */
 const bracketsError = (expr) => {
     let leftBrackets = (expr.match(/\(/g) || []).length;
     let rightBrackets = (expr.match(/\)/g) || []).length;
@@ -79,7 +90,12 @@ const bracketsError = (expr) => {
     return false;
 };
 
-// remove scientific notations from string
+/**
+ * @brief Function replaces all scientific notations (recurently) from the expression string (eg. 8e-10 -> 8*10^-10)
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace scientific notations in
+ * @return Expression with replaced scientific notations
+ */
 const removeEType = (expr) => {
     let eType = regex.eType.exec(expr);
     if (eType == null)
@@ -95,11 +111,23 @@ const removeEType = (expr) => {
     return removeEType(expr);
 };
 
+/**
+ * @brief Function replaces string of random number 'RAND' in expression string for random number
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to replace 'RAND' in
+ * @return Expression with 'RAND' replaced for random number
+ */
 const setRANDs = (expr) => {
     expr = expr.replace('RAND', Math.random());
     return expr;
 };
 
+/**
+ * @brief Function calculates and replaces simple expressions in expression 'expr' for calculated numbers
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to check and replace simple expressions in
+ * @return Expression with replaced simple expressions
+ */
 const replaceSimpleExpression = (expr) => {
     expr = removeEType(expr);
 
@@ -120,6 +148,12 @@ const replaceSimpleExpression = (expr) => {
     return replaceSimpleExpression(expr);
 };
 
+/**
+ * @brief Function replaces function expressions in expression 'expr'
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace function expressions in
+ * @return Expression with function expressions replaced
+ */
 const replaceFunctionExpression = (expr) => {
     expr = removeEType(expr);
 
@@ -136,6 +170,12 @@ const replaceFunctionExpression = (expr) => {
     return replaceFunctionExpression(expr);
 };
 
+/**
+ * @brief Function parses function expression
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Function expression to parse
+ * @return Parsed function expression as array (function name, value)
+ */
 const parseFunctionExpression = (expr) => {
     const splitExpr = expr.split('(');
     const functionName = splitExpr[0];
@@ -144,6 +184,12 @@ const parseFunctionExpression = (expr) => {
     return [functionName, Number(value)];
 };
 
+/**
+ * @brief Function calculates parsed function expressions
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param parsedExpression Parsed function expression to calculate
+ * @return Calculated parsedExpression (number)
+ */
 const calculateFunction = (parsedExpression) => {
     const functionName = parsedExpression[0];
     const value = parsedExpression[1];
@@ -169,6 +215,12 @@ const calculateFunction = (parsedExpression) => {
         return math.cotan(value);
 };
 
+/**
+ * @brief Function replaces root expressions in expression 'expr' to calculate
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace root expressions in
+ * @return Expression with replaced root expressions
+ */
 const replaceRootExpression = (expr) => {
     expr = removeEType(expr);
 
@@ -183,6 +235,12 @@ const replaceRootExpression = (expr) => {
     return replaceRootExpression(frontpart + backpart);
 };
 
+/**
+ * @brief Function replaces bracket factiorials in expression 'expr'
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace bracket factiorials in
+ * @return Expression with bracket factiorials replaced to calculate
+ */
 const replaceBracketFactorial = (expr) => {
     expr = removeEType(expr);
 
@@ -197,6 +255,12 @@ const replaceBracketFactorial = (expr) => {
     return replaceBracketFactorial(frontpart + backpart);
 };
 
+/**
+ * @brief Function replaces bracket powers in expression 'expr' to calculate
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace bracket powers in
+ * @return Expression with bracket powers replaced
+ */
 const replaceBracketPower = (expr) => {
     expr = removeEType(expr);
 
@@ -211,6 +275,10 @@ const replaceBracketPower = (expr) => {
     return replaceBracketFactorial(frontpart + backpart);
 };
 
+/**
+ * @brief nevím
+ * @param expr 
+ */
 const handleConstants = (expr) => {
     expr = removeEType(expr);
 
@@ -225,6 +293,12 @@ const handleConstants = (expr) => {
     return handleConstants(frontpart + backpart);
 };
 
+/**
+ * @brief Function checks if the expression 'expr' is simple expression
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to check
+ * @return True, if the expression 'expr' is simple, or false 
+ */
 const isSimpleExpression = (expr) => {
     let se = /(([0-9\.\+\-\*\/\!\^]*)|\-?Infinity)/.exec(expr).filter(i => i);
     if (se.length === 0)
