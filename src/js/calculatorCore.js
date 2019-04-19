@@ -8,44 +8,18 @@
  */
 
 // include our mathematical library
-const math = require('./math.lib');
-const regex = require('./calculatorRegex');
+const math = require('./math.lib'); /** < mathematical library */
+const regex = require('./calculatorRegex'); /** < regular expressions for calculations */
 
 // max decimal precision to export
-const maxDecimalPrecision = 10;
+const maxDecimalPrecision = 10; /** < maximum decimal places in final results */
 
-const setMultiplyingAsDefaultOperator = (expr) => {
-    const me = regex.multiplyingReplacementNumberStart.exec(expr) || regex.multiplyingReplacementNumberEnd.exec(expr);
-    if (me === null)
-        return expr;
-
-    let frontpart = expr.substr(0, me.index);
-    let backpart = expr.substr(me.index).replace(me[0], me[1] + '*' + me[2]);
-
-    return setMultiplyingAsDefaultOperator(frontpart + backpart);
-};
-
-const startReplacement = (expr) => {
-    // replace mathematical constants
-    expr = expr.replace(/E/g, '(' + math.E + ')');
-    expr = expr.replace(/PI/g, '(' + math.PI + ')');
-    
-    // replace all RANDs by random integers from <0;1) interval
-    while (expr.includes('RAND')) {
-        expr = setRANDs(expr);
-    }
-    
-    // set multiplying as a default operator
-    //expr = expr.replace(/\)\(/g, ')*(');
-    expr = setMultiplyingAsDefaultOperator(expr);
-
-    // remove scientific notation
-    expr = removeEType(expr);
-
-    return expr;
-};
-
-// the main function - do the calculation of the whole expression
+/**
+ * @brief The main function - do the calculation of the whole expression
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to calculate
+ * @return Result of the calculation (number), or null if there was some error or mistake in expression
+ */
 const calculate = (expr) => {
     // check the number of left and right brackets
     if (bracketsError(expr)) {
@@ -78,7 +52,7 @@ const calculate = (expr) => {
         }
         
         // this cannot be calculated
-        if (steps % 10 === 0 && expr == previousIterationExpression) {
+        if (steps % 100 === 0 && expr == previousIterationExpression) {
             return 'ERR:INFINITYLOOP';
         }
 
@@ -102,12 +76,20 @@ const calculate = (expr) => {
     return Number(Number(expr).toPrecision(maxDecimalPrecision));
 };
 
+/**
+ * @brief Function checks if there is the same number of left brackets as of right brackets
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to check
+ * @return true, if there is error with brackets, or false if not
+ */
 const bracketsError = (expr) => {
     let leftBrackets = (expr.match(/\(/g) || []).length;
     let rightBrackets = (expr.match(/\)/g) || []).length;
 
+    // the starting depth (0 = no brackets)
     let depth = 0;
 
+    // count the brackets
     for (let i = 0; i < expr.length; i++) {
         const char = expr[i];
         if (char === '(')
@@ -115,16 +97,67 @@ const bracketsError = (expr) => {
         else if (char === ')')
             depth--;
 
+        // if there were more closing brackets than the opening, return true (error)
         if (depth < 0)
             return true;
     }
 
+    // return true (error) if the number of opening and closing brackets is not the same
     if (leftBrackets !== rightBrackets)
         return true;
+
+    // no error
     return false;
 };
 
-// remove scientific notations from string
+/**
+ * @brief Function for doing the first replacements (constants, RANDs, multiplying as a def. operator)
+ * @param expr Expression to do the basic replacement in 
+ * @author Jan Svabik (xsvabi00)
+ * @return Expression after the replacement
+ */
+const startReplacement = (expr) => {
+    // replace mathematical constants
+    expr = expr.replace(regex.constants.E, '(' + math.E + ')');
+    expr = expr.replace(regex.constants.PI, '(' + math.PI + ')');
+    
+    // replace all RANDs by random integers from <0;1) interval
+    while (expr.includes('RAND')) {
+        expr = setRANDs(expr);
+    }
+    
+    // set multiplying as a default operator
+    expr = setMultiplyingAsDefaultOperator(expr);
+
+    // remove scientific notation
+    expr = removeEType(expr);
+
+    return expr;
+};
+
+/**
+ * @brief Function for adding multiplication * symbol as a default operator
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to add multiplication symbol in
+ * @return The expression with added * symbol e.g. between brackets )( or before functions 3log(2)
+ */
+const setMultiplyingAsDefaultOperator = (expr) => {
+    const me = regex.multiplyingReplacementNumberStart.exec(expr) || regex.multiplyingReplacementNumberEnd.exec(expr);
+    if (me === null)
+        return expr;
+
+    let frontpart = expr.substr(0, me.index);
+    let backpart = expr.substr(me.index).replace(me[0], me[1] + '*' + me[2]);
+
+    return setMultiplyingAsDefaultOperator(frontpart + backpart);
+};
+
+/**
+ * @brief Function replaces all scientific notations (recurently) from the expression string (eg. 8e-10 -> 8*10^-10)
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace scientific notations in
+ * @return Expression with replaced scientific notations
+ */
 const removeEType = (expr) => {
     let eType = regex.eType.exec(expr);
     if (eType == null)
@@ -134,28 +167,35 @@ const removeEType = (expr) => {
     let backpart = expr.substr(eType.index).replace(eType[0], '*10^' + eType[1]);
 
     expr = frontpart + backpart;
-    console.log('\nRemoved E-types');
-    console.log(expr);
 
     return removeEType(expr);
 };
 
+/**
+ * @brief Function replaces string of random number 'RAND' in expression string for random number
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Expression to replace 'RAND' in
+ * @return Expression with 'RAND' replaced for random number
+ */
 const setRANDs = (expr) => {
     expr = expr.replace('RAND', '(' + Math.random() + ')');
     return expr;
 };
 
+/**
+ * @brief Function calculates and replaces simple expressions in expression 'expr' for calculated numbers
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to check and replace simple expressions in
+ * @return Expression with replaced simple expressions
+ */
 const replaceSimpleExpression = (expr) => {
     expr = removeEType(expr);
-
-    console.log('MAM SI POHRAT S ' + expr);
 
     // if there is no simple expression, return the expression
     let simpleExprArray = regex.simpleExpression.exec(expr);
     if (simpleExprArray === null)
         return expr;
-console.log('HRAJU SI S ' + expr);
-console.log(simpleExprArray);
+        
     const simpleExpr = simpleExprArray[0].substr(1, simpleExprArray[0].length-2);
 
     // if the expression is constant, continue
@@ -168,6 +208,12 @@ console.log(simpleExprArray);
     return replaceSimpleExpression(expr);
 };
 
+/**
+ * @brief Function replaces function expressions in expression 'expr'
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace function expressions in
+ * @return Expression with function expressions replaced
+ */
 const replaceFunctionExpression = (expr) => {
     expr = removeEType(expr);
 
@@ -184,6 +230,12 @@ const replaceFunctionExpression = (expr) => {
     return replaceFunctionExpression(expr);
 };
 
+/**
+ * @brief Function parses function expression
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param expr Function expression to parse
+ * @return Parsed function expression as array (function name, value)
+ */
 const parseFunctionExpression = (expr) => {
     const splitExpr = expr.split('(');
     const functionName = splitExpr[0];
@@ -192,15 +244,21 @@ const parseFunctionExpression = (expr) => {
     return [functionName, Number(value)];
 };
 
+/**
+ * @brief Function calculates parsed function expressions
+ * @author Vojtech Dvorak (xdvora3a)
+ * @param parsedExpression Parsed function expression to calculate
+ * @return Calculated parsedExpression (number)
+ */
 const calculateFunction = (parsedExpression) => {
     const functionName = parsedExpression[0];
     const value = parsedExpression[1];
 
     // call matching function
     if (functionName === 'log')
-        return math.decimalLogarithm(value);
+        return math.log(value);
     if (functionName === 'ln')
-        return math.naturalLogarithm(value);
+        return math.ln(value);
     if (functionName === 'sin')
         return math.sin(value);
     if (functionName === 'cos')
@@ -217,6 +275,12 @@ const calculateFunction = (parsedExpression) => {
         return math.cotan(value);
 };
 
+/**
+ * @brief Function replaces root expressions in expression 'expr' to calculate
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace root expressions in
+ * @return Expression with replaced root expressions
+ */
 const replaceRootExpression = (expr) => {
     expr = removeEType(expr);
 
@@ -231,6 +295,12 @@ const replaceRootExpression = (expr) => {
     return replaceRootExpression(frontpart + backpart);
 };
 
+/**
+ * @brief Function replaces bracket factiorials in expression 'expr'
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace bracket factiorials in
+ * @return Expression with bracket factiorials replaced to calculate
+ */
 const replaceBracketFactorial = (expr) => {
     expr = removeEType(expr);
 
@@ -245,6 +315,12 @@ const replaceBracketFactorial = (expr) => {
     return replaceBracketFactorial(frontpart + backpart);
 };
 
+/**
+ * @brief Function replaces bracket powers in expression 'expr' to calculate
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace bracket powers in
+ * @return Expression with bracket powers replaced
+ */
 const replaceBracketPower = (expr) => {
     expr = removeEType(expr);
 
@@ -259,6 +335,12 @@ const replaceBracketPower = (expr) => {
     return replaceBracketFactorial(frontpart + backpart);
 };
 
+/**
+ * @brief Function replaces constants in brackets by the constants only (brackets removal)
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to replace constants in brackets by constants only in
+ * @return Expression with constants without brackets
+ */
 const handleConstants = (expr) => {
     expr = removeEType(expr);
 
@@ -273,8 +355,12 @@ const handleConstants = (expr) => {
     return handleConstants(frontpart + backpart);
 };
 
-
-
+/**
+ * @brief Function checks if the expression 'expr' is simple expression
+ * @author Jan Svabik (xsvabi00)
+ * @param expr Expression to check
+ * @return True, if the expression 'expr' is simple, or false 
+ */
 const isSimpleExpression = (expr) => {
     return regex.fullSimpleExpression.test(expr);
 };
@@ -325,8 +411,7 @@ const plusMinusAxiom = (expr) => {
 const splitArrayOfExpressions = (exprArray, operatorBefore = false, exprBefore = false) => {
     if (operatorBefore === '-' && exprBefore[0] === '-')
         exprArray[1] = 'N' + exprArray[1];
-    console.log('mam rozdelovat ');
-    console.log(exprArray);
+
     for (let i = 0; i < exprArray.length; i++) {
         const expr = exprArray[i];
         const operator = operatorContainmentCheck(expr);
