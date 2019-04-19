@@ -1,6 +1,6 @@
 # The Calculator
 
-The repository for the calculator which is the VUT FIT 1BIT LS IVS second project.
+Vědecký kalkulátor pro rychlé výpočty jednoduchých i složitých matematických výrazů. Podpora závorek, goniometrických a hyperbolických funkcí, logaritmů, mocnin a odmocnin i faktoriálu.
 
 Prostředí
 ---------
@@ -11,10 +11,10 @@ Autoři
 ------
 
 FIT Peaches
-- xdvora3a Vojtech Dvorak 
-- xgurec00 Lukas Gurecky 
-- xsvabi00 Jan Svabik 
-- xzitka07 Radim Zitka 
+* xdvora3a Vojtěch Dvořák 
+* xgurec00 Lukáš Gurecký 
+* xsvabi00 Jan Švábík 
+* xzitka07 Radim Zítka
 
 Licence
 -------
