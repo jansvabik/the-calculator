@@ -2,7 +2,7 @@
  * Core of the calculator
  * @file calculatorCore.js
  * @description Functions that allow calculator to work (splitting the operations, checking them, choosing preferred operations etc.) 
- * @version 0.4
+ * @version 1.0
  * @author Jan Svabik (xsvabi00)
  * @author Vojtech Dvorak (xdvora3a)
  */
@@ -411,7 +411,7 @@ function numberToString(num)
         if (e)
         {
             let negative = num < 0;
-            if (negative) num *= -1
+            if (negative) num *= -1;
             num *= Math.pow(10, e - 1);
             numStr = '0.' + (new Array(e)).join('0') + num.toString().substring(2);
             if (negative) numStr = "-" + numStr;
