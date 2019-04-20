@@ -1,11 +1,11 @@
 SHELL:=/bin/bash
 
-.PHONY: all calc profile pack clean run test jest electronbuilder electron pkg node
+.PHONY: all calc profile pack clean run test jest electronbuilder electron pkg node cleandocs jsdoc
 
 all: calc profile
 
 calc: electronbuilder
-	electron-builder
+	sudo electron-builder
 
 profile: pkg
 	pkg profiling.js --targets node6
@@ -13,11 +13,14 @@ profile: pkg
 pack:
 	zip -r the-calculator.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
 
-clean:
+docs: cleandocs jsdoc
+	jsdoc . -r -c JSDoc.conf -d html -R ../README.md -t jsdoctemplate/default
+
+clean: cleandocs
 	rm -rf profiling .clinic dist the-calculator.zip
 
-docs:
-	doxygen *.js
+cleandocs:
+	rm -rf html
 
 run: electron
 	npm start
@@ -31,6 +34,11 @@ installer: electronpackager
 jest: node
 	@if [[ "$(shell which jest)" == "" ]]; then \
 		sudo npm i -g jest; \
+	fi
+
+jsdoc: node
+	@if [[ "$(shell which jsdoc)" == "" ]]; then \
+		sudo npm i -g jsdoc; \
 	fi
 
 electronbuilder: node 
