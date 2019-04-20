@@ -13,7 +13,7 @@ const app = require('electron').app;
 
 /**
  * The external interface coming from Electron. BrowserWindow is the constructor for managing the native windows in OS.
- * @interface
+ * @interface electron~BrowserWindow
  * @summary Interface for managing native windows in the OS.
  * @author GitHub, Inc.
  * @author other contributors

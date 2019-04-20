@@ -1,21 +1,25 @@
 /** 
  * Functions that allow calculator to work (splitting the operations, checking them, choosing preferred operations etc.) 
- * @module calculatorCore
+ * @summary Core functions of the calculator. Processing expressions and getting result.
+ * @namespace core
  * @version 1.2
  * @author Jan Svabik (xsvabi00)
  * @author Vojtech Dvorak (xdvora3a)
  * @todo Move replacing functions into new module and simplify them.
  */
+let core = {};
 
 /** 
  * Mathematical library (load the unit functions, e.g. adding, subtracting, multiplying, dividing, factorizing, logarithm calculating, root calculating, power calculating, goniometric functinos, hyperbolic functions)
  * @const {Module}
+ * @ignore
  */
 const math = require('./math.lib');
 
 /**
  * Library for processing big numbers (used for transforming scientific notations into long string)
  * @const {Module}
+ * @ignore
  * @todo Write new mathematical library to prevent the requirement to transforming the numbers.
  */
 const Big = require('./big');
@@ -23,6 +27,7 @@ const Big = require('./big');
 /**
  * Load regular expressions for extracting parts of the mathematical expression. Allow e.g. extracting the root arguments – (n)root(x), factorial argument in brackets – (6)!, checking simple expressions etc.
  * @const {Object}
+ * @namespace
  */
 const regex = require('./calculatorRegex');
 
@@ -30,7 +35,7 @@ const regex = require('./calculatorRegex');
  * Defining the maximum decimal places in results. This is used when the whole expression is calculated and it is above returning back from this module.
  * @const {Number}
  */
-const maxDecimalPrecision = 10; /** < maximum decimal places in final results */
+core.maxDecimalPrecision = 10; /** < maximum decimal places in final results */
 
 /**
  * The main function - do the calculation of the whole expression
@@ -47,14 +52,14 @@ const maxDecimalPrecision = 10; /** < maximum decimal places in final results */
  * // returns 11,79689967
  * calculate('4log(8-sin(11.4543))+4!/3');
  */
-const calculate = (expr) => {
+core.calculate = (expr) => {
     // check the number of left and right brackets
-    if (bracketsError(expr)) {
+    if (core.bracketsError(expr)) {
         return 'ERR:BRACKETS';
     }
 
     // replace constants, RANDs, multiplying as a default operator
-    expr = startReplacement(expr);
+    expr = core.startReplacement(expr);
 
     // if the only expression is the number, this number is the result
     if (!isNaN(expr)) {
@@ -65,16 +70,16 @@ const calculate = (expr) => {
     let steps = 0;
     let previousIterationExpression = '';
     while (true) {
-        expr = replaceFunctionExpression(expr); // handle functions
-        expr = replaceRootExpression(expr); // handle roots
-        expr = replaceBracketFactorial(expr); // handle factorized brackets
-        expr = replaceBracketPower(expr); // handle powered brackets
-        expr = replaceSimpleExpression(expr); // handle simple expressions
-        expr = handleConstants(expr); // handle constants
-        expr = plusMinusAxiom(expr); // handle +- operator mix
+        expr = core.replaceFunctionExpression(expr); // handle functions
+        expr = core.replaceRootExpression(expr); // handle roots
+        expr = core.replaceBracketFactorial(expr); // handle factorized brackets
+        expr = core.replaceBracketPower(expr); // handle powered brackets
+        expr = core.replaceSimpleExpression(expr); // handle simple expressions
+        expr = core.handleConstants(expr); // handle constants
+        expr = core.plusMinusAxiom(expr); // handle +- operator mix
 
         // if the expr is a number, end the loop
-        if (!isNaN(expr) || isSimpleExpression(expr) || expr.includes('NaN')) {
+        if (!isNaN(expr) || core.isSimpleExpression(expr) || expr.includes('NaN')) {
             break;
         }
         
@@ -90,7 +95,7 @@ const calculate = (expr) => {
 
     // calculate the last simple expression if expr is simple expression
     if (!expr.includes('NaN') && isNaN(expr)) {
-        expr = calculateSimpleExpression(splitSimpleExpression(expr));
+        expr = core.calculateSimpleExpression(core.splitSimpleExpression(expr));
     }
 
     // if there was NaN in the expression, some calculation had an undefined result
@@ -99,8 +104,8 @@ const calculate = (expr) => {
     }
     
     // return the number with predefined maximal decimal precision
-    expr = removeEType(expr);
-    return Number(Number(expr).toPrecision(maxDecimalPrecision));
+    expr = core.removeEType(expr);
+    return Number(Number(expr).toPrecision(core.maxDecimalPrecision));
 };
 
 /**
@@ -117,7 +122,7 @@ const calculate = (expr) => {
  * // returns false
  * bracketsError('3+(14-sin(3))');
  */
-const bracketsError = (expr) => {
+core.bracketsError = (expr) => {
     let leftBrackets = (expr.match(/\(/g) || []).length;
     let rightBrackets = (expr.match(/\)/g) || []).length;
 
@@ -159,7 +164,7 @@ const bracketsError = (expr) => {
  * // returns 3*3.141592654*0.9040858876-2.718281828*3.141592654
  * startReplacement('3RANDPI-EPI');
  */
-const startReplacement = (expr) => {
+core.startReplacement = (expr) => {
     // replace mathematical constants
     expr = expr.replace(regex.constants.E, '(' + math.E + ')');
     expr = expr.replace(regex.constants.PI, '(' + math.PI + ')');
@@ -169,14 +174,14 @@ const startReplacement = (expr) => {
     
     // replace all RANDs by random integers from <0;1) interval
     while (expr.includes('RAND')) {
-        expr = setRANDs(expr);
+        expr = core.setRANDs(expr);
     }
     
     // set multiplying as a default operator
-    expr = setMultiplyingAsDefaultOperator(expr);
+    expr = core.setMultiplyingAsDefaultOperator(expr);
 
     // remove scientific notation
-    expr = removeEType(expr);
+    expr = core.removeEType(expr);
 
     return expr;
 };
@@ -195,7 +200,7 @@ const startReplacement = (expr) => {
  * // returns (4)*3*log(10)
  * setMultiplyingAsDefaultOperator('(4)3log(10)');
  */
-const setMultiplyingAsDefaultOperator = (expr) => {
+core.setMultiplyingAsDefaultOperator = (expr) => {
     const me = regex.multiplyingReplacementNumberStart.exec(expr) || regex.multiplyingReplacementNumberEnd.exec(expr);
     if (me === null)
         return expr;
@@ -203,7 +208,7 @@ const setMultiplyingAsDefaultOperator = (expr) => {
     let frontpart = expr.substr(0, me.index);
     let backpart = expr.substr(me.index).replace(me[0], me[1] + '*' + me[2]);
 
-    return setMultiplyingAsDefaultOperator(frontpart + backpart);
+    return core.setMultiplyingAsDefaultOperator(frontpart + backpart);
 };
 
 /**
@@ -217,7 +222,7 @@ const setMultiplyingAsDefaultOperator = (expr) => {
  * // returns 2.345*10^-4
  * removeEType('2.345e-4');
  */
-const removeEType = (expr) => {
+core.removeEType = (expr) => {
     let eType = regex.eType.exec(expr);
     if (eType == null)
         return expr;
@@ -227,7 +232,7 @@ const removeEType = (expr) => {
 
     expr = frontpart + backpart;
 
-    return removeEType(expr);
+    return core.removeEType(expr);
 };
 
 /**
@@ -245,7 +250,7 @@ const removeEType = (expr) => {
  * // returns e.g. (0.3201196502)-2(0.7593763115)
  * setRANDs('RAND-2RAND');
  */
-const setRANDs = (expr) => {
+core.setRANDs = (expr) => {
     expr = expr.replace('RAND', '(' + Math.random() + ')');
     return expr;
 };
@@ -264,8 +269,8 @@ const setRANDs = (expr) => {
  * // returns (12.5)
  * replaceSimpleExpression('(3+2*(6-1)-0.5)');
  */
-const replaceSimpleExpression = (expr) => {
-    expr = removeEType(expr);
+core.replaceSimpleExpression = (expr) => {
+    expr = core.removeEType(expr);
 
     // if there is no simple expression, return the expression
     let simpleExprArray = regex.simpleExpression.exec(expr);
@@ -278,10 +283,10 @@ const replaceSimpleExpression = (expr) => {
     if (!isNaN(simpleExpr))
         return expr;
 
-    const calculatedSimpleExpr = calculateSimpleExpression(splitSimpleExpression(simpleExpr));
+    const calculatedSimpleExpr = core.calculateSimpleExpression(core.splitSimpleExpression(simpleExpr));
     expr = expr.replace('(' + simpleExpr + ')', '(' + calculatedSimpleExpr + ')');
 
-    return replaceSimpleExpression(expr);
+    return core.replaceSimpleExpression(expr);
 };
 
 /**
@@ -292,8 +297,8 @@ const replaceSimpleExpression = (expr) => {
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  */
-const replaceFunctionExpression = (expr) => {
-    expr = removeEType(expr);
+core.replaceFunctionExpression = (expr) => {
+    expr = core.removeEType(expr);
 
     // if there is no root, return the expression
     let functionArray = regex.function.exec(expr);
@@ -301,11 +306,11 @@ const replaceFunctionExpression = (expr) => {
         return expr;
 
     const functionExpr = functionArray[0]; // first match
-    const parsedFunctionExpr = parseFunctionExpression(functionExpr);
-    const calculated = calculateFunction(parsedFunctionExpr);
+    const parsedFunctionExpr = core.parseFunctionExpression(functionExpr);
+    const calculated = core.calculateFunction(parsedFunctionExpr);
     expr = expr.replace(functionExpr, '(' + calculated + ')');
 
-    return replaceFunctionExpression(expr);
+    return core.replaceFunctionExpression(expr);
 };
 
 /**
@@ -319,7 +324,7 @@ const replaceFunctionExpression = (expr) => {
  * // returns ['cos', '3.14']
  * parseFunctionExpression('cos(3.14)');
  */
-const parseFunctionExpression = (expr) => {
+core.parseFunctionExpression = (expr) => {
     const splitExpr = expr.split('(');
     const functionName = splitExpr[0];
     const value = splitExpr[1].substr(0, splitExpr[1].length-1);
@@ -339,7 +344,7 @@ const parseFunctionExpression = (expr) => {
  * // returns 1
  * parseFunctionExpression(['log', 10]);
  */
-const calculateFunction = (parsedExpression) => {
+core.calculateFunction = (parsedExpression) => {
     const functionName = parsedExpression[0];
     const value = parsedExpression[1];
 
@@ -375,8 +380,8 @@ const calculateFunction = (parsedExpression) => {
  * // returns 5
  * replaceRootExpression('(3)root(125)');
  */
-const replaceRootExpression = (expr) => {
-    expr = removeEType(expr);
+core.replaceRootExpression = (expr) => {
+    expr = core.removeEType(expr);
 
     // if there is no root, return the expression
     let roots = regex.root.exec(expr);
@@ -386,7 +391,7 @@ const replaceRootExpression = (expr) => {
     let frontpart = expr.substr(0, roots.index);
     let backpart = expr.substr(roots.index).replace(roots[0], math.root(Number(roots[2]), Number(roots[1])));
 
-    return replaceRootExpression(frontpart + backpart);
+    return core.replaceRootExpression(frontpart + backpart);
 };
 
 /**
@@ -403,8 +408,8 @@ const replaceRootExpression = (expr) => {
  * // returns 2*(3+4)!-NaN
  * replaceBracketFactorial('2*(3+4)!-(3.1)!');
  */
-const replaceBracketFactorial = (expr) => {
-    expr = removeEType(expr);
+core.replaceBracketFactorial = (expr) => {
+    expr = core.removeEType(expr);
 
     // if there is no brackets to factorize, return the expression
     let bracketedFactorials = regex.bracketFactorial.exec(expr);
@@ -414,7 +419,7 @@ const replaceBracketFactorial = (expr) => {
     let frontpart = expr.substr(0, bracketedFactorials.index);
     let backpart = expr.substr(bracketedFactorials.index).replace(bracketedFactorials[0], math.factorize(Number(bracketedFactorials[1])));
 
-    return replaceBracketFactorial(frontpart + backpart);
+    return core.replaceBracketFactorial(frontpart + backpart);
 };
 
 /**
@@ -428,8 +433,8 @@ const replaceBracketFactorial = (expr) => {
  * // returns 2*9
  * replaceBracketPower('2*(3)^3');
  */
-const replaceBracketPower = (expr) => {
-    expr = removeEType(expr);
+core.replaceBracketPower = (expr) => {
+    expr = core.removeEType(expr);
 
     // if there is no brackets to factorize, return the expression
     let bracketPowerArray = regex.bracketPower.exec(expr);
@@ -439,7 +444,7 @@ const replaceBracketPower = (expr) => {
     let frontpart = expr.substr(0, bracketPowerArray.index);
     let backpart = expr.substr(bracketPowerArray.index).replace(bracketPowerArray[0], math.power(Number(bracketPowerArray[1]), Number(bracketPowerArray[3])));
 
-    return replaceBracketFactorial(frontpart + backpart);
+    return core.replaceBracketFactorial(frontpart + backpart);
 };
 
 /**
@@ -453,8 +458,8 @@ const replaceBracketPower = (expr) => {
  * // returns 8+16.333*11-2
  * handleConstants('8+(16.333)*11-(2)');
  */
-const handleConstants = (expr) => {
-    expr = removeEType(expr);
+core.handleConstants = (expr) => {
+    expr = core.removeEType(expr);
 
     // if there is no brackets to factorize, return the expression
     let constants = regex.constant.exec(expr);
@@ -464,7 +469,7 @@ const handleConstants = (expr) => {
     let frontpart = expr.substr(0, constants.index);
     let backpart = expr.substr(constants.index).replace(constants[0], constants[1]);
 
-    return handleConstants(frontpart + backpart);
+    return core.handleConstants(frontpart + backpart);
 };
 
 /**
@@ -482,7 +487,7 @@ const handleConstants = (expr) => {
  * isSimpleExpression('8+(16.333)*11-(2)');
  * isSimpleExpression('8+sin(16.333)');
  */
-const isSimpleExpression = (expr) => {
+core.isSimpleExpression = (expr) => {
     return regex.fullSimpleExpression.test(expr);
 };
 
@@ -494,8 +499,8 @@ const isSimpleExpression = (expr) => {
  * @author Vojtech Dvorak (xdvora3a)
  * @since 0.1
  */
-const splitSimpleExpression = (expr) => {
-    expr = plusMinusAxiom(expr);
+core.splitSimpleExpression = (expr) => {
+    expr = core.plusMinusAxiom(expr);
 
     // do the replacement
     expr = expr.replace('*+', '*');
@@ -505,7 +510,7 @@ const splitSimpleExpression = (expr) => {
     expr = expr.replace('/-', '/N');
     expr = expr.replace('^-', '^N');
 
-    return splitArrayOfExpressions([expr])[0];
+    return core.splitArrayOfExpressions([expr])[0];
 };
 
 /**
@@ -519,14 +524,14 @@ const splitSimpleExpression = (expr) => {
  * // returns 8+2-11-sin(2)
  * plusMinusAxiom('8--2++-11----+-sin(2)');
  */
-const plusMinusAxiom = (expr) => {
+core.plusMinusAxiom = (expr) => {
     expr = expr.replace('++', '+');
     expr = expr.replace('+-', '-');
     expr = expr.replace('-+', '-');
     expr = expr.replace('--', '+');
     
     if (expr.includes('++') || expr.includes('+-') || expr.includes('-+') || expr.includes('--'))
-        return plusMinusAxiom(expr);
+        return core.plusMinusAxiom(expr);
     return expr;
 };
 
@@ -548,7 +553,7 @@ const plusMinusAxiom = (expr) => {
  * splitArrayOfExpressions('8*3-22+3+3/1+5/N2');
  * // repl. before calling this func. -----^
  */
-const splitArrayOfExpressions = (exprArray, operatorBefore = false, exprBefore = false) => {
+core.splitArrayOfExpressions = (exprArray, operatorBefore = false, exprBefore = false) => {
     // handle situation when the previous usage of this function splitted the expression by '-' and the '-' symbol was at the beginning of the expression
     if (operatorBefore === '-' && exprBefore[0] === '-')
         exprArray[1] = 'N' + exprArray[1];
@@ -556,7 +561,7 @@ const splitArrayOfExpressions = (exprArray, operatorBefore = false, exprBefore =
     // check each exprArray element
     for (let i = 0; i < exprArray.length; i++) {
         const expr = exprArray[i];
-        const operator = operatorContainmentCheck(expr);
+        const operator = core.operatorContainmentCheck(expr);
 
         // there is no operator and the element is number, check the negation
         if (!operator && expr.length > 0)
@@ -564,7 +569,7 @@ const splitArrayOfExpressions = (exprArray, operatorBefore = false, exprBefore =
 
         // this element is another expression, split it into another calculable array
         else if (expr.length > 1)
-            exprArray[i] = splitArrayOfExpressions([operator, ...expr.split(operator)], operator, expr);
+            exprArray[i] = core.splitArrayOfExpressions([operator, ...expr.split(operator)], operator, expr);
 
         // junk element
         else if (expr.length === 0)
@@ -589,7 +594,7 @@ const splitArrayOfExpressions = (exprArray, operatorBefore = false, exprBefore =
  * // returns false
  * operatorContainmentCheck('345');
  */
-const operatorContainmentCheck = (expr) => {
+core.operatorContainmentCheck = (expr) => {
     const operators = ['+', '-', '*', '/', '^', '!'];
     for (let i = 0; i < operators.length; i++)
         if (expr.includes(operators[i]))
@@ -609,28 +614,28 @@ const operatorContainmentCheck = (expr) => {
  * // returns 5.5
  * calculateSimpleExpression(['+', ['-', ['*', 8, 3], 22], 3, ['/', 3, 1], ['/', 5, -2]]);
  */
-const calculateSimpleExpression = (parsedSimpleExpression) => {
+core.calculateSimpleExpression = (parsedSimpleExpression) => {
     const operation = parsedSimpleExpression[0];
     parsedSimpleExpression.shift();
 
     for (let i = 0; i < parsedSimpleExpression.length; i++) {
         const item = parsedSimpleExpression[i];
         if (typeof item === 'object')
-            parsedSimpleExpression[i] = calculateSimpleExpression(item);
+            parsedSimpleExpression[i] = core.calculateSimpleExpression(item);
     }
 
     if (operation === '+')
-        return numberToString(math.add(parsedSimpleExpression));
+        return core.numberToString(math.add(parsedSimpleExpression));
     if (operation === '-')
-        return numberToString(math.subtract(parsedSimpleExpression));
+        return core.numberToString(math.subtract(parsedSimpleExpression));
     if (operation === '*')
-        return numberToString(math.multiply(parsedSimpleExpression));
+        return core.numberToString(math.multiply(parsedSimpleExpression));
     if (operation === '/')
-        return numberToString(math.divide(parsedSimpleExpression));
+        return core.numberToString(math.divide(parsedSimpleExpression));
     if (operation === '^')
-        return numberToString(math.power(parsedSimpleExpression[0], parsedSimpleExpression[1]));
+        return core.numberToString(math.power(parsedSimpleExpression[0], parsedSimpleExpression[1]));
     if (operation === '!')
-        return numberToString(math.factorize(parsedSimpleExpression[0]));
+        return core.numberToString(math.factorize(parsedSimpleExpression[0]));
 };
 
 /**
@@ -641,7 +646,7 @@ const calculateSimpleExpression = (parsedSimpleExpression) => {
  * @author Jan Svabik (xsvabi00)
  * @since 1.2
  */
-const numberToString = (num) => {
+core.numberToString = (num) => {
     // convert to string
     num = String(num);
 
@@ -653,15 +658,15 @@ const numberToString = (num) => {
 };
 
 module.exports = {
-    calc: calculate,
+    calc: core.calculate,
     unit: {
-        splitSimpleExpression: splitSimpleExpression,
-        splitArrayOfExpressions: splitArrayOfExpressions,
-        operatorContainmentCheck: operatorContainmentCheck,
-        calculateSimpleExpression: calculateSimpleExpression,
-        calculateFunction: calculateFunction,
-        parseFunctionExpression: parseFunctionExpression,
-        plusMinusAxiom: plusMinusAxiom,
+        splitSimpleExpression: core.splitSimpleExpression,
+        splitArrayOfExpressions: core.splitArrayOfExpressions,
+        operatorContainmentCheck: core.operatorContainmentCheck,
+        calculateSimpleExpression: core.calculateSimpleExpression,
+        calculateFunction: core.calculateFunction,
+        parseFunctionExpression: core.parseFunctionExpression,
+        plusMinusAxiom: core.plusMinusAxiom,
     },
 };
 

@@ -1,28 +1,29 @@
 /** 
  * Module with mathematical functions to calculate the most basic expressions at the lowest level.
  * @summary This mathematical library was developed especially for The Calculator.
- * @module math
+ * @namespace math
  * @author Vojtech Dvorak (xdvora3a)
  * @version 1.0
  */
+let math = {};
 
 /**
  * PI (3.141592653589793)
  * @constant {Number}
  */
-const PI = module.exports.PI = Math.PI;
+math.PI = Math.PI;
 
 /**
  * PI/2 (1.5707963267948966)
  * @constant {Number}
  */
-const PId2 = module.exports.PId2 = Math.PI/2;
+math.PId2 = Math.PI/2;
 
 /**
  * E (2.718281828459045)
  * @constant {Number}
  */
-const E = module.exports.E = Math.E;
+math.E = Math.E;
 
 /**
  * Function for checking the arguments coming into the other functions. Each function determines how many operands it needs at least. This functions checks data type of each operand in @p values array. It throw an error if some of the values is unsupported or if the number of operands doesn't match with the @p minOperands.
@@ -34,7 +35,7 @@ const E = module.exports.E = Math.E;
  * @throws Error if some of the value are not correct or supported or if there are less operands than @p minOperands.
  * @since 0.1
  */
-const checkValues = (values, minOperands = 0) => {
+math.checkValues = (values, minOperands = 0) => {
     if (values.length < minOperands)
         throw new Error('Missing operands');
 
@@ -56,9 +57,9 @@ const checkValues = (values, minOperands = 0) => {
  * // returns 10
  * add([1, 2, 3, 4, 5, -5]);
  */
-module.exports.add = (values) => {
+math.add = (values) => {
     // check data-type of each value
-    checkValues(values, 1);
+    math.checkValues(values, 1);
 
     // summarize the values
     let sum = 0;
@@ -84,9 +85,9 @@ module.exports.add = (values) => {
  * // returns 5
  * subtract([6, 4, -8, 5]);
  */
-module.exports.subtract = (values) => {
+math.subtract = (values) => {
     // check data-type of each value
-    checkValues(values, 1);
+    math.checkValues(values, 1);
 
     // if there is only one value in 'values', change the sign
     if (values.length === 1)
@@ -116,9 +117,9 @@ module.exports.subtract = (values) => {
  * // returns 0
  * multiply([-6, 11, 3.33, 0, -1.11]);
  */
-module.exports.multiply = (values) => {
+math.multiply = (values) => {
     // check data-type of each value
-    checkValues(values, 2);
+    math.checkValues(values, 2);
     
     //if there si 0 in array 'values', the product is always 0
     if (values.includes(0)) 
@@ -152,9 +153,9 @@ module.exports.multiply = (values) => {
  * // returns Infinity
  * divide([4, 0]);
  */
-module.exports.divide = (values) => {
+math.divide = (values) => {
     // check data-type of each value
-    checkValues(values, 2);
+    math.checkValues(values, 2);
 
     // if the first value is zero and there is no other zero, return 0
     if (values[0] === 0 && !values.slice(1).includes(0))
@@ -186,8 +187,8 @@ module.exports.divide = (values) => {
  * factorize(-2);
  * factorize(3.456);
  */
-module.exports.factorize = (x) => {
-    checkValues([x]);
+math.factorize = (x) => {
+    math.checkValues([x]);
 
     // Factorization of Infinity is Infinity
     if (x === Infinity)
@@ -223,8 +224,8 @@ module.exports.factorize = (x) => {
  * // returns NaN (complex numbers not supported)
  * power(-2, 3.456);
  */
-module.exports.power = (x, n) => {
-    checkValues([x, n]);
+math.power = (x, n) => {
+    math.checkValues([x, n]);
 
     // Power x to the n
     return Math.pow(x, n);
@@ -245,8 +246,8 @@ module.exports.power = (x, n) => {
  * // returns -3
  * root(3, -27);
  */
-module.exports.root = (x, n) => {
-    checkValues([x, n]);
+math.root = (x, n) => {
+    math.checkValues([x, n]);
 
     let result;
     if (n % 2 === 1 && x < 0)
@@ -276,8 +277,8 @@ module.exports.root = (x, n) => {
  * // returns NaN
  * ln(-27);
  */
-module.exports.ln = (x) => {
-    checkValues([x]);
+math.ln = (x) => {
+    math.checkValues([x]);
 
     // Calculate the natural logarithm
     return Math.log(x);
@@ -300,8 +301,8 @@ module.exports.ln = (x) => {
  * // returns NaN
  * log(-1.3);
  */
-module.exports.log = (x) => {
-    checkValues([x]);
+math.log = (x) => {
+    math.checkValues([x]);
 
     // Calculate the decimal logarithm
     return Math.log10(x);
@@ -321,8 +322,8 @@ module.exports.log = (x) => {
  * // returns 0.7149780101364926
  * sin(2.345);
  */
-module.exports.sin = (x) => {
-    checkValues([x]);
+math.sin = (x) => {
+    math.checkValues([x]);
 
     // Calculate the sinus
     return Number(Number(Math.sin(x).toFixed(13)).toPrecision(13));
@@ -342,8 +343,8 @@ module.exports.sin = (x) => {
  * // returns -0.699146940936783
  * cos(2.345);
  */
-module.exports.cos = (x) => {
-    checkValues([x]);
+math.cos = (x) => {
+    math.checkValues([x]);
 
     // Calculate the cosinus
     return Number(Number(Math.cos(x).toFixed(13)).toPrecision(13));
@@ -363,11 +364,11 @@ module.exports.cos = (x) => {
  * // returns -1.0226434076626263
  * tan(2.345);
  */
-module.exports.tan = (x) => {
-    checkValues([x]);
+math.tan = (x) => {
+    math.checkValues([x]);
 
     // handle undefined points
-    if (Number((x % PId2).toPrecision(13)) === 0 && Number((x % PI).toPrecision(13)) !== 0)
+    if (Number((x % math.PId2).toPrecision(13)) === 0 && Number((x % math.PI).toPrecision(13)) !== 0)
         return NaN;
 
     // Calculate the tangens
@@ -388,11 +389,11 @@ module.exports.tan = (x) => {
  * // returns -0.9778579634964053
  * cotan(2.345);
  */
-module.exports.cotan = (x) => {
-    checkValues([x]);
+math.cotan = (x) => {
+    math.checkValues([x]);
 
     // handle undefined points
-    if (Number((x % PI).toPrecision(13)) === 0)
+    if (Number((x % math.PI).toPrecision(13)) === 0)
         return NaN;
 
     // Calculate the cotangens
@@ -413,8 +414,8 @@ module.exports.cotan = (x) => {
  * // returns 5.16871276270921
  * sinh(2.345);
  */
-module.exports.sinh = (x) => {
-    checkValues([x]);
+math.sinh = (x) => {
+    math.checkValues([x]);
 
     // Calculate the hyperbolic sinus
     return Number(Number(Math.sinh(x).toFixed(13)).toPrecision(13));
@@ -434,8 +435,8 @@ module.exports.sinh = (x) => {
  * // returns 5.264559964839708
  * cosh(2.345);
  */
-module.exports.cosh = (x) => {
-    checkValues([x]);
+math.cosh = (x) => {
+    math.checkValues([x]);
 
     // Calculate the hyperbolic cosinus
     return Number(Number(Math.cosh(x).toFixed(13)).toPrecision(13));
@@ -455,9 +456,11 @@ module.exports.cosh = (x) => {
  * // returns 0.9817938815835262
  * cosh(2.345);
  */
-module.exports.tanh = (x) => {
-    checkValues([x]);
+math.tanh = (x) => {
+    math.checkValues([x]);
 
     // Calculate the hyperbolic tangens
     return Number(Number(Math.tanh(x).toFixed(13)).toPrecision(13));
 };
+
+module.exports = math;

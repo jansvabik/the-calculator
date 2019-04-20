@@ -1,6 +1,6 @@
 /**
  * A small, fast, easy-to-use library for arbitrary-precision decimal arithmetic.
- * @module big
+ * @namespace Big
  * @version 5.2.2
  * @author Michael Mclaughlin
  * @copyright Copyright (c) 2018 Michael Mclaughlin <M8ch88l@gmail.com>
