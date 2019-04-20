@@ -301,7 +301,7 @@ core.replaceFunctionExpression = (expr) => {
     expr = core.removeEType(expr);
 
     // if there is no root, return the expression
-    let functionArray = regex.function.exec(expr);
+    let functionArray = regex.func.exec(expr);
     if (functionArray === null)
         return expr;
 
