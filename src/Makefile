@@ -28,9 +28,6 @@ run: electron
 test: jest
 	jest --expand --verbose --silent ./js/math.lib.test.js
 
-installer: electronpackager
-	electron-packager .
-
 jest: node
 	@if [[ "$(shell which jest)" == "" ]]; then \
 		sudo npm i -g jest; \
@@ -44,12 +41,6 @@ jsdoc: node
 electronbuilder: node 
 	@if [[ "$(shell which electron-builder)" == "" ]]; then \
 		sudo npm i -g electron-builder; \
-	fi
-
-electronpackager:
-	@if [[ "$(shell which electron-packager)" == "" ]]; then \
-		sudo npm install electron --save --unsafe-perm=true --allow-root; \
-		sudo npm i -g electron-packager; \
 	fi
 
 electron: node 
