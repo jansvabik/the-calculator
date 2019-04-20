@@ -14,7 +14,7 @@ pack:
 	zip -r the-calculator.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
 
 doc: cleandocs jsdoc
-	jsdoc . -r -c JSDoc.conf -d html -R ../README.md -t jsdoctemplate/default
+	jsdoc . -r -c JSDoc.conf -d html -R README.md -t jsdoctemplate/default
 
 clean: cleandocs
 	rm -rf profiling .clinic dist the-calculator.zip
