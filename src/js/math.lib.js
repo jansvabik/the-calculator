@@ -1,20 +1,38 @@
-/**
- * @file math.lib.js
- * @brief The mathematical library
- * @description This mathematical library was developed especially for The Calculator
+/** 
+ * Module with mathematical functions to calculate the most basic expressions at the lowest level.
+ * @summary This mathematical library was developed especially for The Calculator.
+ * @module math
  * @author Vojtech Dvorak (xdvora3a)
  * @version 1.0
  */
 
-// constants
+/**
+ * PI (3.141592653589793)
+ * @constant {Number}
+ */
 const PI = module.exports.PI = Math.PI;
+
+/**
+ * PI/2 (1.5707963267948966)
+ * @constant {Number}
+ */
 const PId2 = module.exports.PId2 = Math.PI/2;
+
+/**
+ * E (2.718281828459045)
+ * @constant {Number}
+ */
 const E = module.exports.E = Math.E;
 
 /**
- * @brief Cheking values and the number of operands
- * @description Function for checking the data-type of the array elements. It throw an error if some of the values is unsupported or if the number of operands doesn't match with the @p minOperands.
- * @param[in] values Array of values to check
+ * Function for checking the arguments coming into the other functions. Each function determines how many operands it needs at least. This functions checks data type of each operand in @p values array. It throw an error if some of the values is unsupported or if the number of operands doesn't match with the @p minOperands.
+ * @summary Cheking values and the number of operands.
+ * @param {Array.<(String|Number)>} values Array of values to check
+ * @param {Number} [values=0] The minimal number of array @p values items.
+ * @author Vojtech Dvorak (xdvora3a)
+ * @author Jan Svabik (xsvabi00)
+ * @throws Error if some of the value are not correct or supported or if there are less operands than @p minOperands.
+ * @since 0.1
  */
 const checkValues = (values, minOperands = 0) => {
     if (values.length < minOperands)
@@ -28,10 +46,15 @@ const checkValues = (values, minOperands = 0) => {
 };
 
 /**
- * @brief Summarize values
- * @description Function summarizes all values in array 'values'
- * @param[in] values Arrayof values to summarize
- * @returns Sum of values in array 'values' 
+ * Function for summarizing values in the array @p values.
+ * @summary Summarize values.
+ * @param {Array.<(Number|String)>} values Array of values to summarize
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Sum of all values in array 'values'
+ * @since 0.1
+ * @example
+ * // returns 10
+ * add([1, 2, 3, 4, 5, -5]);
  */
 module.exports.add = (values) => {
     // check data-type of each value
@@ -45,10 +68,21 @@ module.exports.add = (values) => {
 };
 
 /**
- * @brief Subtract values
- * @description Function subtracts values[1 - n] from values[0]
- * @param[in] values Array of values to substract
- * @returns Differention of values in array 'values' 
+ * Function for subtracting values in the array @p values. All array items are subtracted from the first element.
+ * @summary Subtract values.
+ * @param {Array.<(Number|String)>} values Array of values to summarize
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Differention of values in array 'values'
+ * @since 0.1
+ * @example
+ * // returns 10
+ * subtract([12, 2]);
+ * @example
+ * // returns 10
+ * subtract([3, -7]);
+ * @example
+ * // returns 5
+ * subtract([6, 4, -8, 5]);
  */
 module.exports.subtract = (values) => {
     // check data-type of each value
@@ -66,10 +100,21 @@ module.exports.subtract = (values) => {
 };
 
 /**
- * @brief Multiply values
- * @description Function multiplies all values in array 'values'
- * @param[in] values Array of values to multiply
- * @returns Product of values in array 'values' 
+ * Function for multiplying values in the array @p values.
+ * @summary Multiply values.
+ * @param {Array.<(Number|String)>} values Array of values to multiply
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Product of values in array 'values'
+ * @since 0.1
+ * @example
+ * // returns 10
+ * multiply([5, 2]);
+ * @example
+ * // returns 12
+ * multiply([-8, 1, 1, 3, -2, 0.25]);
+ * @example
+ * // returns 0
+ * multiply([-6, 11, 3.33, 0, -1.11]);
  */
 module.exports.multiply = (values) => {
     // check data-type of each value
@@ -88,10 +133,24 @@ module.exports.multiply = (values) => {
 };
 
 /**
- * @brief Divide values
- * @description Function divides values[0] with all other values in array 'values'
- * @param[in] values Array of values to divide
- * @returns Qutient of values in array 'values' 
+ * Function for dividing values in the array @p values. The first element is taken as base and it is divided by the next element. The result is divided by the next element and so on.
+ * @summary Divide values.
+ * @param {Array.<(Number|String)>} values Array of values to divide
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Quotient of values in array 'values'
+ * @since 0.1
+ * @example
+ * // returns 2.5
+ * divide([5, 2]);
+ * @example
+ * // returns 4
+ * divide([-6, 1, 1, 3, -2, 0.25]);
+ * @example
+ * // returns 0
+ * divide([0, 11, 3.33, 4, -1.11]);
+ * @example
+ * // returns Infinity
+ * divide([4, 0]);
  */
 module.exports.divide = (values) => {
     // check data-type of each value
@@ -110,10 +169,22 @@ module.exports.divide = (values) => {
 };
 
 /**
- * @brief Factorize value
- * @description Function factorizes 'x'
- * @param[in] x Value to factorize
- * @returns result of factorizing x
+ * Function for factorizing the given value.
+ * @summary Factorize value.
+ * @param {(Number|String)} value Value to factorize
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns The result of factorization 'x' or NaN if undefined (e.g. factorization of floating point number or negative number)
+ * @since 0.1
+ * @example
+ * // returns 1
+ * factorize(0);
+ * @example
+ * // returns 120
+ * factorize(5);
+ * @example
+ * // returns NaN
+ * factorize(-2);
+ * factorize(3.456);
  */
 module.exports.factorize = (x) => {
     checkValues([x]);
@@ -122,8 +193,7 @@ module.exports.factorize = (x) => {
     if (x === Infinity)
         return Infinity;
     
-    // if x is not an integer, if x is -Infinity and if x < 0,
-    // the result is NaN
+    // if x is not an integer, if x is -Infinity and if x < 0, the result is NaN
     if (x % 1 !== 0 || x === -Infinity || x < 0)
         return NaN;
 
@@ -136,11 +206,22 @@ module.exports.factorize = (x) => {
 };
 
 /**
- * @brief Power x to n
- * @description Function powers x to n
- * @param[in] x Value of the base
- * @param[in] n Value of the exponent
- * @returns Power of x to the n
+ * Function for powering the given value.
+ * @summary Power the value.
+ * @param {(Number|String)} x The number to powering
+ * @param {(Number|String)} n The exponent
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Power of 'x' to the 'n'.
+ * @since 0.1
+ * @example
+ * // returns 1
+ * power(4, 0);
+ * @example
+ * // returns 32
+ * power(2, 5);
+ * @example
+ * // returns NaN (complex numbers not supported)
+ * power(-2, 3.456);
  */
 module.exports.power = (x, n) => {
     checkValues([x, n]);
@@ -150,11 +231,19 @@ module.exports.power = (x, n) => {
 };
 
 /**
- * @brief Nth root of x 
- * @description Function calculates nth root of x
- * @param[in] x Value of the base
- * @param[in] n Value of the root
- * @returns Result of nth root of x
+ * Function for calculating the nth root of x.
+ * @summary Calculate root.
+ * @param {(Number|String)} x Value to calculate root from
+ * @param {(Number|String)} n The level of the root
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns nth root of 'x'
+ * @since 0.1
+ * @example
+ * // returns 4
+ * root(2, 16);
+ * @example
+ * // returns -3
+ * root(3, -27);
  */
 module.exports.root = (x, n) => {
     checkValues([x, n]);
@@ -174,10 +263,18 @@ module.exports.root = (x, n) => {
 };
 
 /**
- * @brief Natural logarithm of x
- * @description Function calculates natural logarithm of x
- * @param[in] x Value to calculate natural logarithm of
- * @returns Natural logarithm of x
+ * Function for calculating the natural logarithm of the given number.
+ * @summary Natural logarithm (ln) of number.
+ * @param {(Number|String)} x Value to calculate natural logarithm of
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Natural logarithm of 'x'.
+ * @since 0.1
+ * @example
+ * // returns 1.3862943611198906
+ * ln(4);
+ * @example
+ * // returns NaN
+ * ln(-27);
  */
 module.exports.ln = (x) => {
     checkValues([x]);
@@ -187,10 +284,21 @@ module.exports.ln = (x) => {
 };
 
 /**
- * @brief Decimal logarithm of x
- * @description Function calculates decimal logarithm of x
- * @param[in] x Value to calculate decimal logarithm of
- * @returns Decimal logarithm of x
+ * Function for calculating the decimal logarithm of the given number.
+ * @summary Decimal logarithm (log) of number.
+ * @param {(Number|String)} x Value to calculate decimal logarithm of
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Decimal logarithm of 'x'.
+ * @since 0.1
+ * @example
+ * // returns 1
+ * log(10);
+ * @example
+ * // returns 0.3701428470511021
+ * log(2.345);
+ * @example
+ * // returns NaN
+ * log(-1.3);
  */
 module.exports.log = (x) => {
     checkValues([x]);
@@ -200,10 +308,18 @@ module.exports.log = (x) => {
 };
 
 /**
- * @brief Sinus of x
- * @description Function calculates sinus of x
- * @param[in] x Value to calculate sinus of
- * @returns Sinus of x
+ * Function for calculating the sinus of the given number.
+ * @summary Sinus of number.
+ * @param {(Number|String)} x Value to calculate sinus of
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Sinus of 'x'.
+ * @since 0.1
+ * @example
+ * // returns 0
+ * sin(0);
+ * @example
+ * // returns 0.7149780101364926
+ * sin(2.345);
  */
 module.exports.sin = (x) => {
     checkValues([x]);
@@ -213,10 +329,18 @@ module.exports.sin = (x) => {
 };
 
 /**
- * @brief Cosinus of x
- * @description Function calculates cosinus of x
- * @param[in] x Value to calculate cosinus of
- * @returns Cosinus of x
+ * Function for calculating the cosinus of the given number.
+ * @summary Cosinus of number.
+ * @param {(Number|String)} x Value to calculate cosinus of
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Cosinus of 'x'.
+ * @since 0.1
+ * @example
+ * // returns 1
+ * cos(0);
+ * @example
+ * // returns -0.699146940936783
+ * cos(2.345);
  */
 module.exports.cos = (x) => {
     checkValues([x]);
@@ -226,10 +350,18 @@ module.exports.cos = (x) => {
 };
 
 /**
- * @brief Tangens of x
- * @description Function calculates tangens of x
- * @param[in] x Value to calculate tangens of
- * @returns Tangens of x
+ * Function for calculating the tangens of the given number.
+ * @summary Tangens of number.
+ * @param {(Number|String)} x Value to calculate tangens of
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Tangens of 'x'.
+ * @since 0.1
+ * @example
+ * // returns 0
+ * tan(0);
+ * @example
+ * // returns -1.0226434076626263
+ * tan(2.345);
  */
 module.exports.tan = (x) => {
     checkValues([x]);
@@ -243,10 +375,18 @@ module.exports.tan = (x) => {
 };
 
 /**
- * @brief Cotangens of x
- * @description Function calculates cotangens of x
- * @param[in] x Value to calculate cotangens of
- * @returns Cotangens of x
+ * Function for calculating the cotangens of the given number.
+ * @summary Cotangens of number.
+ * @param {(Number|String)} x Value to calculate cotangens of
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Cotangens of 'x'.
+ * @since 1.0
+ * @example
+ * // returns -Infinity
+ * cotan(0);
+ * @example
+ * // returns -0.9778579634964053
+ * cotan(2.345);
  */
 module.exports.cotan = (x) => {
     checkValues([x]);
@@ -260,10 +400,18 @@ module.exports.cotan = (x) => {
 };
 
 /**
- * @brief Hyperbolic sinus of x
- * @description Function calculates hyperbolic sinus of x
- * @param[in] x Value to calculate hyperbolic sinus of
- * @returns Hyperbolic sinus of x
+ * Function for calculating the hyperbolic sinus of the given number.
+ * @summary Hyperbolic sinus of number.
+ * @param {(Number|String)} x Value to calculate hyperbolic sinus of
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Hyperbolic sinus of 'x'.
+ * @since 1.0
+ * @example
+ * // returns 0
+ * sinh(0);
+ * @example
+ * // returns 5.16871276270921
+ * sinh(2.345);
  */
 module.exports.sinh = (x) => {
     checkValues([x]);
@@ -273,10 +421,18 @@ module.exports.sinh = (x) => {
 };
 
 /**
- * @brief Hyperbolic cosinus of x
- * @description Function calculates hyperbolic cosinus of x
- * @param[in] x Value to calculate hyperbolic cosinus of
- * @returns Hyperbolic cosinus of x
+ * Function for calculating the hyperbolic cosinus of the given number.
+ * @summary Hyperbolic cosinus of number.
+ * @param {(Number|String)} x Value to calculate hyperbolic cosinus of
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Hyperbolic cosinus of 'x'.
+ * @since 1.0
+ * @example
+ * // returns 1
+ * cosh(0);
+ * @example
+ * // returns 5.264559964839708
+ * cosh(2.345);
  */
 module.exports.cosh = (x) => {
     checkValues([x]);
@@ -286,10 +442,18 @@ module.exports.cosh = (x) => {
 };
 
 /**
- * @brief Hyperbolic tangens of x
- * @description Function calculates hyperbolic tangens of x
- * @param[in] x Value to calculate hyperbolic tangens of
- * @returns Hyperbolic tangens of x
+ * Function for calculating the hyperbolic tangens of the given number.
+ * @summary Hyperbolic tangens of number.
+ * @param {(Number|String)} x Value to calculate hyperbolic tangens of
+ * @author Vojtech Dvorak (xdvora3a)
+ * @returns Hyperbolic tangens of 'x'.
+ * @since 1.0
+ * @example
+ * // returns 0
+ * cosh(0);
+ * @example
+ * // returns 0.9817938815835262
+ * cosh(2.345);
  */
 module.exports.tanh = (x) => {
     checkValues([x]);
