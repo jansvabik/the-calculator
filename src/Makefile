@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
 
-.PHONY: all calc profile pack clean run test jest electronbuilder electron pkg node cleandocs jsdoc
+.PHONY: all calc profile pack clean run test jest electronbuilder electron pkg node doc cleandocs jsdoc
 
 all: calc profile
 
@@ -13,7 +13,7 @@ profile: pkg
 pack:
 	zip -r the-calculator.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
 
-docs: cleandocs jsdoc
+doc: cleandocs jsdoc
 	jsdoc . -r -c JSDoc.conf -d html -R ../README.md -t jsdoctemplate/default
 
 clean: cleandocs
