@@ -50,7 +50,7 @@ const checkValues = (values, minOperands = 0) => {
  * @summary Summarize values.
  * @param {Array.<(Number|String)>} values Array of values to summarize
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Sum of all values in array 'values'
+ * @returns {Number} Sum of all values in array 'values'
  * @since 0.1
  * @example
  * // returns 10
@@ -72,7 +72,7 @@ module.exports.add = (values) => {
  * @summary Subtract values.
  * @param {Array.<(Number|String)>} values Array of values to summarize
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Differention of values in array 'values'
+ * @returns {Number} Differention of values in array 'values'
  * @since 0.1
  * @example
  * // returns 10
@@ -104,7 +104,7 @@ module.exports.subtract = (values) => {
  * @summary Multiply values.
  * @param {Array.<(Number|String)>} values Array of values to multiply
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Product of values in array 'values'
+ * @returns {Number} Product of values in array 'values'
  * @since 0.1
  * @example
  * // returns 10
@@ -137,7 +137,7 @@ module.exports.multiply = (values) => {
  * @summary Divide values.
  * @param {Array.<(Number|String)>} values Array of values to divide
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Quotient of values in array 'values'
+ * @returns {Number} Quotient of values in array 'values'
  * @since 0.1
  * @example
  * // returns 2.5
@@ -173,7 +173,7 @@ module.exports.divide = (values) => {
  * @summary Factorize value.
  * @param {(Number|String)} value Value to factorize
  * @author Vojtech Dvorak (xdvora3a)
- * @returns The result of factorization 'x' or NaN if undefined (e.g. factorization of floating point number or negative number)
+ * @returns {Number} The result of factorization 'x' or NaN if undefined (e.g. factorization of floating point number or negative number)
  * @since 0.1
  * @example
  * // returns 1
@@ -211,7 +211,7 @@ module.exports.factorize = (x) => {
  * @param {(Number|String)} x The number to powering
  * @param {(Number|String)} n The exponent
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Power of 'x' to the 'n'.
+ * @returns {Number} Power of 'x' to the 'n'.
  * @since 0.1
  * @example
  * // returns 1
@@ -236,7 +236,7 @@ module.exports.power = (x, n) => {
  * @param {(Number|String)} x Value to calculate root from
  * @param {(Number|String)} n The level of the root
  * @author Vojtech Dvorak (xdvora3a)
- * @returns nth root of 'x'
+ * @returns {Number} nth root of 'x'
  * @since 0.1
  * @example
  * // returns 4
@@ -267,7 +267,7 @@ module.exports.root = (x, n) => {
  * @summary Natural logarithm (ln) of number.
  * @param {(Number|String)} x Value to calculate natural logarithm of
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Natural logarithm of 'x'.
+ * @returns {Number} Natural logarithm of 'x'.
  * @since 0.1
  * @example
  * // returns 1.3862943611198906
@@ -288,7 +288,7 @@ module.exports.ln = (x) => {
  * @summary Decimal logarithm (log) of number.
  * @param {(Number|String)} x Value to calculate decimal logarithm of
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Decimal logarithm of 'x'.
+ * @returns {Number} Decimal logarithm of 'x'.
  * @since 0.1
  * @example
  * // returns 1
@@ -312,7 +312,7 @@ module.exports.log = (x) => {
  * @summary Sinus of number.
  * @param {(Number|String)} x Value to calculate sinus of
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Sinus of 'x'.
+ * @returns {Number} Sinus of 'x'.
  * @since 0.1
  * @example
  * // returns 0
@@ -333,7 +333,7 @@ module.exports.sin = (x) => {
  * @summary Cosinus of number.
  * @param {(Number|String)} x Value to calculate cosinus of
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Cosinus of 'x'.
+ * @returns {Number} Cosinus of 'x'.
  * @since 0.1
  * @example
  * // returns 1
@@ -354,7 +354,7 @@ module.exports.cos = (x) => {
  * @summary Tangens of number.
  * @param {(Number|String)} x Value to calculate tangens of
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Tangens of 'x'.
+ * @returns {Number} Tangens of 'x'.
  * @since 0.1
  * @example
  * // returns 0
@@ -379,7 +379,7 @@ module.exports.tan = (x) => {
  * @summary Cotangens of number.
  * @param {(Number|String)} x Value to calculate cotangens of
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Cotangens of 'x'.
+ * @returns {Number} Cotangens of 'x'.
  * @since 1.0
  * @example
  * // returns -Infinity
@@ -404,7 +404,7 @@ module.exports.cotan = (x) => {
  * @summary Hyperbolic sinus of number.
  * @param {(Number|String)} x Value to calculate hyperbolic sinus of
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Hyperbolic sinus of 'x'.
+ * @returns {Number} Hyperbolic sinus of 'x'.
  * @since 1.0
  * @example
  * // returns 0
@@ -425,7 +425,7 @@ module.exports.sinh = (x) => {
  * @summary Hyperbolic cosinus of number.
  * @param {(Number|String)} x Value to calculate hyperbolic cosinus of
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Hyperbolic cosinus of 'x'.
+ * @returns {Number} Hyperbolic cosinus of 'x'.
  * @since 1.0
  * @example
  * // returns 1
@@ -446,7 +446,7 @@ module.exports.cosh = (x) => {
  * @summary Hyperbolic tangens of number.
  * @param {(Number|String)} x Value to calculate hyperbolic tangens of
  * @author Vojtech Dvorak (xdvora3a)
- * @returns Hyperbolic tangens of 'x'.
+ * @returns {Number} Hyperbolic tangens of 'x'.
  * @since 1.0
  * @example
  * // returns 0

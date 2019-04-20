@@ -1,7 +1,7 @@
 /** 
  * Functions that allow calculator to work (splitting the operations, checking them, choosing preferred operations etc.) 
  * @module calculatorCore
- * @version 1.1
+ * @version 1.2
  * @author Jan Svabik (xsvabi00)
  * @author Vojtech Dvorak (xdvora3a)
  * @todo Move replacing functions into new module and simplify them.
@@ -12,6 +12,13 @@
  * @const {Module}
  */
 const math = require('./math.lib');
+
+/**
+ * Library for processing big numbers (used for transforming scientific notations into long string)
+ * @const {Module}
+ * @todo Write new mathematical library to prevent the requirement to transforming the numbers.
+ */
+const Big = require('./big');
 
 /**
  * Load regular expressions for extracting parts of the mathematical expression. Allow e.g. extracting the root arguments – (n)root(x), factorial argument in brackets – (6)!, checking simple expressions etc.
@@ -29,7 +36,7 @@ const maxDecimalPrecision = 10; /** < maximum decimal places in final results */
  * The main function - do the calculation of the whole expression
  * @summary Doing the whole calculation of the given expression.
  * @param {String} expr Expression to calculate
- * @return Result of the calculation (number), or null if there was some error or mistake in expression
+ * @return {Number} Result of the calculation (number), or null if there was some error or mistake in expression
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  * @version 1.1
@@ -100,7 +107,7 @@ const calculate = (expr) => {
  * Function for checking if there is the same number of left brackets as of right brackets and checking that there is no moment when more brackets are closed than opened.
  * @summary Checking correctness of brackets in expression.
  * @param {String} expr Expression to check
- * @return true, if there is error with brackets, or false if not
+ * @return {Boolean} true, if there is error with brackets, or false if not
  * @author Vojtech Dvorak (xdvora3a)
  * @since 1.1
  * @example
@@ -142,7 +149,7 @@ const bracketsError = (expr) => {
  * Function for doing the first replacements (constants are replaced by its value, RANDs are replaced by generated number, multiplying is set up as the default operator)
  * @summary Do the basic replacements (constants, RANDs, set * symbol as default operator).
  * @param {String} expr Expression to do the basic replacement in
- * @return Expression after the replacement
+ * @return {String} Expression after the replacement
  * @author Jan Svabik (xsvabi00)
  * @since 1.0
  * @example
@@ -178,7 +185,7 @@ const startReplacement = (expr) => {
  * Function that add the multiplication symbol (*) as a default operator between brackets, constants and functions to do the default operation – multiplying.
  * @summary Function for adding multiplication * symbol as a default operator
  * @param {String} expr Expression to add multiplication symbol in
- * @return The expression with added * symbol e.g. between brackets or before functions
+ * @return {String} The expression with added * symbol e.g. between brackets or before functions
  * @author Jan Svabik (xsvabi00)
  * @since 1.1
  * @example
@@ -203,7 +210,7 @@ const setMultiplyingAsDefaultOperator = (expr) => {
  * Function for replacing all scientific notations (recursively) from the expression string.
  * @summary Function for adding multiplication * symbol as a default operator
  * @param {String} expr Expression to replace scientific notations in
- * @return The expression with scientific notations replaced
+ * @return {String} The expression with scientific notations replaced by the *10^ notation
  * @author Jan Svabik (xsvabi00)
  * @since 1.0
  * @example
@@ -228,7 +235,7 @@ const removeEType = (expr) => {
  * @summary Replace RAND keywords by random numbers.
  * @generator
  * @param {String} expr Expression to replace 'RAND' in
- * @return Expression with 'RAND's replaced by random numbers
+ * @return {String} Expression with 'RAND's replaced by random numbers
  * @author Vojtech Dvorak (xdvora3a)
  * @since 1.0
  * @example
@@ -247,7 +254,7 @@ const setRANDs = (expr) => {
  * Function calculates and replaces simple expressions in brackets in expression 'expr' by the calculated result. Simple expressions are these expressions that contains only numbers with operators +, -, *, /, ^, !.
  * @summary Replace simple expression by its value which is calculated.
  * @param {String} expr Expression to check and replace simple expressions in
- * @return Expression with simple expressions replaced
+ * @return {String} Expression with simple expressions replaced
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  * @example
@@ -281,7 +288,7 @@ const replaceSimpleExpression = (expr) => {
  * Function calculates and replaces function expressions in expression 'expr' by the calculated result.
  * @summary Function replaces function expressions in expression 'expr'
  * @param {String} expr Expression to check and replace function expressions in
- * @return Expression with replaced function expressions
+ * @return {String} Expression with function expressions replaced
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  */
@@ -305,7 +312,7 @@ const replaceFunctionExpression = (expr) => {
  * Function extracts function name and function value from the expression of 'sin(12345)' type and returns array with splitted data. It must be guaranteed that the expression is in the expected format.
  * @summary Function extracts and return functio name and function value separately.
  * @param {String} expr Function expression to parse
- * @return Array with function name and value: [functionName, functionValue]
+ * @return {Array.<String, Number>} Array with function name and value: [functionName, functionValue]
  * @author Vojtech Dvorak (xdvora3a)
  * @since 0.1
  * @example
@@ -324,7 +331,7 @@ const parseFunctionExpression = (expr) => {
  * Function calculate the value of parsed function (info array).
  * @summary Calculate the result value of function with its value.
  * @param {Array<String,Number>} parsedExpression Parsed function expression to calculate
- * @return Calculated value of the function specified.
+ * @return {Number} Calculated value of the function specified.
  * @author Vojtech Dvorak (xdvora3a)
  * @since 0.1
  * @todo Change argument into two (functionName, value) and make corresponding changes of the parseFunctionExpression() function.
@@ -361,7 +368,7 @@ const calculateFunction = (parsedExpression) => {
  * Function calculates and replaces root expressions in expression 'expr' by the calculated result.
  * @summary Function replaces root expressions in expression 'expr'.
  * @param {String} expr Expression to check and replace root expressions in
- * @return Expression with root expressions replaced
+ * @return {String} Expression with root expressions replaced
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  * @example
@@ -386,7 +393,7 @@ const replaceRootExpression = (expr) => {
  * Function calculates and replaces factorial of bracket with constant in expression 'expr' by the calculated result.
  * @summary Function replaces (n)! expression in expression 'expr' by the value.
  * @param {String} expr Expression to check and replace (n)! expressions in
- * @return Expression with factorized brackets content replaced
+ * @return {String} Expression with factorized brackets content replaced
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  * @example
@@ -414,7 +421,7 @@ const replaceBracketFactorial = (expr) => {
  * Function calculates and replaces power of bracket with the value in expression 'expr' by the calculated result.
  * @summary Function replaces (x)^n expression in expression 'expr' by the value.
  * @param {String} expr Expression to check and replace (x)^n expressions in
- * @return Expression with powered brackets content replaced
+ * @return {String} Expression with powered brackets content replaced
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  * @example
@@ -439,7 +446,7 @@ const replaceBracketPower = (expr) => {
  * Function replaces constants in brackets with the value in the brackets (with the constant itself) so the brackets are removed after calling this function.
  * @summary Remove brackets around constants in expression.
  * @param {String} expr Expression to check and remove brackets around constants.
- * @return Expression without brackets around constants
+ * @return {String} Expression without brackets around constants
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  * @example
@@ -464,7 +471,7 @@ const handleConstants = (expr) => {
  * Function for determining that some expression is simple expression from its start to its end. Simple expressions are expressions that contains only numbers with these operators only: +, -, *, /, ^, !.
  * @summary Check that the whole expression is simple expression.
  * @param {String} expr Expression to check for being the simple expression
- * @return true, if the expression 'expr' is simple expression, or false 
+ * @return {Boolean} true, if the expression 'expr' is simple expression, or false 
  * @author Jan Svabik (xsvabi00)
  * @since 1.1
  * @example
@@ -483,7 +490,7 @@ const isSimpleExpression = (expr) => {
  * Function for splitting simple expression into calculable array by our mathematical library.
  * @summary Parse simple mathematic expression into array to calculate (+, -, *, /, ^, !)
  * @param {String} expr Expression to split
- * @return splitted expression into processable array
+ * @return {Array} splitted expression into processable array
  * @author Vojtech Dvorak (xdvora3a)
  * @since 0.1
  */
@@ -505,7 +512,7 @@ const splitSimpleExpression = (expr) => {
  * Function for removing sequences of + and - symbols by its final value (e.g. -- => +, ++-- => +, +--- => -)
  * @summary Applying plus-minus axiom.
  * @param {String} expr Expression to check and modify
- * @return Modified expression 'expr'.
+ * @return {String} Modified expression 'expr'.
  * @author Vojtech Dvorak (xdvora3a)
  * @since 0.1
  * @example
@@ -529,7 +536,7 @@ const plusMinusAxiom = (expr) => {
  * @param {Array<(String|Number)>} exprArray The array with expressions to be prepared for the calculation
  * @param {Boolean|String} operatorBefore If this is recursive call, the operator of the previous splitting, or false
  * @param {Boolean|String} exprBefore If this is recursive call, the previously splitted expression, or false
- * @return Processable array for the calculateSimpleExpression() function
+ * @return {Array} Processable array for the calculateSimpleExpression() function
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  * @example
@@ -572,7 +579,7 @@ const splitArrayOfExpressions = (exprArray, operatorBefore = false, exprBefore =
  * Check if expression contains one of the operators defined and get this operator or false.
  * @summary Function checks, if some expression contains one of the operators defined
  * @param {String} expr The expression to find operator in.
- * @return First operator found in expression 'expr', or false.
+ * @return {String|Boolean} First operator found in expression 'expr', or false.
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  * @example
@@ -595,7 +602,7 @@ const operatorContainmentCheck = (expr) => {
  * Do the calculation of parsed simple expression into array calculable by this function. Go recursively through the array until some object (array) does not include any other object (array). Calculate the result of the operation represented by the array and replace the calculated array in the parent by the calculated value until there will be no object (array) to calculate.
  * @summary Calculate simple expression parsed into the array calculable by this function.
  * @param {Array.<(Number|String)>} parsedSimpleExpression Array made of the parsed expressions to calculate.
- * @return The result of the calculation.
+ * @return {String} The result of the calculation in string.
  * @author Jan Svabik (xsvabi00)
  * @since 0.1
  * @example
@@ -627,45 +634,23 @@ const calculateSimpleExpression = (parsedSimpleExpression) => {
 };
 
 /**
- * Function for removing the scientific notation from the number
+ * Function for removing the scientific notation from the number using the Big.js module (library)
  * @summary Removing the scientific notation
  * @param {Number|String} num The number with scientific notation
- * @todo Broken number precision, see below
- * @todo Use BigInt library for calculations and remove this function
- * @author Jenny O'Reilly
- * @see https://stackoverflow.com/a/46545519
- * @see https://stackoverflow.com/revisions/46545519/1
- * @license CC-BY-SA
+ * @return {String} The original number if not in scientific notation or the original number without the scientific notation.
+ * @author Jan Svabik (xsvabi00)
+ * @since 1.2
  */
-function numberToString(num)
-{
-    let numStr = String(num);
+const numberToString = (num) => {
+    // convert to string
+    num = String(num);
 
-    if (Math.abs(num) < 1.0)
-    {
-        let e = parseInt(num.toString().split('e-')[1]);
-        if (e)
-        {
-            let negative = num < 0;
-            if (negative) num *= -1;
-            num *= Math.pow(10, e - 1);
-            numStr = '0.' + (new Array(e)).join('0') + num.toString().substring(2);
-            if (negative) numStr = "-" + numStr;
-        }
-    }
-    else
-    {
-        let e = parseInt(num.toString().split('+')[1]);
-        if (e > 20)
-        {
-            e -= 20;
-            num /= Math.pow(10, e);
-            numStr = num.toString() + (new Array(e + 1)).join('0');
-        }
-    }
+    // if the number is in scientific notation, convert into the long string
+    if (num.includes('e'))
+        return (new Big(num)).toFixed(200);
 
-    return numStr;
-}
+    return num;
+};
 
 module.exports = {
     calc: calculate,
