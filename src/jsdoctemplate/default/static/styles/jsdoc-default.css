@@ -159,6 +159,7 @@ h1
 }
 
 section article h1 {margin-left: 0;}
+article dl.move {margin: 30px 20px;}
 
 h2, h3.subsection-title
 {

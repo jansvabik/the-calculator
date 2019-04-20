@@ -87,7 +87,7 @@
     ?>
         <h3 class="subsection-title">Classes</h3>
 
-        <dl><?js classes.forEach(function(c) { ?>
+        <dl class="move"><?js classes.forEach(function(c) { ?>
             <dt><?js= self.linkto(c.longname, c.name) ?></dt>
             <dd><?js if (c.summary) { ?><?js= c.summary ?><?js } ?></dd>
         <?js }); ?></dl>
@@ -99,7 +99,7 @@
     ?>
         <h3 class="subsection-title">Interfaces</h3>
 
-        <dl><?js interfaces.forEach(function(i) { ?>
+        <dl class="move"><?js interfaces.forEach(function(i) { ?>
             <dt><?js= self.linkto(i.longname, i.name) ?></dt>
             <dd><?js if (i.summary) { ?><?js= i.summary ?><?js } ?></dd>
         <?js }); ?></dl>
@@ -123,7 +123,7 @@
     ?>
         <h3 class="subsection-title">Namespaces</h3>
 
-        <dl><?js namespaces.forEach(function(n) { ?>
+        <dl class="move"><?js namespaces.forEach(function(n) { ?>
             <dt><?js= self.linkto(n.longname, n.name) ?></dt>
             <dd><?js if (n.summary) { ?><?js= n.summary ?><?js } ?></dd>
         <?js }); ?></dl>

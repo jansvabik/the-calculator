@@ -10,6 +10,7 @@
 /**
  * jQuery namespace/library providing the functions for manipulating with the DOM structure and for easy access to the DOM elements.
  * @namespace
+ * @summary jQuery namespace for DOM elements manipulations.
  * @license MIT
  * @see https://api.jquery.com/
  * @version 3.3.1
