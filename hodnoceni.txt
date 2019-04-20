@@ -1,4 +1,4 @@
 xdvora3a 90 (matematicka knihovna, dokumentace, profiling)
-xgurec00 125 (GUI, mockup, uzivatelska prirucka, matematicka knihovna, interakce s uzivatelem)
-xsvabi00 105 (unit testy mat. knihovny, jadro kalkulacky, Makefile, interakce s uzivatelem)
+xgurec00 120 (GUI, mockup, uzivatelska prirucka, matematicka knihovna, interakce s uzivatelem)
+xsvabi00 110 (unit testy mat. knihovny, jadro kalkulacky, Makefile, interakce s uzivatelem)
 xzitka07 80 (komplexni testovani, uzivatelska prirucka, vytvoreni instalatoru)
