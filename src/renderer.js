@@ -222,9 +222,14 @@ $(document).ready(function () {
         if (!resultDisplayed)
             setLine(expressionLine, resultLine.text() + '=');
         
+        // get what should be calculated
+        let toCalculate = getLine(resultLine);
+        if (resultDisplayed || errorDisplayed)
+            toCalculate = getLine(expressionLine).substr(0, getLine(expressionLine).length-1);
+
         // try to calculate the value
         try {
-            result = String(calculate(strToExpr(getLine(resultLine))));
+            result = String(calculate(strToExpr(toCalculate)));
         } catch (e) {
             error.is = true;
             error.type = 'ERR:MISSINGOPERAND';
