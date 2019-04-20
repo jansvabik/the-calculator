@@ -1,19 +1,43 @@
 /**
- * THE CALCULATOR
- * 
- * @file app.js
- * @brief Entry point and Electron settings
+ * The entry point of the app and Electron settings
+ * @module app
  * @author Jan Svabik (xsvabi00)
  * @version 1.0
  */
 
-const {app, BrowserWindow} = require('electron');
+/**
+ * The app controller from the Electron package
+ * @constant
+ */
+const app = require('electron').app;
+
+/**
+ * The BrowserWindow class from the Electron package for managing windows.
+ * @class
+ */
+const BrowserWindow = require('electron').BrowserWindow;
+
+/**
+ * path package for path manipulations
+ * @constant
+ */
 const path = require('path');
+
+/**
+ * url package for url manipulations
+ * @constant
+ */
 const url = require('url');
 
-// init main window
+/**
+ * Main window initializer
+ * @type {BrowserWindow}
+ */
 let mainWindow;
 
+/**
+ * Function for creating the main window. This function will be called when the electron app will be ready to start.
+ */
 const createWindow = () => {
     // create a new instance of window and set it up
     mainWindow = new BrowserWindow({
@@ -59,7 +83,8 @@ const createWindow = () => {
 // create the main window when app is ready
 app.on('ready', createWindow);
 
+// quit the app when all windows are closed
 app.on('window-all-closed', () => {
-    if (process.platform === 'darwin')
+    //if (process.platform === 'darwin')
         app.quit();
 });

@@ -1,12 +1,15 @@
 /**
- * MATHEMATIC LIBRARY TESTS
- * 
+ * Unit tests for the calculator core.
+ * @ignore
  * @description The library will be developed using this tests (test-driven development).
  * @author Jan Svabik (xsvabi00)
  * @version 1.1
  */
 
-const units = require('./calculatorCore').testing;
+// load the core functions
+const units = require('./calculatorCore').unit;
+
+// load the calculating function
 const calc = require('./calculatorCore').calc;
 
 test('Splitting simple expressions', () => {

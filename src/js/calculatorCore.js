@@ -1,24 +1,44 @@
-/**
- * Core of the calculator
- * @file calculatorCore.js
- * @description Functions that allow calculator to work (splitting the operations, checking them, choosing preferred operations etc.) 
- * @version 1.0
+/** 
+ * Functions that allow calculator to work (splitting the operations, checking them, choosing preferred operations etc.) 
+ * @module calculatorCore
+ * @version 1.1
  * @author Jan Svabik (xsvabi00)
  * @author Vojtech Dvorak (xdvora3a)
+ * @todo Move replacing functions into new module and simplify them.
  */
 
-// include our mathematical library
-const math = require('./math.lib'); /** < mathematical library */
-const regex = require('./calculatorRegex'); /** < regular expressions for calculations */
+/** 
+ * Mathematical library (load the unit functions, e.g. adding, subtracting, multiplying, dividing, factorizing, logarithm calculating, root calculating, power calculating, goniometric functinos, hyperbolic functions)
+ * @const {Module}
+ */
+const math = require('./math.lib');
 
-// max decimal precision to export
+/**
+ * Load regular expressions for extracting parts of the mathematical expression. Allow e.g. extracting the root arguments – (n)root(x), factorial argument in brackets – (6)!, checking simple expressions etc.
+ * @const {Object}
+ */
+const regex = require('./calculatorRegex');
+
+/**
+ * Defining the maximum decimal places in results. This is used when the whole expression is calculated and it is above returning back from this module.
+ * @const {Number}
+ */
 const maxDecimalPrecision = 10; /** < maximum decimal places in final results */
 
 /**
- * @brief The main function - do the calculation of the whole expression
- * @author Jan Svabik (xsvabi00)
- * @param expr Expression to calculate
+ * The main function - do the calculation of the whole expression
+ * @summary Doing the whole calculation of the given expression.
+ * @param {String} expr Expression to calculate
  * @return Result of the calculation (number), or null if there was some error or mistake in expression
+ * @author Jan Svabik (xsvabi00)
+ * @since 0.1
+ * @version 1.1
+ * @example
+ * // returns 39916808,27
+ * calculate('3+11!-3(sin(4)-1)');
+ * @example
+ * // returns 11,79689967
+ * calculate('4log(8-sin(11.4543))+4!/3');
  */
 const calculate = (expr) => {
     // check the number of left and right brackets
@@ -77,10 +97,18 @@ const calculate = (expr) => {
 };
 
 /**
- * @brief Function checks if there is the same number of left brackets as of right brackets
- * @author Vojtech Dvorak (xdvora3a)
- * @param expr Expression to check
+ * Function for checking if there is the same number of left brackets as of right brackets and checking that there is no moment when more brackets are closed than opened.
+ * @summary Checking correctness of brackets in expression.
+ * @param {String} expr Expression to check
  * @return true, if there is error with brackets, or false if not
+ * @author Vojtech Dvorak (xdvora3a)
+ * @since 1.1
+ * @example
+ * // returns true
+ * bracketsError('3+(14-sin(3)');
+ * @example
+ * // returns false
+ * bracketsError('3+(14-sin(3))');
  */
 const bracketsError = (expr) => {
     let leftBrackets = (expr.match(/\(/g) || []).length;
@@ -111,10 +139,18 @@ const bracketsError = (expr) => {
 };
 
 /**
- * @brief Function for doing the first replacements (constants, RANDs, multiplying as a def. operator)
- * @param expr Expression to do the basic replacement in 
- * @author Jan Svabik (xsvabi00)
+ * Function for doing the first replacements (constants are replaced by its value, RANDs are replaced by generated number, multiplying is set up as the default operator)
+ * @summary Do the basic replacements (constants, RANDs, set * symbol as default operator).
+ * @param {String} expr Expression to do the basic replacement in
  * @return Expression after the replacement
+ * @author Jan Svabik (xsvabi00)
+ * @since 1.0
+ * @example
+ * // returns 2.718281828-2*(33-2*3.141592654)
+ * startReplacement('E-2(33-2PI)');
+ * @example
+ * // returns 3*3.141592654*0.9040858876-2.718281828*3.141592654
+ * startReplacement('3RANDPI-EPI');
  */
 const startReplacement = (expr) => {
     // replace mathematical constants
@@ -139,10 +175,18 @@ const startReplacement = (expr) => {
 };
 
 /**
- * @brief Function for adding multiplication * symbol as a default operator
+ * Function that add the multiplication symbol (*) as a default operator between brackets, constants and functions to do the default operation – multiplying.
+ * @summary Function for adding multiplication * symbol as a default operator
+ * @param {String} expr Expression to add multiplication symbol in
+ * @return The expression with added * symbol e.g. between brackets or before functions
  * @author Jan Svabik (xsvabi00)
- * @param expr Expression to add multiplication symbol in
- * @return The expression with added * symbol e.g. between brackets )( or before functions 3log(2)
+ * @since 1.1
+ * @example
+ * // returns 3*log(2)
+ * setMultiplyingAsDefaultOperator('3log(2)');
+ * @example
+ * // returns (4)*3*log(10)
+ * setMultiplyingAsDefaultOperator('(4)3log(10)');
  */
 const setMultiplyingAsDefaultOperator = (expr) => {
     const me = regex.multiplyingReplacementNumberStart.exec(expr) || regex.multiplyingReplacementNumberEnd.exec(expr);
@@ -156,10 +200,15 @@ const setMultiplyingAsDefaultOperator = (expr) => {
 };
 
 /**
- * @brief Function replaces all scientific notations (recurently) from the expression string (eg. 8e-10 -> 8*10^-10)
+ * Function for replacing all scientific notations (recursively) from the expression string.
+ * @summary Function for adding multiplication * symbol as a default operator
+ * @param {String} expr Expression to replace scientific notations in
+ * @return The expression with scientific notations replaced
  * @author Jan Svabik (xsvabi00)
- * @param expr Expression to replace scientific notations in
- * @return Expression with replaced scientific notations
+ * @since 1.0
+ * @example
+ * // returns 2.345*10^-4
+ * removeEType('2.345e-4');
  */
 const removeEType = (expr) => {
     let eType = regex.eType.exec(expr);
@@ -175,10 +224,19 @@ const removeEType = (expr) => {
 };
 
 /**
- * @brief Function replaces string of random number 'RAND' in expression string for random number
+ * Function replaces all the 'RAND' keywords in expression by random numbers from the <0;1) interval. The generated numbers are putted into brackets.
+ * @summary Replace RAND keywords by random numbers.
+ * @generator
+ * @param {String} expr Expression to replace 'RAND' in
+ * @return Expression with 'RAND's replaced by random numbers
  * @author Vojtech Dvorak (xdvora3a)
- * @param expr Expression to replace 'RAND' in
- * @return Expression with 'RAND' replaced for random number
+ * @since 1.0
+ * @example
+ * // returns e.g. (0.3201196502)(0.7593763115)
+ * setRANDs('RANDRAND');
+ * @example
+ * // returns e.g. (0.3201196502)-2(0.7593763115)
+ * setRANDs('RAND-2RAND');
  */
 const setRANDs = (expr) => {
     expr = expr.replace('RAND', '(' + Math.random() + ')');
@@ -186,10 +244,18 @@ const setRANDs = (expr) => {
 };
 
 /**
- * @brief Function calculates and replaces simple expressions in expression 'expr' for calculated numbers
+ * Function calculates and replaces simple expressions in brackets in expression 'expr' by the calculated result. Simple expressions are these expressions that contains only numbers with operators +, -, *, /, ^, !.
+ * @summary Replace simple expression by its value which is calculated.
+ * @param {String} expr Expression to check and replace simple expressions in
+ * @return Expression with simple expressions replaced
  * @author Jan Svabik (xsvabi00)
- * @param expr Expression to check and replace simple expressions in
- * @return Expression with replaced simple expressions
+ * @since 0.1
+ * @example
+ * // returns (3+2*(5)-sin(3))
+ * replaceSimpleExpression('(3+2*(6-1)-sin(3))');
+ * @example
+ * // returns (12.5)
+ * replaceSimpleExpression('(3+2*(6-1)-0.5)');
  */
 const replaceSimpleExpression = (expr) => {
     expr = removeEType(expr);
@@ -212,10 +278,12 @@ const replaceSimpleExpression = (expr) => {
 };
 
 /**
- * @brief Function replaces function expressions in expression 'expr'
+ * Function calculates and replaces function expressions in expression 'expr' by the calculated result.
+ * @summary Function replaces function expressions in expression 'expr'
+ * @param {String} expr Expression to check and replace function expressions in
+ * @return Expression with replaced function expressions
  * @author Jan Svabik (xsvabi00)
- * @param expr Expression to replace function expressions in
- * @return Expression with function expressions replaced
+ * @since 0.1
  */
 const replaceFunctionExpression = (expr) => {
     expr = removeEType(expr);
@@ -234,10 +302,15 @@ const replaceFunctionExpression = (expr) => {
 };
 
 /**
- * @brief Function parses function expression
+ * Function extracts function name and function value from the expression of 'sin(12345)' type and returns array with splitted data. It must be guaranteed that the expression is in the expected format.
+ * @summary Function extracts and return functio name and function value separately.
+ * @param {String} expr Function expression to parse
+ * @return Array with function name and value: [functionName, functionValue]
  * @author Vojtech Dvorak (xdvora3a)
- * @param expr Function expression to parse
- * @return Parsed function expression as array (function name, value)
+ * @since 0.1
+ * @example
+ * // returns ['cos', '3.14']
+ * parseFunctionExpression('cos(3.14)');
  */
 const parseFunctionExpression = (expr) => {
     const splitExpr = expr.split('(');
@@ -248,10 +321,16 @@ const parseFunctionExpression = (expr) => {
 };
 
 /**
- * @brief Function calculates parsed function expressions
+ * Function calculate the value of parsed function (info array).
+ * @summary Calculate the result value of function with its value.
+ * @param {Array<String,Number>} parsedExpression Parsed function expression to calculate
+ * @return Calculated value of the function specified.
  * @author Vojtech Dvorak (xdvora3a)
- * @param parsedExpression Parsed function expression to calculate
- * @return Calculated parsedExpression (number)
+ * @since 0.1
+ * @todo Change argument into two (functionName, value) and make corresponding changes of the parseFunctionExpression() function.
+ * @example
+ * // returns 1
+ * parseFunctionExpression(['log', 10]);
  */
 const calculateFunction = (parsedExpression) => {
     const functionName = parsedExpression[0];
@@ -279,10 +358,15 @@ const calculateFunction = (parsedExpression) => {
 };
 
 /**
- * @brief Function replaces root expressions in expression 'expr' to calculate
+ * Function calculates and replaces root expressions in expression 'expr' by the calculated result.
+ * @summary Function replaces root expressions in expression 'expr'.
+ * @param {String} expr Expression to check and replace root expressions in
+ * @return Expression with root expressions replaced
  * @author Jan Svabik (xsvabi00)
- * @param expr Expression to replace root expressions in
- * @return Expression with replaced root expressions
+ * @since 0.1
+ * @example
+ * // returns 5
+ * replaceRootExpression('(3)root(125)');
  */
 const replaceRootExpression = (expr) => {
     expr = removeEType(expr);
@@ -299,10 +383,18 @@ const replaceRootExpression = (expr) => {
 };
 
 /**
- * @brief Function replaces bracket factiorials in expression 'expr'
+ * Function calculates and replaces factorial of bracket with constant in expression 'expr' by the calculated result.
+ * @summary Function replaces (n)! expression in expression 'expr' by the value.
+ * @param {String} expr Expression to check and replace (n)! expressions in
+ * @return Expression with factorized brackets content replaced
  * @author Jan Svabik (xsvabi00)
- * @param expr Expression to replace bracket factiorials in
- * @return Expression with bracket factiorials replaced to calculate
+ * @since 0.1
+ * @example
+ * // returns 3+6
+ * replaceBracketFactorial('3+(3)!');
+ * @example
+ * // returns 2*(3+4)!-NaN
+ * replaceBracketFactorial('2*(3+4)!-(3.1)!');
  */
 const replaceBracketFactorial = (expr) => {
     expr = removeEType(expr);
@@ -319,10 +411,15 @@ const replaceBracketFactorial = (expr) => {
 };
 
 /**
- * @brief Function replaces bracket powers in expression 'expr' to calculate
+ * Function calculates and replaces power of bracket with the value in expression 'expr' by the calculated result.
+ * @summary Function replaces (x)^n expression in expression 'expr' by the value.
+ * @param {String} expr Expression to check and replace (x)^n expressions in
+ * @return Expression with powered brackets content replaced
  * @author Jan Svabik (xsvabi00)
- * @param expr Expression to replace bracket powers in
- * @return Expression with bracket powers replaced
+ * @since 0.1
+ * @example
+ * // returns 2*9
+ * replaceBracketPower('2*(3)^3');
  */
 const replaceBracketPower = (expr) => {
     expr = removeEType(expr);
@@ -339,10 +436,15 @@ const replaceBracketPower = (expr) => {
 };
 
 /**
- * @brief Function replaces constants in brackets by the constants only (brackets removal)
+ * Function replaces constants in brackets with the value in the brackets (with the constant itself) so the brackets are removed after calling this function.
+ * @summary Remove brackets around constants in expression.
+ * @param {String} expr Expression to check and remove brackets around constants.
+ * @return Expression without brackets around constants
  * @author Jan Svabik (xsvabi00)
- * @param expr Expression to replace constants in brackets by constants only in
- * @return Expression with constants without brackets
+ * @since 0.1
+ * @example
+ * // returns 8+16.333*11-2
+ * handleConstants('8+(16.333)*11-(2)');
  */
 const handleConstants = (expr) => {
     expr = removeEType(expr);
@@ -359,20 +461,31 @@ const handleConstants = (expr) => {
 };
 
 /**
- * @brief Function checks if the expression 'expr' is simple expression
+ * Function for determining that some expression is simple expression from its start to its end. Simple expressions are expressions that contains only numbers with these operators only: +, -, *, /, ^, !.
+ * @summary Check that the whole expression is simple expression.
+ * @param {String} expr Expression to check for being the simple expression
+ * @return true, if the expression 'expr' is simple expression, or false 
  * @author Jan Svabik (xsvabi00)
- * @param expr Expression to check
- * @return True, if the expression 'expr' is simple, or false 
+ * @since 1.1
+ * @example
+ * // returns true
+ * isSimpleExpression('8+16.333*-0.11-8^16.2');
+ * @example
+ * // returns false
+ * isSimpleExpression('8+(16.333)*11-(2)');
+ * isSimpleExpression('8+sin(16.333)');
  */
 const isSimpleExpression = (expr) => {
     return regex.fullSimpleExpression.test(expr);
 };
 
 /**
- * @brief Function parses simple mathematic expression into array to calculate (+, -, *, /, !)
+ * Function for splitting simple expression into calculable array by our mathematical library.
+ * @summary Parse simple mathematic expression into array to calculate (+, -, *, /, ^, !)
+ * @param {String} expr Expression to split
+ * @return splitted expression into processable array
  * @author Vojtech Dvorak (xdvora3a)
- * @param expr Expression to split
- * @return Returns array 'splitted' to calculate
+ * @since 0.1
  */
 const splitSimpleExpression = (expr) => {
     expr = plusMinusAxiom(expr);
@@ -389,10 +502,15 @@ const splitSimpleExpression = (expr) => {
 };
 
 /**
- * @brief Function for removing chain of plus or minus symbols
+ * Function for removing sequences of + and - symbols by its final value (e.g. -- => +, ++-- => +, +--- => -)
+ * @summary Applying plus-minus axiom.
+ * @param {String} expr Expression to check and modify
+ * @return Modified expression 'expr'.
  * @author Vojtech Dvorak (xdvora3a)
- * @param expr Expression to check and modify
- * @return Returns modified expression 'expr'
+ * @since 0.1
+ * @example
+ * // returns 8+2-11-sin(2)
+ * plusMinusAxiom('8--2++-11----+-sin(2)');
  */
 const plusMinusAxiom = (expr) => {
     expr = expr.replace('++', '+');
@@ -406,38 +524,63 @@ const plusMinusAxiom = (expr) => {
 };
 
 /**
- * @brief Function parses array of simple mathematic expressions into array to even more simple array
- * @author Jan Svabik (xsvabi00) 
- * @param exprArray Array of expressions to split into more simple array
- * @return Returns splitted array 'exprArray' without nulls, 0, ...
+ * This function do the splitting of every simple expression that has to be calculated. It should get prepared expression array (array with only element – the whole simple expression). Than this will be splitted recursively until all operators will be used. The returned array is calculable by calculateSimpleExpression() function then.
+ * @summary The final preparation before any simple expression is really calculated.
+ * @param {Array<(String|Number)>} exprArray The array with expressions to be prepared for the calculation
+ * @param {Boolean|String} operatorBefore If this is recursive call, the operator of the previous splitting, or false
+ * @param {Boolean|String} exprBefore If this is recursive call, the previously splitted expression, or false
+ * @return Processable array for the calculateSimpleExpression() function
+ * @author Jan Svabik (xsvabi00)
+ * @since 0.1
+ * @example
+ * // 1st iteration ['+', '8*3-22', 3, '3/1', '5/N2']
+ * // 2nd iteration ['+', ['-', '8*3', 22], 3, '3/1', '5/N2']
+ * // 3rd iteration ['+', ['-', ['*', 8, 3], 22], 3, '3/1', '5/N2']
+ * // 4rd iteration ['+', ['-', ['*', 8, 3], 22], 3, ['/', 3, 1], ['/', 5, -2]]
+ * // returns       ['+', ['-', ['*', 8, 3], 22], 3, ['/', 3, 1], ['/', 5, -2]]
+ * splitArrayOfExpressions('8*3-22+3+3/1+5/N2');
+ * // repl. before calling this func. -----^
  */
 const splitArrayOfExpressions = (exprArray, operatorBefore = false, exprBefore = false) => {
+    // handle situation when the previous usage of this function splitted the expression by '-' and the '-' symbol was at the beginning of the expression
     if (operatorBefore === '-' && exprBefore[0] === '-')
         exprArray[1] = 'N' + exprArray[1];
 
+    // check each exprArray element
     for (let i = 0; i < exprArray.length; i++) {
         const expr = exprArray[i];
         const operator = operatorContainmentCheck(expr);
 
-
+        // there is no operator and the element is number, check the negation
         if (!operator && expr.length > 0)
             exprArray[i] = expr[0] !== 'N' ? Number(expr) : -Number(expr.substr(1));
-        else if (expr.length > 1) {
-            let splitted = expr.split(operator);
-            exprArray[i] = splitArrayOfExpressions([operator, ...splitted], operator, expr);
-        }
+
+        // this element is another expression, split it into another calculable array
+        else if (expr.length > 1)
+            exprArray[i] = splitArrayOfExpressions([operator, ...expr.split(operator)], operator, expr);
+
+        // junk element
         else if (expr.length === 0)
             delete(exprArray[i]);
     }
 
+    // return filtered array (null, false, undefined will be removed, 0 will stay inside)
     return exprArray.filter(i => i || i === 0);
 };
 
 /**
- * @brief Function checks, if some expression contains one of the operators defined
- * @author Jan Svabik (xsvabi00) 
- * @param expr Expression to check
- * @return Returns first operator found in expression 'expr', or false
+ * Check if expression contains one of the operators defined and get this operator or false.
+ * @summary Function checks, if some expression contains one of the operators defined
+ * @param {String} expr The expression to find operator in.
+ * @return First operator found in expression 'expr', or false.
+ * @author Jan Svabik (xsvabi00)
+ * @since 0.1
+ * @example
+ * // returns '-'
+ * operatorContainmentCheck('3*4-5');
+ * @example
+ * // returns false
+ * operatorContainmentCheck('345');
  */
 const operatorContainmentCheck = (expr) => {
     const operators = ['+', '-', '*', '/', '^', '!'];
@@ -449,10 +592,15 @@ const operatorContainmentCheck = (expr) => {
 };
 
 /**
- * @brief Function calculates simple expressions parsed to array
- * @author Jan Svabik (xsvabi00) 
- * @param parsedSimpleExpression Array made of parsed expression to calculate
- * @return Returns result of calculation
+ * Do the calculation of parsed simple expression into array calculable by this function. Go recursively through the array until some object (array) does not include any other object (array). Calculate the result of the operation represented by the array and replace the calculated array in the parent by the calculated value until there will be no object (array) to calculate.
+ * @summary Calculate simple expression parsed into the array calculable by this function.
+ * @param {Array.<(Number|String)>} parsedSimpleExpression Array made of the parsed expressions to calculate.
+ * @return The result of the calculation.
+ * @author Jan Svabik (xsvabi00)
+ * @since 0.1
+ * @example
+ * // returns 5.5
+ * calculateSimpleExpression(['+', ['-', ['*', 8, 3], 22], 3, ['/', 3, 1], ['/', 5, -2]]);
  */
 const calculateSimpleExpression = (parsedSimpleExpression) => {
     const operation = parsedSimpleExpression[0];
@@ -480,9 +628,9 @@ const calculateSimpleExpression = (parsedSimpleExpression) => {
 
 /**
  * Function for removing the scientific notation from the number
- * @brief Removing the scientific notation
- * @param num The number with scientific notation
- * @bug Breaking the number precision
+ * @summary Removing the scientific notation
+ * @param {Number|String} num The number with scientific notation
+ * @todo Broken number precision, see below
  * @todo Use BigInt library for calculations and remove this function
  * @author Jenny O'Reilly
  * @see https://stackoverflow.com/a/46545519
@@ -521,7 +669,7 @@ function numberToString(num)
 
 module.exports = {
     calc: calculate,
-    testing: {
+    unit: {
         splitSimpleExpression: splitSimpleExpression,
         splitArrayOfExpressions: splitArrayOfExpressions,
         operatorContainmentCheck: operatorContainmentCheck,
@@ -531,3 +679,5 @@ module.exports = {
         plusMinusAxiom: plusMinusAxiom,
     },
 };
+
+/** file end */
