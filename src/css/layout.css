@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: .5em;
+    cursor: default !important;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    letter-spacing: -1px;
+}
+
+*:focus {outline: 0;}
+
+::selection {background: transparent;}
+
+body {
+    background: #565658;
+}
+
+sup {
+    display: inline-block;
+    margin-top: -1.2em;
+    margin-left: .1em;
+}
+
+sub {
+    display: inline-block;
+    margin-bottom: -1em;
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    color: white;
+}
+
+.row > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    
+}
+
+.expressionRow {
+    flex: 0.7 !important;
+}
+
+.resultRow {
+    flex: 1.1 !important;
+}
+
+.expressionRow, .resultRow {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.expressionRow > *::selection, .resultRow > *::selection {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.container > div {
+    flex: 0.9;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.result {
+    flex:9;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    font-size: 4rem;
+    text-align: right;
+    padding: .5rem 2rem 1.5rem 2rem;
+}
+
+.expression {
+    letter-spacing: 0 !important;
+    flex: 9;
+    z-index: 10;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    font-size: 2.3rem;
+    padding: 2rem 2rem 1.5rem 2rem;
+    color: rgba(255, 255, 255, 0.733);
+}
+
+.exception {
+    flex: 2 !important;
+}
+
+.button {
+    flex: 1;
+    box-shadow: inset 0px 0px 0px .5px rgba(86,86,88,1);
+    font-size: 2.7rem !important;
+}
+
+.button .content {
+    font-size: 2.7rem;
+}
+
+.bg-shadow {
+    background: #7D7D7F;
+}
+
+.bg-dark-shadow {
+    background: #636567;
+}
+
+.bg-orange {
+    background: #FF9C38;
+}
+
+.bg-orange:active {
+    background: #FF9C38aa;
+}
+
+.bg-dark-shadow:active, .bg-shadow:active {
+    background: #6365676e;
+}
+
+.bg-arrow-left {background-image: url('../img/iconmonstr-arrow-left-thin.svg') !important; background-size: 33% !important; background-position: center center !important; background-repeat: no-repeat !important;}
+div.fraction {display: flex; flex-direction: column; font-size: 3.5rem !important; align-items: center; justify-content: center;}
+div.fraction > div:first-child {border-bottom: 1px solid #fff;}
+div.fraction > div:last-child {margin-top: -3px;}
+div.fraction > div {padding-left: 3px; padding-right: 3px;}
+
+.button span.help {display: none;}
+.button:hover span.help {position: absolute; z-index: 100; top: 0; left: 0; right: 0; display: block; color: #fff; background: rgba(0, 0, 0, 0.7); text-align: center; font-size: 2rem; padding: .6rem; letter-spacing: -.5px;}

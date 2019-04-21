@@ -1,0 +1,42 @@
+{
+    "name": "thecalculator",
+    "productName": "The Calculator",
+    "version": "1.0.0",
+    "description": "The Calculator – app for calculating",
+    "main": "app.js",
+    "author": {
+        "name": "FIT Peaches",
+        "email": "xsvabi00@stud.fit.vutbr.cz"
+    },
+    "maintainers": [
+        "FIT Peaches"
+    ],
+    "homepage": "https://bitbucket.org/fitpeaches/the-calculator",
+    "license": "GPL-3.0-or-later",
+    "scripts": {
+        "start": "electron .",
+        "test": "jest"
+    },
+    "dependencies": {
+        "easy-profiler": "^2.0.0"
+    },
+    "devDependencies": {
+        "electron": "^4.1.4",
+        "electron-builder": "^20.40.2",
+        "jest": "^24.7.1"
+    },
+    "build": {
+        "appId": "cz.vutbr.fit.ivs.thecalculator.fitpeaches",
+        "directories": {
+            "output": "dist",
+            "buildResources": "build"
+        },
+        "linux": {
+            "target": [
+                "AppImage"
+            ],
+            "icon": "build/icon.png",
+            "category": "Utility"
+        }
+    }
+}

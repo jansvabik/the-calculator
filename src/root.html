@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Obecná odmocnina</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;subset=latin-ext" rel="stylesheet">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Open Sans", Arial, sans-serif;
+            }
+
+            *:focus {
+                outline: 0;
+            }
+        
+            body {
+                padding: 1rem;
+                background: #636567;
+                line-height: 1.6;
+                color: white;
+                text-align: center;
+                
+            }
+            
+            .input {
+                background: #888a8b;
+                border: none;
+                margin: 0.2em;
+                color: white;
+                width: 7em;
+                height: 1.7em;
+                padding: 0.5em; 
+                border-radius: 3px;
+                margin-bottom: 0.5em;
+            }
+
+            .button {
+                background: #FF9C38;
+                border: none;
+                color: white;
+                padding: 0.3em 1em;
+                margin-top: 1em;
+                border-radius: 10px;
+                
+            }
+
+            .container {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .container div:first-child {
+                font-size: 0.9em;
+            }
+        </style>
+    </head>
+    <body>
+        <form action="#">
+            <div class="container">
+                <div>
+                    Kolikátá odmocnina:
+                </div>
+                <div>
+                    <input class="input" type="number" id="n" autofocus required>
+                </div>
+            </div>
+            <div class="container">
+                <div>
+                    Z jakého čísla:
+                </div>
+                <div>
+                    <input class="input" type="number" id="x" required>
+                </div>
+            </div>
+            <input class="button" type="submit" id="btn" value="Hotovo">
+        </form>
+        <script>
+            document.getElementById("btn").addEventListener("click", function () {
+                let n = document.getElementById('n').value;
+                let x = document.getElementById('x').value;
+
+                window.opener.commonRoot(n, x);
+                window.close();
+            });
+        </script>
+    </body>
+</html>
