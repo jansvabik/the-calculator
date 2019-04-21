@@ -1,6 +1,8 @@
 SHELL:=/bin/bash
 
-.PHONY: all calc profile pack clean run test jest electronbuilder electron pkg node doc cleandocs jsdoc
+XLOGINS:=xdvora3a_xgurec00_xsvabi00_xzitka07
+
+.PHONY: all calc profile pack clean run test jest electronbuilder electron pkg node doc cleandoc jsdoc
 
 all: calc profile
 
@@ -10,16 +12,25 @@ calc: electronbuilder
 profile: pkg
 	pkg profiling.js --targets node6
 
-pack:
-	zip -r the-calculator.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
+pack: clean
+	mkdir -p $(XLOGINS)/repo/
+	make doc
+	rsync -av --progress doc $(XLOGINS)
+	make cleandoc
+	mkdir $(XLOGINS)/install
+	shopt -s dotglob
+	rsync -av --progress ../ $(XLOGINS)/repo --exclude="src/$(XLOGINS)" --exclude="install"
+	rsync -av --progress ../install $(XLOGINS)
+	zip -r ../$(XLOGINS).zip --exclude=*.DS_Store* $(XLOGINS)
+	rm -rf $(XLOGINS)
 
-doc: cleandocs jsdoc
+doc: cleandoc jsdoc
 	jsdoc . -r -c JSDoc.conf -d doc -R README.md -t jsdoctemplate/default
 
-clean: cleandocs
-	rm -rf profiling .clinic dist the-calculator.zip
+clean: cleandoc
+	rm -rf profiling .clinic dist $(XLOGINS) ../$(XLOGINS).zip
 
-cleandocs:
+cleandoc:
 	rm -rf doc
 
 run: electron
@@ -45,7 +56,7 @@ electronbuilder: node
 
 electron: node 
 	@if [[ "$(shell which electron)" == "" ]]; then \
-		sudo npm i -g electron; \
+		sudo npm i -g electron --unsafe-perm=true --allow-root; \
 	fi
 
 pkg: node
