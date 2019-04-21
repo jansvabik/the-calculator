@@ -1,22 +1,24 @@
 # The Calculator
 
-Vědecký kalkulátor pro rychlé výpočty jednoduchých i složitých matematických výrazů. Podpora závorek, goniometrických a hyperbolických funkcí, logaritmů, mocnin a odmocnin i faktoriálu.
+Scientific calculator for fast calculating simple and complex mathematic expressions. It support brackets, goniometric and hyperbolic functions, logarithms, powers, roots and factorization too.
 
-Prostředí
+Environment
 ---------
 
 Ubuntu 64bit
 
-Autoři
+To make it work install *make* command and then, in the *src* directory, write *make run* to run the calculator or *make calc* to create an app file. More detailed procedure can be found in the user manual.
+
+Authors
 ------
 
 FIT Peaches
-* xdvora3a Vojtěch Dvořák 
-* xgurec00 Lukáš Gurecký 
-* xsvabi00 Jan Švábík 
-* xzitka07 Radim Zítka
+* xdvora3a Vojtech Dvorak 
+* xgurec00 Lukas Gurecky 
+* xsvabi00 Jan Svabik 
+* xzitka07 Radim Zitka
 
-Licence
+License
 -------
 
-Aplikace je poskytována pod licencí GNU General Public License v3.0.
+The app is distributed under the GNU General Public License v3.0 license.

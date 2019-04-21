@@ -1,26 +1,56 @@
 /**
- * THE CALCULATOR
- * 
- * @file app.js
- * @brief Entry point and Electron settings
+ * The entry point of the app and Electron settings
+ * @module app
  * @author Jan Svabik (xsvabi00)
  * @version 1.0
  */
 
-const {app, BrowserWindow} = require('electron');
+/**
+ * The app controller from the Electron package
+ * @constant
+ */
+const app = require('electron').app;
+
+/**
+ * The external interface coming from Electron. BrowserWindow is the constructor for managing the native windows in OS.
+ * @interface electron~BrowserWindow
+ * @summary Interface for managing native windows in the OS.
+ * @author GitHub, Inc.
+ * @author other contributors
+ * @since 0.1
+ * @see https://electronjs.org/docs/api/browser-window
+ * @license MIT
+ */
+const BrowserWindow = require('electron').BrowserWindow;
+
+/**
+ * path package for path manipulations
+ * @constant
+ */
 const path = require('path');
+
+/**
+ * url package for url manipulations
+ * @constant
+ */
 const url = require('url');
 
-// init main window
+/**
+ * Main window initializer
+ * @type {BrowserWindow}
+ */
 let mainWindow;
 
+/**
+ * Function for creating the main window. This function will be called when the electron app will be ready to start.
+ */
 const createWindow = () => {
     // create a new instance of window and set it up
     mainWindow = new BrowserWindow({
         width: 600,
         height: 350,
         resizable: false,
-        icon: __dirname + '/img/icon.png',
+        icon: path.join(__dirname + 'build/icon.png'),
         webPreferences: {
             nativeWindowOpen: true,
         },
@@ -59,7 +89,8 @@ const createWindow = () => {
 // create the main window when app is ready
 app.on('ready', createWindow);
 
+// quit the app when all windows are closed
 app.on('window-all-closed', () => {
-    if (process.platform === 'darwin')
+    //if (process.platform === 'darwin')
         app.quit();
 });

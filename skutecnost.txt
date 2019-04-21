@@ -1,0 +1,9 @@
+Stanovene terminy jsme prakticky vsechny dodrzeli, vyvoj probihal podle planu. V Trellu jsme si stanovovali terminy pro konkretni casti projektu o nekolik dni drive. I pokud se tedy vyvoj nektereho modulu aplikace nebo cokoliv jineho casove protahlo, nakonec byl puvodni plan skutecne dodrzeny.
+
+Jedinou vyjimkou bylo GUI, ktere se muselo nekolikrat predelavat a vytvoreni Makefilu, ktery se delal az na konec (pri finalnim testovani na virtualnim stroji). Do Makefilu se take dodavala cast pro generovani dokumentace az po jejim prepsani. Makefile byl tak finalne dokoncen az o dva tydny pozdeji.
+
+Nektere casti aplikace nebyly nakonec tvoreny striktne jednim clovekem, casto se tvoreni prekryvalo nebo byl vyvoj veden tim zpusobem, ze jeden z tymu programoval a druhy kontroloval (interakce s uzivatelem, matematicka knihovna, profiling).
+
+Instalator aplikace nevytvarel Radim Zitka, z casti take proto, ze jsme chteli pripojit take instalator pro macOS, ktery vsak musi byt prave na macOS vytvoren. Naopak ale stravil spoustu casu vytvarenim dokumentace v LaTeXu spolecne s Lukasem Gureckym.
+
+Na posledni chvili se take predelavala velka cast programove dokumentace kodu, protoze se nam nedarilo pro dokumentaci naseho projektu vyuzit Doxygen (byt na zacatku tvorby projektu se nam jeden .js soubor zdokumentovat podarilo). Museli jsme tak sahnout po jinem reseni (zvolili jsme JSDoc).

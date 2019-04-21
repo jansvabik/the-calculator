@@ -1,8 +1,39 @@
-// libs
+/**
+ * User interactions (buttons and sending the calculation request)
+ * @module renderer
+ * @author Jan Svabik (xsvabi00)
+ * @author Vojtech Dvorak (xdvora3a)
+ * @author Lukas Gurecky (xgurec00)
+ * @version 2.0
+ */
+
+/**
+ * jQuery namespace/library providing the functions for manipulating with the DOM structure and for easy access to the DOM elements.
+ * @namespace jQuery~$
+ * @summary jQuery namespace for DOM elements manipulations.
+ * @license MIT
+ * @see https://api.jquery.com/
+ * @version 3.3.1
+ * @author JS Foundation 
+ * @author other contributors
+ */
 const $ = require('./js/jquery-3.3.1.min');
+
+/**
+ * Load the function for the expression calculating from the calculator's core
+ * @const {function}
+ */
 const calculate = require('./js/calculatorCore').calc;
 
-// define error messages
+/**
+ * Define error messages
+ * @const {Object.String}
+ * @property {String} ERR:ERROR Common error – it should not occur ever
+ * @property {String} ERR:BRACKETS Bracketed incorrectly
+ * @property {String} ERR:UNDEFINED Undefined result
+ * @property {String} ERR:MISSINGOPERAND Missing operand in expression
+ * @property {String} ERR:INFINITYLOOP Could not calculate this expression
+ */
 let errors = {
     'ERR:ERROR': 'Chyba.',
     'ERR:BRACKETS': 'Nesprávné uzávorkování.',
@@ -11,38 +42,103 @@ let errors = {
     'ERR:INFINITYLOOP': 'Toto bohužel neumím spočítat.',
 };
 
-// set line content to data
+/**
+ * Get content of the element (line)
+ * @param {DOMElement} line Line to getting the content from
+ * @return The text content (HTML structure is ignored) of the element (line)
+ * @author Lukas Gurecky (xgurec00)
+ * @since 2.0
+ */
+const getLine = (line) => {
+    return line.text();
+};
+
+/**
+ * Set content of the element (line)
+ * @param {DOMElement} line Line to set the content in
+ * @param {*} data The content to set
+ * @author Lukas Gurecky (xgurec00)
+ * @since 2.0
+ */
 const setLine = (line, data) => {
     line.text(data);
     line.parent().scrollLeft(line.width());
 };
 
-// add data to line
+/**
+ * Append content to the element (line)
+ * @param {DOMElement} line Line to append the data in
+ * @param {*} data The content to append
+ * @author Lukas Gurecky (xgurec00)
+ * @since 2.0
+ */
 const addToLine = (line, data) => {
     line.text(line.text() + data);
     line.parent().scrollLeft(line.width());
 };
 
-// transfer string into processable expression
+// * the properties below are set only for display pretty table in docs
+/**
+ * Transfer string into processable expression. Some symbols will be replaced by another symbols or strings.
+ * @param {String} data String to process
+ * @return String after the replacement.
+ * @property {Replacement} , .
+ * @property {Replacement} × *
+ * @property {Replacement} ÷ /
+ * @property {Replacement} − -
+ * @property {Replacement} π PI
+ * @property {Replacement} e E
+ * @author Jan Svabik (xsvabi00)
+ * @since 2.0
+ */
 const strToExpr = (data) => {
-    return data.replace(/,/g, '.').replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+    return data.replace(/,/g, '.').replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-').replace(/π/g, 'PI').replace(/e/g, 'E');
 };
 
-// transfer processable expression into pretty string
+// * the properties below are set only for display pretty table in docs
+/**
+ * Transfer processable expression into the pretty string
+ * @param {String} data String to process
+ * @return String after the replacement.
+ * @property {Replacement} . ,
+ * @property {Replacement} e ×10^
+ * @property {Replacement} ÷ /
+ * @property {Replacement} - −
+ * @author Jan Svabik (xsvabi00)
+ * @since 2.0
+ */
 const exprToStr = (data) => {
     return data.replace('.', ',').replace('e', '×10^').replace('-', '−');
 };
 
-// no error object
+/**
+ * Function for getting no false object.
+ * @author Jan Svabik (xsvabi00)
+ * @since 2.0
+ * @return Object determining that there is no error. It should be assigned to the error variable in $(document).ready();
+ */
 const noError = () => {
     return {is: false, type: 'ERR:ERROR'};
 };
 
-// calculating and displaying variables, data and statuses
+/**
+ * Variable for storing the result.
+ */
 let result = '';
-let expression = '';
+
+/**
+ * Variable for storing the information that result is displayed right now.
+ */
 let resultDisplayed = false;
+
+/**
+ * Variable for storing the information that error is displayed right now.
+ */
 let errorDisplayed = false;
+
+/**
+ * Variable for storing user's memory data.
+ */
 let M = '';
 
 // start when the document is ready
@@ -57,9 +153,13 @@ $(document).ready(function () {
     // predefine an error
     let error = noError();
 
+    /**
+     * Function for reseting the whole states and data to start again.
+     * @author Jan Svabik (xsvabi00)
+     * @since 2.0
+     */
     const startAgain = () => {
         result = '';
-        expression = '';
         setLine(resultLine, '');
         setLine(expressionLine, '');
         resultDisplayed = false;
@@ -81,7 +181,6 @@ $(document).ready(function () {
     resultLine.on('keyup', function (e) {
         if (e.keyCode !== 13) {        
             resultDisplayed = false;   
-            expression = strToExpr($(this).text());
         }
     });
 
@@ -96,7 +195,7 @@ $(document).ready(function () {
             return;
 
         if (resultDisplayed && !errorDisplayed && btnType === 'operator') {
-            expression = result;
+            //expression = result;
         }
         else if (resultDisplayed || errorDisplayed) {
             startAgain();
@@ -107,8 +206,8 @@ $(document).ready(function () {
             startAgain();
         }
 
+        // add the data to the end of line
         addToLine(resultLine, lineValue);
-        expression += exprValue;
         resultDisplayed = false;
     });
 
@@ -123,9 +222,14 @@ $(document).ready(function () {
         if (!resultDisplayed)
             setLine(expressionLine, resultLine.text() + '=');
         
+        // get what should be calculated
+        let toCalculate = getLine(resultLine);
+        if (resultDisplayed || errorDisplayed)
+            toCalculate = getLine(expressionLine).substr(0, getLine(expressionLine).length-1);
+
         // try to calculate the value
         try {
-            result = String(calculate(expression));
+            result = String(calculate(strToExpr(toCalculate)));
         } catch (e) {
             error.is = true;
             error.type = 'ERR:MISSINGOPERAND';
@@ -137,10 +241,13 @@ $(document).ready(function () {
             error.type = result;
         }
 
+        // if there is no error, display the result
         if (!error.is) {
             setLine(resultLine, exprToStr(result));
             resultDisplayed = true;
         }
+
+        // or display the error and save the flags
         else {
             errorDisplayed = true;
             resultDisplayed = false;
@@ -148,49 +255,63 @@ $(document).ready(function () {
         }
     });
 
+    // backspace button clicked
     $('#btnBackspace').click(function () {
+        // if error or result displayed, remove all
         if (errorDisplayed || resultDisplayed) {
             startAgain();
             resultLine.focus();
         }
-        else {
-            expression = expression.substr(0, expression.length-1);
-            setLine(resultLine, exprToStr(expression));
 
-            if (expression.length === 0)
+        // or remove only the last character from the resultLine
+        else {
+            let lineNow = getLine(resultLine);
+            let lineNew = lineNow.substr(0, lineNow.length-1);
+            setLine(resultLine, lineNew);
+
+            // if the length of the line is 0, focus the contenteditable line
+            if (lineNew.length === 0)
                 resultLine.focus();
         }
     });
 
+    // button for reseting the memory clicked
     $('#btnMemoryReset').click(function () {
         M = '';
     });
 
+    // button for setting the memory clicked
     $('#btnMemorySet').click(function () {
-        if (!errorDisplayed)
+        if (!errorDisplayed && resultDisplayed)
             M = result;
     });
 
+    // button for memory reading clicked
     $('#btnMemoryRead').click(function () {
         if (!resultDisplayed && !errorDisplayed) {
-            expression += M;
             addToLine(resultLine, exprToStr(M));
         }
     });
 
+    // button to enter common root clicked
     $('#btnCommonRoot').click(function () {
         window.open('root.html', 'modal');
     });
 
+    /**
+     * Function that is fired by modal window for entering common root data by user.
+     * @param {Number} n The level of root
+     * @param {Number} x The number to calculate root from
+     * @author Jan Svabik (xsvabi00)
+     * @since 2.0
+     */
     function commonRoot(n, x) {
-        if (resultDisplayed && !errorDisplayed) {
-            expression = result;
-        }
-
         resultDisplayed = false;
-        expression += '(' + n + ')root(' + x + ')';
-        setLine(resultLine, exprToStr(expression));
+        addToLine(resultLine, '(' + n + ')root(' + x + ')');
     }
 
+    // assign the common root to window to make it accessible from child windows
     window.commonRoot = commonRoot;
 });
+
+/** file end */

@@ -1,5 +1,6 @@
 /**
  * @file profiling.js
+ * @ignore
  * @brief Standard deviation calculator – for profiling
  * @author Vojtech Dvorak (xdvora3a)
  * @author Jan Svabik (xsvabi00)

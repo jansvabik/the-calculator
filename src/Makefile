@@ -1,23 +1,37 @@
 SHELL:=/bin/bash
 
-.PHONY: all calc profile pack clean run test jest electronbuilder electron pkg node
+XLOGINS:=xdvora3a_xgurec00_xsvabi00_xzitka07
+
+.PHONY: all calc profile pack clean run test jest electronbuilder electron pkg node doc cleandoc jsdoc
 
 all: calc profile
 
 calc: electronbuilder
-	electron-builder
+	sudo electron-builder
 
 profile: pkg
-	pkg profiling.js --targets host
+	pkg profiling.js --targets node6
 
-pack:
-	zip -r the-calculator.zip --exclude=*.DS_Store* --exclude=*dev/* --exclude=*node_modules* .
+pack: clean
+	mkdir -p $(XLOGINS)/repo/
+	make doc
+	rsync -av --progress doc $(XLOGINS)
+	make cleandoc
+	mkdir $(XLOGINS)/install
+	shopt -s dotglob
+	rsync -av --progress ../ $(XLOGINS)/repo --exclude="src/$(XLOGINS)" --exclude="install"
+	rsync -av --progress ../install $(XLOGINS)
+	zip -r ../$(XLOGINS).zip --exclude=*.DS_Store* $(XLOGINS)
+	rm -rf $(XLOGINS)
 
-clean:
-	rm -rf profiling .clinic dist the-calculator.zip
+doc: cleandoc jsdoc
+	jsdoc . -r -c JSDoc.conf -d doc -R README.md -t jsdoctemplate/default
 
-docs:
-	doxygen *.js
+clean: cleandoc
+	rm -rf profiling .clinic dist $(XLOGINS) ../$(XLOGINS).zip
+
+cleandoc:
+	rm -rf doc
 
 run: electron
 	npm start
@@ -25,12 +39,14 @@ run: electron
 test: jest
 	jest --expand --verbose --silent ./js/math.lib.test.js
 
-installer: electronpackager
-	electron-packager .
-
 jest: node
 	@if [[ "$(shell which jest)" == "" ]]; then \
 		sudo npm i -g jest; \
+	fi
+
+jsdoc: node
+	@if [[ "$(shell which jsdoc)" == "" ]]; then \
+		sudo npm i -g jsdoc; \
 	fi
 
 electronbuilder: node 
@@ -38,15 +54,9 @@ electronbuilder: node
 		sudo npm i -g electron-builder; \
 	fi
 
-electronpackager:
-	@if [[ "$(shell which electron-packager)" == "" ]]; then \
-		sudo npm install electron --save --unsafe-perm=true --allow-root; \
-		sudo npm i -g electron-packager; \
-	fi
-
 electron: node 
 	@if [[ "$(shell which electron)" == "" ]]; then \
-		sudo npm i -g electron; \
+		sudo npm i -g electron --unsafe-perm=true --allow-root; \
 	fi
 
 pkg: node
